@@ -12,6 +12,8 @@
     "append": "git://github.com/utilise/append",
     "base": "git://github.com/utilise/base",
     "chainable": "git://github.com/utilise/chainable",
+    "def": "git://github.com/utilise/def",
+    "emitterify": "git://github.com/utilise/emitterify",
     "err": "git://github.com/utilise/err",
     "fn": "git://github.com/utilise/fn",
     "has": "git://github.com/utilise/has",
