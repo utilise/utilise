@@ -13,6 +13,7 @@
     "base": "git://github.com/utilise/base",
     "chainable": "git://github.com/utilise/chainable",
     "err": "git://github.com/utilise/err",
+    "fn": "git://github.com/utilise/fn",
     "has": "git://github.com/utilise/has",
     "header": "git://github.com/utilise/header",
     "includes": "git://github.com/utilise/includes",
