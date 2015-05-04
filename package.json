@@ -1,0 +1,30 @@
+{
+  "name": "utilise",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "node alias.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "append": "git://github.com/utilise/append",
+    "base": "git://github.com/utilise/base",
+    "chainable": "git://github.com/utilise/chainable",
+    "err": "git://github.com/utilise/err",
+    "has": "git://github.com/utilise/has",
+    "header": "git://github.com/utilise/header",
+    "includes": "git://github.com/utilise/includes",
+    "is": "git://github.com/utilise/is",
+    "key": "git://github.com/utilise/key",
+    "keys": "git://github.com/utilise/keys",
+    "log": "git://github.com/utilise/log",
+    "noop": "git://github.com/utilise/noop",
+    "not": "git://github.com/utilise/not",
+    "objectify": "git://github.com/utilise/objectify",
+    "prepend": "git://github.com/utilise/prepend",
+    "rebind": "git://github.com/utilise/rebind",
+    "values": "git://github.com/utilise/values"
+  }
+}
