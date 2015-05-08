@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "all": "git://github.com/utilise/all",
     "append": "git://github.com/utilise/append",
     "base": "git://github.com/utilise/base",
     "chainable": "git://github.com/utilise/chainable",
