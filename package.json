@@ -11,6 +11,7 @@
   "dependencies": {
     "all": "git://github.com/utilise/all",
     "append": "git://github.com/utilise/append",
+    "attr": "git://github.com/utilise/attr",
     "base": "git://github.com/utilise/base",
     "chainable": "git://github.com/utilise/chainable",
     "client": "git://github.com/utilise/client",
