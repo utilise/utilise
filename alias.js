@@ -11,7 +11,6 @@ var fs = require('fs')
   , core = ['package.json', 'alias.js']
   , modules = require('./package.json').dependencies
 
-console.log(not)
 // clean dir
 fs.readdirSync(__dirname)
   .filter(includes('js'))
