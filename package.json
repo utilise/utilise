@@ -33,6 +33,7 @@
     "noop": "git://github.com/utilise/noop",
     "not": "git://github.com/utilise/not",
     "objectify": "git://github.com/utilise/objectify",
+    "owner": "git://github.com/utilise/owner",
     "prepend": "git://github.com/utilise/prepend",
     "rebind": "git://github.com/utilise/rebind",
     "resourcify": "git://github.com/utilise/resourcify",
