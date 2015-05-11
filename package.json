@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "all": "git://github.com/utilise/all",
+    "all": "git://github.com/utilise/raw",
     "append": "git://github.com/utilise/append",
     "attr": "git://github.com/utilise/attr",
     "base": "git://github.com/utilise/base",
