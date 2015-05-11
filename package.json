@@ -25,6 +25,7 @@
     "fn": "git://github.com/utilise/fn",
     "has": "git://github.com/utilise/has",
     "header": "git://github.com/utilise/header",
+    "identity": "git://github.com/utilise/identity",
     "includes": "git://github.com/utilise/includes",
     "is": "git://github.com/utilise/is",
     "key": "git://github.com/utilise/key",
