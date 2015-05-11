@@ -38,6 +38,7 @@
     "objectify": "git://github.com/utilise/objectify",
     "owner": "git://github.com/utilise/owner",
     "prepend": "git://github.com/utilise/prepend",
+    "raw": "git://github.com/utilise/raw",
     "rebind": "git://github.com/utilise/rebind",
     "resourcify": "git://github.com/utilise/resourcify",
     "values": "git://github.com/utilise/values"
