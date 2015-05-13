@@ -14,6 +14,7 @@
     "attr": "git://github.com/utilise/attr",
     "base": "git://github.com/utilise/base",
     "body": "git://github.com/utilise/body",
+    "by": "git://github.com/utilise/by",
     "chainable": "git://github.com/utilise/chainable",
     "client": "git://github.com/utilise/client",
     "copy": "git://github.com/utilise/copy",
@@ -33,14 +34,17 @@
     "last": "git://github.com/utilise/last",
     "lo": "git://github.com/utilise/lo",
     "log": "git://github.com/utilise/log",
+    "matches": "git://github.com/utilise/by",
     "noop": "git://github.com/utilise/noop",
     "not": "git://github.com/utilise/not",
     "objectify": "git://github.com/utilise/objectify",
     "owner": "git://github.com/utilise/owner",
+    "parse": "git://github.com/utilise/parse",
     "prepend": "git://github.com/utilise/prepend",
     "raw": "git://github.com/utilise/raw",
     "rebind": "git://github.com/utilise/rebind",
     "resourcify": "git://github.com/utilise/resourcify",
+    "str": "git://github.com/utilise/str",
     "values": "git://github.com/utilise/values"
   }
 }

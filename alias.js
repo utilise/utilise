@@ -10,6 +10,7 @@ var fs = require('fs')
   , includes = require('includes')
   , core = ['package.json', 'alias.js']
   , modules = require('./package.json').dependencies
+  , template = "module.exports = require('{mod}')"
 
 // clean dir
 fs.readdirSync(__dirname)
@@ -25,6 +26,8 @@ keys(modules)
   .map(log('creating'))
   .map(fs.createWriteStream)
   .map(function(s){ 
-    s.write("module.exports = require('"+s.path.slice(0,-3)+"')")
+    var key = s.path.slice(0,-3)
+      , mod = modules[key].split('/').pop()
+    s.write(template.replace('{mod}', mod))
   })
 
