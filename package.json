@@ -44,6 +44,7 @@
     "prepend": "git://github.com/utilise/prepend",
     "raw": "git://github.com/utilise/raw",
     "rebind": "git://github.com/utilise/rebind",
+    "replace": "git://github.com/utilise/replace",
     "resourcify": "git://github.com/utilise/resourcify",
     "str": "git://github.com/utilise/str",
     "values": "git://github.com/utilise/values"
