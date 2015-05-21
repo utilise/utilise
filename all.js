@@ -1,1 +1,1 @@
-module.exports = require('raw')
+module.exports = require('all')
