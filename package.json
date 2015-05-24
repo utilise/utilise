@@ -3,14 +3,22 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
+  "browser": {
+    "send": false
+  },
   "scripts": {
-    "prepublish": "node alias.js"
+    "bundle": "browserify tmp.js -o utilise.js -s utilise && rm tmp.js",
+    "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
+    "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
+    "build": "node alias.js && npm run bundle && npm run minify && npm run gzip",
+    "prepublish": "npm run build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "all": "git://github.com/utilise/all",
     "append": "git://github.com/utilise/append",
+    "args": "git://github.com/utilise/args",
     "attr": "git://github.com/utilise/attr",
     "base": "git://github.com/utilise/base",
     "body": "git://github.com/utilise/body",
@@ -46,7 +54,12 @@
     "rebind": "git://github.com/utilise/rebind",
     "replace": "git://github.com/utilise/replace",
     "resourcify": "git://github.com/utilise/resourcify",
+    "send": "git://github.com/utilise/send",
     "str": "git://github.com/utilise/str",
+    "to": "git://github.com/utilise/to",
     "values": "git://github.com/utilise/values"
+  },
+  "devDependencies": {
+    "browserify": "^10.2.1"
   }
 }
