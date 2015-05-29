@@ -47,6 +47,7 @@
     "noop": "git://github.com/utilise/noop",
     "not": "git://github.com/utilise/not",
     "objectify": "git://github.com/utilise/objectify",
+    "once": "git://github.com/utilise/once",
     "owner": "git://github.com/utilise/owner",
     "parse": "git://github.com/utilise/parse",
     "prepend": "git://github.com/utilise/prepend",
@@ -60,6 +61,7 @@
     "values": "git://github.com/utilise/values"
   },
   "devDependencies": {
-    "browserify": "^10.2.1"
+    "browserify": "^10.2.1",
+    "uglify-js": "^2.4.23"
   }
 }
