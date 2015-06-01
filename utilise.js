@@ -207,6 +207,8 @@ module.exports = function key(k, v){
 },{"is":12}],12:[function(require,module,exports){
 arguments[4][8][0].apply(exports,arguments)
 },{"dup":8}],13:[function(require,module,exports){
+
+},{}],14:[function(require,module,exports){
 var key = require('key')
 
 module.exports = function by(k, v){
@@ -217,9 +219,9 @@ module.exports = function by(k, v){
       : d == v
   }
 }
-},{"key":14}],14:[function(require,module,exports){
+},{"key":15}],15:[function(require,module,exports){
 arguments[4][11][0].apply(exports,arguments)
-},{"dup":11,"is":15}],15:[function(require,module,exports){
+},{"dup":11,"is":16}],16:[function(require,module,exports){
 module.exports = { 
   fn     : isFunction
 , str    : isString
@@ -276,15 +278,15 @@ function isIn(set) {
          :  d in set
   }
 }
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function chainable(fn) {
   return function(){
     return fn.apply(this, arguments), fn
   }
 }
-},{}],17:[function(require,module,exports){
-module.exports = typeof window != 'undefined'
 },{}],18:[function(require,module,exports){
+module.exports = typeof window != 'undefined'
+},{}],19:[function(require,module,exports){
 var client = require('client')
 
 module.exports = colorfill()
@@ -299,15 +301,15 @@ function colorfill(){
   })
 }
 
-},{"client":19}],19:[function(require,module,exports){
-arguments[4][17][0].apply(exports,arguments)
-},{"dup":17}],20:[function(require,module,exports){
+},{"client":20}],20:[function(require,module,exports){
+arguments[4][18][0].apply(exports,arguments)
+},{"dup":18}],21:[function(require,module,exports){
 module.exports = function copy(from, to){ 
   return function(d){ 
     return to[d] = from[d], d
   }
 }
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var has = require('has')
 
 module.exports = function def(o, p, v, w){
@@ -315,11 +317,11 @@ module.exports = function def(o, p, v, w){
   return o[p]
 }
 
-},{"has":22}],22:[function(require,module,exports){
+},{"has":23}],23:[function(require,module,exports){
 module.exports = function has(o, k) {
   return o.hasOwnProperty(k)
 }
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var err  = require('err')('emitterify')
   , keys = require('keys')
   , def  = require('def')
@@ -371,27 +373,27 @@ module.exports = function emitterify(body) {
     return callback.once = true, body.on(type, callback), body
   }
 }
-},{"def":24,"err":26,"keys":27,"not":28}],24:[function(require,module,exports){
-arguments[4][21][0].apply(exports,arguments)
-},{"dup":21,"has":25}],25:[function(require,module,exports){
+},{"def":25,"err":27,"keys":28,"not":29}],25:[function(require,module,exports){
 arguments[4][22][0].apply(exports,arguments)
-},{"dup":22}],26:[function(require,module,exports){
+},{"dup":22,"has":26}],26:[function(require,module,exports){
+arguments[4][23][0].apply(exports,arguments)
+},{"dup":23}],27:[function(require,module,exports){
 module.exports = function log(prefix){
   return function(d){
     return console.error.bind(console, ''.red ? prefix.red : prefix).apply(console, arguments), d
   }
 }
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = function keys(o) {
   return Object.keys(o || {})
 }
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function not(fn){
   return function(){
     return !fn.apply(this, arguments)
   }
 }
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function err(prefix){
   return function(d){
     var args = [].slice.call(arguments, 0)
@@ -399,7 +401,7 @@ module.exports = function err(prefix){
     return console.error.apply(console, args), d
   }
 }
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var is = require('is')
   , not = require('not')
   , keys = require('keys')
@@ -414,30 +416,34 @@ module.exports = function extend(to){
     return to
   }
 }
-},{"copy":31,"is":32,"keys":33,"not":34}],31:[function(require,module,exports){
-arguments[4][20][0].apply(exports,arguments)
-},{"dup":20}],32:[function(require,module,exports){
+},{"copy":32,"is":33,"keys":34,"not":35}],32:[function(require,module,exports){
+arguments[4][21][0].apply(exports,arguments)
+},{"dup":21}],33:[function(require,module,exports){
 arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],33:[function(require,module,exports){
-arguments[4][27][0].apply(exports,arguments)
-},{"dup":27}],34:[function(require,module,exports){
+},{"dup":5}],34:[function(require,module,exports){
 arguments[4][28][0].apply(exports,arguments)
 },{"dup":28}],35:[function(require,module,exports){
+arguments[4][29][0].apply(exports,arguments)
+},{"dup":29}],36:[function(require,module,exports){
+module.exports = function file(name){
+  return require('fs').readFileSync(name, { encoding:'utf8' })
+}
+},{"fs":13}],37:[function(require,module,exports){
 module.exports = function first(d){
   return d[0]
 }
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 var is = require('is')
 
 module.exports = function fn(candid){
   return is.fn(candid) ? candid
        : (new Function("return " + candid))()
 }
-},{"is":37}],37:[function(require,module,exports){
+},{"is":39}],39:[function(require,module,exports){
 arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],38:[function(require,module,exports){
-arguments[4][22][0].apply(exports,arguments)
-},{"dup":22}],39:[function(require,module,exports){
+},{"dup":8}],40:[function(require,module,exports){
+arguments[4][23][0].apply(exports,arguments)
+},{"dup":23}],41:[function(require,module,exports){
 var has = require('has')
 
 module.exports = function header(header, value) {
@@ -450,21 +456,21 @@ module.exports = function header(header, value) {
                                    : d['headers'][header] == value
   }
 }
-},{"has":40}],40:[function(require,module,exports){
-arguments[4][22][0].apply(exports,arguments)
-},{"dup":22}],41:[function(require,module,exports){
+},{"has":42}],42:[function(require,module,exports){
+arguments[4][23][0].apply(exports,arguments)
+},{"dup":23}],43:[function(require,module,exports){
 module.exports = function identity(d) {
   return d
 }
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports = function includes(pattern){
   return function(d){
     return ~d.indexOf(pattern)
   }
 }
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],44:[function(require,module,exports){
+},{"dup":5}],46:[function(require,module,exports){
 var is = require('is')
 
 module.exports = function key(k, v){ 
@@ -484,7 +490,7 @@ module.exports = function key(k, v){
                               :  o[k])
   }
 }
-},{"is":45}],45:[function(require,module,exports){
+},{"is":47}],47:[function(require,module,exports){
 module.exports = is
 is.fn     = isFunction
 is.str    = isString
@@ -546,18 +552,18 @@ function isIn(set) {
          :  d in set
   }
 }
-},{}],46:[function(require,module,exports){
-arguments[4][27][0].apply(exports,arguments)
-},{"dup":27}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
+arguments[4][28][0].apply(exports,arguments)
+},{"dup":28}],49:[function(require,module,exports){
 module.exports =  function last(d) {
   return d[d.length-1]
 }
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = function lo(d){
   return d.toLowerCase()
 }
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 var is = require('is')
   , to = require('to')
 
@@ -569,22 +575,22 @@ module.exports = function log(prefix){
     return console.log.apply(console, args), d
   }
 }
-},{"is":50,"to":51}],50:[function(require,module,exports){
+},{"is":52,"to":53}],52:[function(require,module,exports){
 arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],51:[function(require,module,exports){
+},{"dup":8}],53:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)
-},{"dup":2}],52:[function(require,module,exports){
+},{"dup":2}],54:[function(require,module,exports){
 module.exports = function noop(){}
-},{}],53:[function(require,module,exports){
-arguments[4][28][0].apply(exports,arguments)
-},{"dup":28}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
+arguments[4][29][0].apply(exports,arguments)
+},{"dup":29}],56:[function(require,module,exports){
 module.exports = function objectify(rows, by) {
   var o = {}, by = by || 'name'
   return rows.forEach(function(d){
     return o[d[by]] = d 
   }), o
 }
-},{}],55:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 var d3 = require('d3')
   
 module.exports = function once(g, selector, data, before, key) {
@@ -600,7 +606,7 @@ module.exports = function once(g, selector, data, before, key) {
     .selectAll(selector.toString())
     .data(data || [0], key)
 
-  el.once = function(s,d,b,k) { return once.apply(el,s,d,b,k) }
+  el.once = function(s,d,b,k) { return once(el,s,d,b,k) }
 
   el.out = el.exit()
     .remove() 
@@ -612,7 +618,7 @@ module.exports = function once(g, selector, data, before, key) {
   return el
 }
 
-},{"d3":56}],56:[function(require,module,exports){
+},{"d3":58}],58:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.5.5"
@@ -10117,27 +10123,27 @@ module.exports = function once(g, selector, data, before, key) {
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 (function (global){
 module.exports = require('client') ? window : global
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"client":58}],58:[function(require,module,exports){
-arguments[4][17][0].apply(exports,arguments)
-},{"dup":17}],59:[function(require,module,exports){
+},{"client":60}],60:[function(require,module,exports){
+arguments[4][18][0].apply(exports,arguments)
+},{"dup":18}],61:[function(require,module,exports){
 module.exports = function parse(d){
   return d && JSON.parse(d)
 }
-},{}],60:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = function prepend(v) {
   return function(d){
     return v+d
   }
 }
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = function raw(selector, context){
   return (context ? context : document).querySelector(selector)
 }
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = function(target, source) {
   var i = 1, n = arguments.length, method
   while (++i < n) target[method = arguments[i]] = rebind(target, source, source[method])
@@ -10150,13 +10156,13 @@ function rebind(target, source, method) {
     return value === source ? target : value
   }
 }
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = function replace(from, to){
   return function(d){
     return d.replace(from, to)
   }
 }
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var is = require('is')
   , body = require('body')
   , first = require('first')
@@ -10174,28 +10180,28 @@ module.exports = function resourcify(ripple){
            )
   }
 }
-},{"body":65,"first":68,"is":69,"values":70}],65:[function(require,module,exports){
+},{"body":67,"first":70,"is":71,"values":72}],67:[function(require,module,exports){
 arguments[4][10][0].apply(exports,arguments)
-},{"dup":10,"key":66}],66:[function(require,module,exports){
+},{"dup":10,"key":68}],68:[function(require,module,exports){
 arguments[4][11][0].apply(exports,arguments)
-},{"dup":11,"is":67}],67:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],68:[function(require,module,exports){
-arguments[4][35][0].apply(exports,arguments)
-},{"dup":35}],69:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],70:[function(require,module,exports){
+},{"dup":11,"is":69}],69:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"dup":16}],70:[function(require,module,exports){
+arguments[4][37][0].apply(exports,arguments)
+},{"dup":37}],71:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"dup":16}],72:[function(require,module,exports){
 var keys = require('keys')
   , base = require('base')
 
 module.exports = function values(o) {
   return !o ? [] : keys(o).map(base(o))
 }
-},{"base":71,"keys":72}],71:[function(require,module,exports){
+},{"base":73,"keys":74}],73:[function(require,module,exports){
 arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],72:[function(require,module,exports){
-arguments[4][27][0].apply(exports,arguments)
-},{"dup":27}],73:[function(require,module,exports){
+},{"dup":9}],74:[function(require,module,exports){
+arguments[4][28][0].apply(exports,arguments)
+},{"dup":28}],75:[function(require,module,exports){
 var is = require('is') 
 
 module.exports = function str(d){
@@ -10203,22 +10209,22 @@ module.exports = function str(d){
        ? String(d)
        : JSON.stringify(d)
 }
-},{"is":74}],74:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],75:[function(require,module,exports){
+},{"is":76}],76:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"dup":16}],77:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)
-},{"dup":2}],76:[function(require,module,exports){
+},{"dup":2}],78:[function(require,module,exports){
 var keys = require('keys')
   , base = require('base')
 
 module.exports = function values(o) {
   return !o ? [] : keys(o).map(base(o))
 }
-},{"base":77,"keys":78}],77:[function(require,module,exports){
+},{"base":79,"keys":80}],79:[function(require,module,exports){
 arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],78:[function(require,module,exports){
-arguments[4][27][0].apply(exports,arguments)
-},{"dup":27}],79:[function(require,module,exports){
+},{"dup":9}],80:[function(require,module,exports){
+arguments[4][28][0].apply(exports,arguments)
+},{"dup":28}],81:[function(require,module,exports){
 require('owner').all = require('all')
 require('owner').append = require('append')
 require('owner').args = require('args')
@@ -10234,6 +10240,7 @@ require('owner').def = require('def')
 require('owner').emitterify = require('emitterify')
 require('owner').err = require('err')
 require('owner').extend = require('extend')
+require('owner').file = require('file')
 require('owner').first = require('first')
 require('owner').fn = require('fn')
 require('owner').has = require('has')
@@ -10262,5 +10269,5 @@ require('owner').str = require('str')
 require('owner').to = require('to')
 require('owner').values = require('values')
 
-},{"all":1,"append":3,"args":4,"attr":7,"base":9,"body":10,"by":13,"chainable":16,"client":17,"colorfill":18,"copy":20,"def":21,"emitterify":23,"err":29,"extend":30,"first":35,"fn":36,"has":38,"header":39,"identity":41,"includes":42,"is":43,"key":44,"keys":46,"last":47,"lo":48,"log":49,"noop":52,"not":53,"objectify":54,"once":55,"owner":57,"parse":59,"prepend":60,"raw":61,"rebind":62,"replace":63,"resourcify":64,"str":73,"to":75,"values":76}]},{},[79])(79)
+},{"all":1,"append":3,"args":4,"attr":7,"base":9,"body":10,"by":14,"chainable":17,"client":18,"colorfill":19,"copy":21,"def":22,"emitterify":24,"err":30,"extend":31,"file":36,"first":37,"fn":38,"has":40,"header":41,"identity":43,"includes":44,"is":45,"key":46,"keys":48,"last":49,"lo":50,"log":51,"noop":54,"not":55,"objectify":56,"once":57,"owner":59,"parse":61,"prepend":62,"raw":63,"rebind":64,"replace":65,"resourcify":66,"str":75,"to":77,"values":78}]},{},[81])(81)
 });

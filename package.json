@@ -31,6 +31,7 @@
     "emitterify": "git://github.com/utilise/emitterify",
     "err": "git://github.com/utilise/err",
     "extend": "git://github.com/utilise/extend",
+    "file": "git://github.com/utilise/file",
     "first": "git://github.com/utilise/first",
     "fn": "git://github.com/utilise/fn",
     "has": "git://github.com/utilise/has",
