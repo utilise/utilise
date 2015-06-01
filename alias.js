@@ -61,5 +61,5 @@ keys(modules)
 
 
 function module(key){
-  return modules[key].split('/').pop()
+  return modules[key].split('/').pop().slice(0,-4)
 }
