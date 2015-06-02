@@ -616,11 +616,13 @@ module.exports = function once(g, selector, data, before, key) {
                   ? function(){ return selector }
                   : selector.split('.')[0] || 'div'
     
-  is.str(data) && (data = [data])
+  if (is.str(data)) (data = [data])
+  if (arguments.length == 2) data = [0]
+  if (!data) data = []
 
   var el = g
     .selectAll(selector.toString())
-    .data(data || [0], key)
+    .data(data, key)
 
   el.once = function(s,d,b,k) { return once(el,s,d,b,k) }
 
