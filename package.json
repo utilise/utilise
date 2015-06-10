@@ -54,6 +54,7 @@
     "owner": "git+https://github.com/utilise/owner.git",
     "parse": "git+https://github.com/utilise/parse.git",
     "prepend": "git+https://github.com/utilise/prepend.git",
+    "promise": "git+https://github.com/utilise/promise.git",
     "raw": "git+https://github.com/utilise/raw.git",
     "rebind": "git+https://github.com/utilise/rebind.git",
     "replace": "git+https://github.com/utilise/replace.git",
