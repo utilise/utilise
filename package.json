@@ -45,6 +45,7 @@
     "last": "git+https://github.com/utilise/last.git",
     "lo": "git+https://github.com/utilise/lo.git",
     "log": "git+https://github.com/utilise/log.git",
+    "mask": "git+https://github.com/utilise/mask.git",
     "matches": "git+https://github.com/utilise/by.git",
     "noop": "git+https://github.com/utilise/noop.git",
     "not": "git+https://github.com/utilise/not.git",
@@ -60,7 +61,8 @@
     "send": "git+https://github.com/utilise/send.git",
     "str": "git+https://github.com/utilise/str.git",
     "to": "git+https://github.com/utilise/to.git",
-    "values": "git+https://github.com/utilise/values.git"
+    "values": "git+https://github.com/utilise/values.git",
+    "via": "git+https://github.com/utilise/via.git"
   },
   "devDependencies": {
     "browserify": "^10.2.1",
