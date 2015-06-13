@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "browser": {
-    "send": false
+    "send": false,
+    "via": false
   },
   "scripts": {
-    "bundle": "browserify tmp.js -o utilise.js -s utilise && rm tmp.js",
+    "bundle": "browserify tmp.js -o utilise.js -i d3 -s utilise && rm tmp.js",
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
     "build": "node alias.js && npm run bundle && npm run minify && npm run gzip",
@@ -31,6 +32,7 @@
     "emitterify": "git+https://github.com/utilise/emitterify.git",
     "err": "git+https://github.com/utilise/err.git",
     "extend": "git+https://github.com/utilise/extend.git",
+    "falsy": "git://github.com/utilise/falsy.git",
     "file": "git+https://github.com/utilise/file.git",
     "first": "git+https://github.com/utilise/first.git",
     "fn": "git+https://github.com/utilise/fn.git",
