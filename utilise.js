@@ -438,8 +438,68 @@ module.exports = function fn(candid){
        : (new Function("return " + candid))()
 }
 },{"is":59}],59:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],60:[function(require,module,exports){
+module.exports = is
+is.fn     = isFunction
+is.str    = isString
+is.num    = isNumber
+is.obj    = isObject
+is.truthy = isTruthy
+is.falsy  = isFalsy
+is.arr    = isArray
+is.null   = isNull
+is.def    = isDef
+is.in     = isIn
+
+function is(v){
+  return function(d){
+    return d == v
+  }
+}
+
+function isFunction(d) {
+  return typeof d == 'function'
+}
+
+function isString(d) {
+  return typeof d == 'string'
+}
+
+function isNumber(d) {
+  return typeof d == 'number'
+}
+
+function isObject(d) {
+  return typeof d == 'object'
+}
+
+function isTruthy(d) {
+  return !!d == true
+}
+
+function isFalsy(d) {
+  return !!d == false
+}
+
+function isArray(d) {
+  return d instanceof Array
+}
+
+function isNull(d) {
+  return d === null
+}
+
+function isDef(d) {
+  return typeof d !== 'undefined'
+}
+
+function isIn(set) {
+  return function(d){
+    return  set.indexOf 
+         ? ~set.indexOf(d)
+         :  d in set
+  }
+}
+},{}],60:[function(require,module,exports){
 arguments[4][31][0].apply(exports,arguments)
 },{"dup":31}],61:[function(require,module,exports){
 var has = require('has')
@@ -765,6 +825,12 @@ arguments[4][9][0].apply(exports,arguments)
 },{"dup":9}],122:[function(require,module,exports){
 arguments[4][45][0].apply(exports,arguments)
 },{"dup":45}],123:[function(require,module,exports){
+module.exports = function wrap(d){
+  return function(){
+    return d
+  }
+}
+},{}],124:[function(require,module,exports){
 require('owner').all = require('all')
 require('owner').append = require('append')
 require('owner').args = require('args')
@@ -819,6 +885,7 @@ require('owner').sel = require('sel')
 require('owner').str = require('str')
 require('owner').to = require('to')
 require('owner').values = require('values')
+require('owner').wrap = require('wrap')
 
-},{"all":1,"append":3,"args":4,"attr":7,"base":9,"body":10,"by":14,"chainable":17,"client":18,"clone":19,"colorfill":24,"copy":26,"datum":27,"debounce":29,"def":30,"el":32,"emitterify":38,"err":47,"extend":50,"falsy":55,"file":56,"first":57,"fn":58,"has":60,"header":61,"identity":63,"includes":64,"inherit":65,"is":67,"join":68,"key":79,"keys":81,"last":82,"lo":83,"log":84,"mask":89,"mo":91,"noop":94,"not":95,"objectify":96,"once":97,"owner":99,"parse":101,"prepend":102,"promise":103,"raw":104,"rebind":105,"replace":106,"resourcify":107,"sel":116,"str":117,"to":119,"values":120}]},{},[123])(123)
+},{"all":1,"append":3,"args":4,"attr":7,"base":9,"body":10,"by":14,"chainable":17,"client":18,"clone":19,"colorfill":24,"copy":26,"datum":27,"debounce":29,"def":30,"el":32,"emitterify":38,"err":47,"extend":50,"falsy":55,"file":56,"first":57,"fn":58,"has":60,"header":61,"identity":63,"includes":64,"inherit":65,"is":67,"join":68,"key":79,"keys":81,"last":82,"lo":83,"log":84,"mask":89,"mo":91,"noop":94,"not":95,"objectify":96,"once":97,"owner":99,"parse":101,"prepend":102,"promise":103,"raw":104,"rebind":105,"replace":106,"resourcify":107,"sel":116,"str":117,"to":119,"values":120,"wrap":123}]},{},[124])(124)
 });

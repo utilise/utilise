@@ -72,7 +72,8 @@
     "str": "git+https://github.com/utilise/str.git",
     "to": "git+https://github.com/utilise/to.git",
     "values": "git+https://github.com/utilise/values.git",
-    "via": "git+https://github.com/utilise/via.git"
+    "via": "git+https://github.com/utilise/via.git",
+    "wrap": "git+https://github.com/utilise/wrap.git"
   },
   "devDependencies": {
     "browserify": "^10.2.1",
