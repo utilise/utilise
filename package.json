@@ -40,6 +40,7 @@
     "file": "git+https://github.com/utilise/file.git",
     "first": "git+https://github.com/utilise/first.git",
     "fn": "git+https://github.com/utilise/fn.git",
+    "from": "git+https://github.com/utilise/from.git",
     "has": "git+https://github.com/utilise/has.git",
     "header": "git+https://github.com/utilise/header.git",
     "identity": "git+https://github.com/utilise/identity.git",
