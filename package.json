@@ -51,6 +51,7 @@
     "key": "git+https://github.com/utilise/key.git",
     "keys": "git+https://github.com/utilise/keys.git",
     "last": "git+https://github.com/utilise/last.git",
+    "link": "git+https://github.com/utilise/link.git",
     "lo": "git+https://github.com/utilise/lo.git",
     "log": "git+https://github.com/utilise/log.git",
     "mask": "git+https://github.com/utilise/mask.git",
