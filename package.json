@@ -62,6 +62,7 @@
     "once": "git+https://github.com/utilise/once.git",
     "owner": "git+https://github.com/utilise/owner.git",
     "parse": "git+https://github.com/utilise/parse.git",
+    "perf": "git+https://github.com/utilise/perf.git",
     "prepend": "git+https://github.com/utilise/prepend.git",
     "promise": "git+https://github.com/utilise/promise.git",
     "raw": "git+https://github.com/utilise/raw.git",
