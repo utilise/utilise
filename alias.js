@@ -27,7 +27,7 @@ fs.readdirSync(__dirname)
 keys(modules)
   .map(append('.js'))
   .map(log('creating'))
-  .map(fs.createWriteStream)
+  .map(args(0)(fs.createWriteStream))
   .map(function(s){ 
     var key = s.path.slice(0,-3)
       , mod = module(key)

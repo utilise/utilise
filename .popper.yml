@@ -1,0 +1,36 @@
+globals:
+  - <script src="https://cdn.polyfill.io/v1/polyfill.min.js"></script>
+  - <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+  - <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.0.0/chai.min.js"></script>
+
+tests: browserify ../*/test.js
+  -i colors
+  -i jsdom
+  -i chai
+  -i d3
+  -i ../pause/test.js
+  -i ../send/test.js
+  -i ../via/test.js
+  --full-paths
+  | sed -E "s/require\('chai'\)/window.chai/"
+  | sed -E "s/require\('d3'\)/window.d3/"
+  # | uglifyjs
+
+browsers: 
+  # - browserName: 'internet explorer'
+  #   version: '9'
+  #   platform: 'WINDOWS'
+  # - browserName: 'android'
+  #   platform: 'ANDROID'
+  #   device: 'Samsung Galaxy S5'
+  # - browserName: 'iPhone'
+  #   platform: 'MAC'
+  #   device: 'iPhone 5'
+  # - browserName: 'opera'
+  #   platform: 'WINDOWS'
+  # - browserName: 'safari'
+  #   platform: 'MAC'
+
+port: 1945
+
+watch: ../*/index.js
