@@ -34,9 +34,9 @@ mutations
   * You don't have to load a 0.5MB utility library just to use one function.
   * You can be a lot smarter with dead code elimination, even if you include the base file (but not use everything).
 
-* There is no spraying your code with `_.` everywhere. These functions are largely first-class additions to the language that make your code a lot more fluent. 
+* There is no spraying your code with `_.` everywhere, since these functions are largely first-class additions to the language that make your code a lot more fluent. 
 
-* These are mostly stable, a few new ones I'm still paving the cow paths with. 
+* These are mostly stable, a few new ones may still need experimenting with to get the API right. 
 
 * Each micro-library is only just a few lines. 
 
@@ -66,15 +66,16 @@ all('li.class', ul)
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/append/badge.svg?branch=master)](https://coveralls.io/r/utilise/append?branch=master) [![Build](https://api.travis-ci.org/utilise/append.svg)](https://travis-ci.org/utilise/append) append
 
+Append something to a string
+
 ```js
 ['lorem', 'ipsum']
-  .map(append('-foo')) 
-  // ['lorem-foo', 'ipsum-foo']
+  .map(append('-foo')) // returns ['lorem-foo', 'ipsum-foo']
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/args/badge.svg?branch=master)](https://coveralls.io/r/utilise/args?branch=master) [![Build](https://api.travis-ci.org/utilise/args.svg)](https://travis-ci.org/utilise/args) args
 
-Cherry-pick arguments to pass to function by index. This is useful when iterating a list, and invoking a function which 
+Cherry-pick arguments to pass to function by index. This is useful when iterating a list, and invoking a function which may be confused if passed the index and array arguments.
 
 ```js
 ['lorem.txt', 'ipsum.txt']
@@ -83,16 +84,16 @@ Cherry-pick arguments to pass to function by index. This is useful when iteratin
 
 This would fail without `args` since the second argument (index) would try to be read as the encoding.
 
-You can pick out 1+ arguments using an array instead of number.
+You can pick out more than one argument using an array instead of a number.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/attr/badge.svg?branch=master)](https://coveralls.io/r/utilise/attr?branch=master) [![Build](https://api.travis-ci.org/utilise/attr.svg)](https://travis-ci.org/utilise/attr) attr
 
 Get or set value of element attribute.
 
 ```js
-attr('key')(el) // returns value for attribute key
+attr('key')(el)          // returns value for attribute key
 attr('key', 'value')(el) // adds [key=value]
-attr('key', false)(el) // removes attribute key
+attr('key', false)(el)   // removes attribute key
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/body/badge.svg?branch=master)](https://coveralls.io/r/utilise/body?branch=master) [![Build](https://api.travis-ci.org/utilise/body.svg)](https://travis-ci.org/utilise/body) body
@@ -142,7 +143,7 @@ ripple
   .resource('lorem', 'ipsum')
 ```
 
-NB: I think this will be deprecated in favour of the more generic proxy function that is used to alter return values
+NB: I think this will be deprecated in favour of the more [generic proxy function](https://github.com/utilise/utilise#--proxy) that is used to alter return values
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/client/badge.svg?branch=master)](https://coveralls.io/r/utilise/client?branch=master) [![Build](https://api.travis-ci.org/utilise/client.svg)](https://travis-ci.org/utilise/client) client
 
@@ -179,7 +180,7 @@ require('colorfill')
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/copy/badge.svg?branch=master)](https://coveralls.io/r/utilise/copy?branch=master) [![Build](https://api.travis-ci.org/utilise/copy.svg)](https://travis-ci.org/utilise/copy) copy
 
-Copies a properties from one object to another
+Copies properties from one object to another
 
 ```js
 keys(from)
@@ -198,7 +199,7 @@ nodes
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/debounce/badge.svg?branch=master)](https://coveralls.io/r/utilise/debounce?branch=master) [![Build](https://api.travis-ci.org/utilise/debounce.svg)](https://travis-ci.org/utilise/debounce) debounce
 
-Returns a debounced function
+Returns a debounced function (100ms)
 
 ```js
 debounced = debounce(fn)
@@ -216,7 +217,9 @@ def(object, prop, value[, writable])  // returns value
 
 Creates a node from a CSS selector
 
+```js
 el(div.foo.bar[lorem=ipsum]) // returns <el class="foo bar" lorem="ipsum" />
+```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/emitterify/badge.svg?branch=master)](https://coveralls.io/r/utilise/emitterify?branch=master) [![Build](https://api.travis-ci.org/utilise/emitterify.svg)](https://travis-ci.org/utilise/emitterify) emitterify
 
@@ -224,7 +227,7 @@ Enhance any object with `.on`, `.once` and `.emit`
 
 ```js
 var o = emitterify({}) 
-o.on('event')             // get listeners
+o.on('event')             // get listeners for event
 o.on('event', fn)         // set listener on arbitrary event
 o.once('event', fn)       // set listener that is only called once
 o.on('event.ns', fn)      // set listener for event.namespace, unique listener per namespace
@@ -234,7 +237,7 @@ o.emit('event', [array])  // emit event with optional multiple arguments
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/err/badge.svg?branch=master)](https://coveralls.io/r/utilise/err?branch=master) [![Build](https://api.travis-ci.org/utilise/err.svg)](https://travis-ci.org/utilise/err) err
 
-Lightweight scope of console.error with a prefix, useful for per module identification
+Lightweight scoped version of `console.error` with a prefix, useful for per module identification
 
 ```js
 err = err('[module/prefix]')
@@ -305,13 +308,13 @@ users = [
 , { name: 'baz', city: 1 }
 ]
 
-cities: { 1: 'London', 2: 'New York' }
+cities: { 1: 'London', 2: 'New York', 3: 'Paris' }
 
 // get a unique list of cities users live in
 users
   .map(key('city'))
   .map(from(cities))
-  .reduce(unique)
+  .reduce(unique)     // returns [ 'London', 'New York' ]
 ```
 
 `from.parent` returns the value of a property from the parent datum. Useful if you generate a fixed number of columns, whose values depend on the parent. 
@@ -322,20 +325,27 @@ processes = [
 , { name: 'safari', pid: '456', cpu: '50%' } 
 ]
 
-// generate a list of rows, each with three 
+// generate a list of rows, each with three columns
 once('tr', processes)
   ('td', ['name', 'pid', 'cpu'])
     .text(from.parent)
+```
+
+```html
+<tr>
+  <td>chrome</td><td>123</td></td>50%</td>
+  <td>safari</td><td>456</td></td>50%</td>
+</tr>
 ```
 
 In general you should try to pass each element the data it needs and not reach outside of its own scope.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/grep/badge.svg?branch=master)](https://coveralls.io/r/utilise/grep?branch=master) [![Build](https://api.travis-ci.org/utilise/grep.svg)](https://travis-ci.org/utilise/grep) grep
 
-Filters a function execution depending on regex against arguments. Returns the original unfiltered function. Useful for higher order modules to conditionally filter out logs of many smaller modules unobtrusively.
+Conditionally executes a function depending on the regex against its arguments. Returns the original unfiltered function. Useful for higher order modules to conditionally filter out logs of many smaller modules unobtrusively.
 
 ```js
-// filter out all internal logs from ripple
+// filter out all internal logs from ripple (i.e. that don't start with "[ri/")
 unfiltered = grep(console, 'log', /^(?!.*\[ri\/)/)
 ```
 
@@ -444,6 +454,9 @@ is.in(set)(d) // checks if d in set (string, array or object)
 Replace a foreign key property with the full record or a value from the record
 
 ```js
+// doctors == [ { name: nick, grade: 1 .. }, .. ]
+// ripple('grades') == [ { id: 1, name: 'FY1' }, { id: 2, name: 'SHO' }, .. ]
+
 doctors
   .map(join('shift', 'shifts'))
   .map(join('speciality', 'specialities'))
@@ -451,26 +464,28 @@ doctors
   .map(join('hospital', 'hospitals.location'))
 ```
 
+If the second parameter is a string, it uses that as the ripple resource to look in. You can also use a primitive array outside of a ripple context.
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/key/badge.svg?branch=master)](https://coveralls.io/r/utilise/key?branch=master) [![Build](https://api.travis-ci.org/utilise/key.svg)](https://travis-ci.org/utilise/key) key
 
 Powerful versatile operator for accessing/setting key(s)
 
 ```js
 key('name')(d)                        // returns value of property name from object d
-key('details.profile.name')(d)        // returns deep properties
+key('details.profile.name')(d)        // returns deep property
 key('details', 'foo')(d)              // set property
 key('details.profile.name', 'foo')(d) // set deep property
-key(['name', 'city.name'])            // returns object with selected keys (can mix from any level)
-key()
+key(['name', 'city.name'])(d)         // returns object with selected keys (can mix from any level)
+key()(d)                              // returns object root if key undefined
 ```
 
-Accessing deep keys returns `undefined` if a link is missing, which prevents doing things like 
+Accessing deep keys returns `undefined` if a link is missing, which prevents doing things like: 
 
 ```js
 (((d || {}).details || {}).profile || {}).name
 ```
 
-Setting a deep key will create a non-existent missing key as it traverses the path
+Setting a deep key will create any missing keys it needs as it traverses the path.
 
 If the second value parameter is a function, it evaluates it with the data before setting. 
 
@@ -507,7 +522,7 @@ Links changes in the attribute of one component to the attribute of another
 link('events-calendar[selected-day]', 'event-detail[day]')
 ```
 
-```js
+```html
 <events-calendar selected-day="1-1-1970" />
 <event-detail day="1-1-1970"/>
 ```
@@ -522,7 +537,7 @@ Lowercase a string
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/log/badge.svg?branch=master)](https://coveralls.io/r/utilise/log?branch=master) [![Build](https://api.travis-ci.org/utilise/log.svg)](https://travis-ci.org/utilise/log) log
 
-Lightweight scope of console.error with a prefix, useful for per module identification
+Lightweight scoped version of `console.log` with a prefix, useful for per module identification
 
 ```js
 log = log('[module/prefix]')
@@ -568,7 +583,7 @@ numbers
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/objectify/badge.svg?branch=master)](https://coveralls.io/r/utilise/objectify?branch=master) [![Build](https://api.travis-ci.org/utilise/objectify.svg)](https://travis-ci.org/utilise/objectify) objectify
 
-Converts an array to an object. Uses 'name' property as key by default if none specified
+Converts an array to an object. Uses `name` property as key by default if none specified
 
 ```js
 objectify([
@@ -599,7 +614,7 @@ once(node)                        // limit to this node
 The first time you call `once(node | string)` it essentially selects that element and limits the scope of subsequent operations to that.
 
 Subsequents calls generate a D3 join using the syntax `(selector, data)`. The selector can be:
-* A selector string (`foo.bar.baz`). Class names are fine too and will be added to the final elements created
+* A selector string (`foo.bar.baz`). Classes are fine too and will be added to the final elements created.
 * A real element, which will be replicated. 
 * A function, which will be given parent data, in case you wish to output different (custom) elements based on data.
 
@@ -623,9 +638,9 @@ Equivalent to `JSON.parse`
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/pause/badge.svg?branch=master)](https://coveralls.io/r/utilise/pause?branch=master) [![Build](https://api.travis-ci.org/utilise/pause.svg)](https://travis-ci.org/utilise/parse) pause
 
-Actually pauses a stream so you can build up a pipeline, pass it around, attach more pipes, before starting the flow.
+Actually pauses a stream so you can build up a pipeline, pass it around, attach more pipes, before starting the flow. Server only.
 
-```
+```js
 var stream = pause(browserify)
   .pipe(via(minify))
   .pipe(via(deadcode))
@@ -666,8 +681,7 @@ var p = promise()                 // creates promise with resolve/reject attache
 p.resolve('result')
 p.reject('something went wrong')
 
-var p = promise(5)                // creates promise and resolves to value
-
+promise(5)                        // creates promise and resolves to value
 promise.args(1)('foo', 'bar')     // creates promise that resolves to argument given
 promise.sync(1)('foo', 'bar')     // creates thenable that immediately invokes then callback
 promise.noop()                    // creates empty promise
@@ -693,7 +707,7 @@ raw('.foo')
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/rebind/badge.svg?branch=master)](https://coveralls.io/r/utilise/rebind?branch=master) [![Build](https://api.travis-ci.org/utilise/rebind.svg)](https://travis-ci.org/utilise/rebind) rebind
 
-D3 rebind function. See the [docs here](https://github.com/mbostock/d3/wiki/Internals#rebind).
+D3 rebind function to rebind accessors. See the [docs here](https://github.com/mbostock/d3/wiki/Internals#rebind).
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/replace/badge.svg?branch=master)](https://coveralls.io/r/utilise/replace?branch=master) [![Build](https://api.travis-ci.org/utilise/replace.svg)](https://travis-ci.org/utilise/replace) replace
 
@@ -734,7 +748,7 @@ sel(string)
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/send/badge.svg?branch=master)](https://coveralls.io/r/utilise/send?branch=master) [![Build](https://api.travis-ci.org/utilise/send.svg)](https://travis-ci.org/utilise/send) send
 
-Sends a file on an express route
+Sends a file on an express route. Server only.
 
 ```js
 app.get('/file', send('./file'))
@@ -781,11 +795,13 @@ values({
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/via/badge.svg?branch=master)](https://coveralls.io/r/utilise/via?branch=master) [![Build](https://api.travis-ci.org/utilise/via.svg)](https://travis-ci.org/utilise/via) via
 
-Buffers output to a stream destination
+Buffers output to a stream destination. Useful when you need the whole input rather than chunks. Server only.
 
+```js
 stream
   .pipe(via(minify))
   .pipe(via(replace))
+```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/wrap/badge.svg?branch=master)](https://coveralls.io/r/utilise/wrap?branch=master) [![Build](https://api.travis-ci.org/utilise/wrap.svg)](https://travis-ci.org/utilise/wrap) wrap
 
