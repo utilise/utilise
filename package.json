@@ -1,7 +1,7 @@
 {
   "name": "utilise",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "Lean JavaScript Utilities as Micro-libraries",
   "main": "index.js",
   "browser": {
     "pause": false,
@@ -9,7 +9,6 @@
     "file": false,
     "via": false
   },
-  "description": "Lean JavaScript Utilities as Micro-libraries",
   "scripts": {
     "bundle": "browserify tmp.js -o utilise.js -i d3 -i colors -s utilise && rm tmp.js",
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
