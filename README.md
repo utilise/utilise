@@ -622,7 +622,7 @@ The data is the same as what you would normally use to generate a join (array of
 
 The return value is essentially a D3 join selection (enter/update/exit), so you can continue to customise using `.text`, `.classed`, `.attr`, etc. You can also access the elements added via `.enter` and removed via `.exit`.
 
-There are two further optional arguments you can use (selector, data[, key[, before]]). The key function has the exact same meaning as normal (how to key data), which D3 defaults to by index. The before parameter can be used to force the insertion before a specific element à la `.insert(something, before)`.
+There are two further optional arguments you can use `(selector, data[, key[, before]])`. The key function has the exact same meaning as normal (how to key data), which D3 defaults to by index. The before parameter can be used to force the insertion before a specific element à la `.insert(something, before)` as opposed to just `.append(something)`.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/owner/badge.svg?branch=master)](https://coveralls.io/r/utilise/owner?branch=master) [![Build](https://api.travis-ci.org/utilise/owner.svg)](https://travis-ci.org/utilise/owner) owner
 
