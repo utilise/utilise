@@ -2,6 +2,10 @@
   "name": "utilise",
   "version": "0.1.1",
   "description": "Lean JavaScript Utilities as Micro-libraries",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/utilise/utilise.git"
+  },
   "main": "index.js",
   "browser": {
     "pause": false,
@@ -15,8 +19,8 @@
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
     "build": "node alias.js && npm run bundle && npm run minify && npm run gzip"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Pedram Emrouznejad (https://github.com/pemrouz)",
+  "license": "pemrouz.mit-license.org",
   "dependencies": {
     "all": "git+https://github.com/utilise/all.git",
     "append": "git+https://github.com/utilise/append.git",
