@@ -618,7 +618,11 @@ Subsequents calls generate a D3 join using the syntax `(selector, data)`. The se
 * A real element, which will be replicated. 
 * A function, which will be given parent data, in case you wish to output different (custom) elements based on data.
 
+The data is the same as what you would normally use to generate a join (array of items, or function), with some convenient defaults: if you pass an object, number or boolean it'll be converted to a single-valued array, meaning "create one element with this as the datum". If you pass in a falsy, it defaults to empty array "meaning removing all elements of this type".
+
 The return value is essentially a D3 join selection (enter/update/exit), so you can continue to customise using `.text`, `.classed`, `.attr`, etc. You can also access the elements added via `.enter` and removed via `.exit`.
+
+There are two further optional arguments you can use (selector, data[, key[, before]]). The key function has the exact same meaning as normal (how to key data), which D3 defaults to by index. The before parameter can be used to force the insertion before a specific element à la `.insert(something, before)`.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/owner/badge.svg?branch=master)](https://coveralls.io/r/utilise/owner?branch=master) [![Build](https://api.travis-ci.org/utilise/owner.svg)](https://travis-ci.org/utilise/owner) owner
 
