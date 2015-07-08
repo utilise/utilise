@@ -3,7 +3,7 @@ globals:
   - <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
   - <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.0.0/chai.min.js"></script>
 
-tests: browserify ../*/test.js
+tests: browserify ./node_modules/**/test.js
   -i colors
   -i jsdom
   -i chai
@@ -14,22 +14,14 @@ tests: browserify ../*/test.js
   --full-paths
   | sed -E "s/require\('chai'\)/window.chai/"
   | sed -E "s/require\('d3'\)/window.d3/"
-  # | uglifyjs
+  | uglifyjs
 
 browsers: 
-  # - browserName: 'internet explorer'
-  #   version: '9'
-  #   platform: 'WINDOWS'
-  # - browserName: 'android'
-  #   platform: 'ANDROID'
-  #   device: 'Samsung Galaxy S5'
-  # - browserName: 'iPhone'
-  #   platform: 'MAC'
-  #   device: 'iPhone 5'
-  # - browserName: 'opera'
-  #   platform: 'WINDOWS'
-  # - browserName: 'safari'
-  #   platform: 'MAC'
+  - ie9
+  - android
+  - iphone
+  - opera
+  - safari
 
 port: 1945
 
