@@ -129,7 +129,7 @@ var key = require('key')
 
 module.exports = function body(ripple){
   return function(name){
-    return key([name, 'body'])(ripple.resources)
+    return key([name, 'body'].join('.'))(ripple.resources)
   }
 }
 },{"key":10}],10:[function(require,module,exports){
@@ -607,14 +607,8 @@ module.exports = function grep(o, k, regex){
   return original
 }
 },{"to":77}],77:[function(require,module,exports){
-module.exports = { 
-  arr : toArray
-}
-
-function toArray(d){
-  return Array.prototype.slice.call(d, 0)
-}
-},{}],78:[function(require,module,exports){
+arguments[4][2][0].apply(exports,arguments)
+},{"dup":2}],78:[function(require,module,exports){
 arguments[4][31][0].apply(exports,arguments)
 },{"dup":31}],79:[function(require,module,exports){
 var has = require('has')
@@ -1076,67 +1070,47 @@ arguments[4][65][0].apply(exports,arguments)
 arguments[4][5][0].apply(exports,arguments)
 },{"dup":5}],159:[function(require,module,exports){
 var keys = require('keys')
-  , from = require('from')
+  , base = require('base')
 
 module.exports = function values(o) {
-  return !o ? [] : keys(o).map(from(o))
+  return !o ? [] : keys(o).map(base(o))
 }
-},{"from":160,"keys":167}],160:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"datum":161,"dup":69,"key":163}],161:[function(require,module,exports){
-arguments[4][34][0].apply(exports,arguments)
-},{"dup":34,"sel":162}],162:[function(require,module,exports){
+},{"base":160,"keys":161}],160:[function(require,module,exports){
+module.exports = function base(o) {
+  return function (k) {
+    return o[k]
+  }
+}
+},{}],161:[function(require,module,exports){
+arguments[4][53][0].apply(exports,arguments)
+},{"dup":53}],162:[function(require,module,exports){
+arguments[4][130][0].apply(exports,arguments)
+},{"dup":130,"sel":163}],163:[function(require,module,exports){
 arguments[4][35][0].apply(exports,arguments)
-},{"dup":35}],163:[function(require,module,exports){
-arguments[4][10][0].apply(exports,arguments)
-},{"dup":10,"is":164,"str":165}],164:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],165:[function(require,module,exports){
+},{"dup":35}],164:[function(require,module,exports){
+arguments[4][35][0].apply(exports,arguments)
+},{"dup":35}],165:[function(require,module,exports){
 arguments[4][12][0].apply(exports,arguments)
 },{"dup":12,"is":166}],166:[function(require,module,exports){
 arguments[4][5][0].apply(exports,arguments)
 },{"dup":5}],167:[function(require,module,exports){
-arguments[4][53][0].apply(exports,arguments)
-},{"dup":53}],168:[function(require,module,exports){
-arguments[4][130][0].apply(exports,arguments)
-},{"dup":130,"sel":169}],169:[function(require,module,exports){
-arguments[4][35][0].apply(exports,arguments)
-},{"dup":35}],170:[function(require,module,exports){
-arguments[4][35][0].apply(exports,arguments)
-},{"dup":35}],171:[function(require,module,exports){
-arguments[4][12][0].apply(exports,arguments)
-},{"dup":12,"is":172}],172:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],173:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)
-},{"dup":2}],174:[function(require,module,exports){
+},{"dup":2}],168:[function(require,module,exports){
 module.exports = function unique(matched, value, i){
   if (i === 1) matched = [matched]
   if (!~matched.indexOf(value)) matched.push(value)
   return matched
 }
 
-},{}],175:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 arguments[4][159][0].apply(exports,arguments)
-},{"dup":159,"from":176,"keys":183}],176:[function(require,module,exports){
-arguments[4][69][0].apply(exports,arguments)
-},{"datum":177,"dup":69,"key":179}],177:[function(require,module,exports){
-arguments[4][34][0].apply(exports,arguments)
-},{"dup":34,"sel":178}],178:[function(require,module,exports){
-arguments[4][35][0].apply(exports,arguments)
-},{"dup":35}],179:[function(require,module,exports){
-arguments[4][10][0].apply(exports,arguments)
-},{"dup":10,"is":180,"str":181}],180:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],181:[function(require,module,exports){
-arguments[4][12][0].apply(exports,arguments)
-},{"dup":12,"is":182}],182:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],183:[function(require,module,exports){
+},{"base":170,"dup":159,"keys":171}],170:[function(require,module,exports){
+arguments[4][160][0].apply(exports,arguments)
+},{"dup":160}],171:[function(require,module,exports){
 arguments[4][53][0].apply(exports,arguments)
-},{"dup":53}],184:[function(require,module,exports){
+},{"dup":53}],172:[function(require,module,exports){
 arguments[4][84][0].apply(exports,arguments)
-},{"dup":84}],185:[function(require,module,exports){
+},{"dup":84}],173:[function(require,module,exports){
 require('owner').all = require('all')
 require('owner').append = require('append')
 require('owner').args = require('args')
@@ -1199,5 +1173,5 @@ require('owner').unique = require('unique')
 require('owner').values = require('values')
 require('owner').wrap = require('wrap')
 
-},{"all":1,"append":3,"args":4,"attr":7,"body":9,"by":16,"chainable":22,"client":23,"clone":24,"colorfill":29,"copy":33,"datum":34,"debounce":36,"def":37,"el":39,"emitterify":45,"err":55,"extend":59,"falsy":64,"first":65,"flatten":66,"fn":67,"from":69,"grep":76,"has":78,"header":79,"identity":81,"includes":82,"inherit":83,"is":85,"join":86,"key":102,"keys":106,"last":107,"link":108,"lo":112,"log":113,"mask":118,"mo":120,"noop":123,"not":124,"objectify":125,"once":126,"owner":134,"parse":136,"perf":137,"prepend":144,"promise":145,"proxy":146,"raw":148,"rebind":149,"replace":150,"resourcify":151,"sall":168,"sel":170,"str":171,"to":173,"unique":174,"values":175,"wrap":184}]},{},[185])(185)
+},{"all":1,"append":3,"args":4,"attr":7,"body":9,"by":16,"chainable":22,"client":23,"clone":24,"colorfill":29,"copy":33,"datum":34,"debounce":36,"def":37,"el":39,"emitterify":45,"err":55,"extend":59,"falsy":64,"first":65,"flatten":66,"fn":67,"from":69,"grep":76,"has":78,"header":79,"identity":81,"includes":82,"inherit":83,"is":85,"join":86,"key":102,"keys":106,"last":107,"link":108,"lo":112,"log":113,"mask":118,"mo":120,"noop":123,"not":124,"objectify":125,"once":126,"owner":134,"parse":136,"perf":137,"prepend":144,"promise":145,"proxy":146,"raw":148,"rebind":149,"replace":150,"resourcify":151,"sall":162,"sel":164,"str":165,"to":167,"unique":168,"values":169,"wrap":172}]},{},[173])(173)
 });
