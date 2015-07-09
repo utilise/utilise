@@ -342,6 +342,14 @@ once('tr', processes)
 
 In general you should try to pass each element the data it needs and not reach outside of its own scope.
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/group/badge.svg?branch=master)](https://coveralls.io/r/utilise/group?branch=master) [![Build](https://api.travis-ci.org/utilise/group.svg)](https://travis-ci.org/utilise/group) group
+
+Grouped logging using groupCollapsed/groupEnd if it exists, or simple start/end demarcation logs using asterisk if not.
+
+```js
+group('category', fn)
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/grep/badge.svg?branch=master)](https://coveralls.io/r/utilise/grep?branch=master) [![Build](https://api.travis-ci.org/utilise/grep.svg)](https://travis-ci.org/utilise/grep) grep
 
 Conditionally executes a function depending on the regex against its arguments. Returns the original unfiltered function. Useful for higher order modules to conditionally filter out logs of many smaller modules unobtrusively.
