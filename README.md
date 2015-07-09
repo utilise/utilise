@@ -199,10 +199,12 @@ nodes
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/debounce/badge.svg?branch=master)](https://coveralls.io/r/utilise/debounce?branch=master) [![Build](https://api.travis-ci.org/utilise/debounce.svg)](https://travis-ci.org/utilise/debounce) debounce
 
-Returns a debounced function (100ms)
+Returns a debounced function. Specify time in ms, or defaults to 100ms.
 
 ```js
 debounced = debounce(fn)
+// or
+debounced = debounce(200)(fn)
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/def/badge.svg?branch=master)](https://coveralls.io/r/utilise/def?branch=master) [![Build](https://api.travis-ci.org/utilise/def.svg)](https://travis-ci.org/utilise/def) def

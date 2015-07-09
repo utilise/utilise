@@ -8,20 +8,20 @@ tests: browserify ./node_modules/**/test.js
   -i jsdom
   -i chai
   -i d3
-  -i ../pause/test.js
-  -i ../send/test.js
-  -i ../via/test.js
-  --full-paths
+  -i ./node_modules/pause/test.js
+  -i ./node_modules/send/test.js
+  -i ./node_modules/file/test.js
+  -i ./node_modules/via/test.js
   | sed -E "s/require\('chai'\)/window.chai/"
   | sed -E "s/require\('d3'\)/window.d3/"
   | uglifyjs
 
 browsers: 
-  - ie9
-  - android
-  - iphone
-  - opera
-  - safari
+  # - ie9
+  # - android
+  # - iphone
+  # - opera
+  # - safari
 
 port: 1945
 

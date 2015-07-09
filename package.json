@@ -47,6 +47,7 @@
     "fn": "git+https://github.com/utilise/fn.git",
     "from": "git+https://github.com/utilise/from.git",
     "grep": "git+https://github.com/utilise/grep.git",
+    "group": "git+https://github.com/utilise/group.git",
     "has": "git+https://github.com/utilise/has.git",
     "header": "git+https://github.com/utilise/header.git",
     "identity": "git+https://github.com/utilise/identity.git",
