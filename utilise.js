@@ -269,11 +269,12 @@ var key = require('key')
   , is  = require('is')
 
 module.exports = function by(k, v){
+  var exists = arguments.length == 1
   return function(o){
     var d = key(k)(o)
     
     return d && v && d.toLowerCase && v.toLowerCase ? d.toLowerCase() === v.toLowerCase()
-         : !v ? Boolean(d)
+         : exists ? Boolean(d)
          : is.fn(v) ? v(d)
          : d == v
   }
@@ -712,8 +713,20 @@ module.exports = function join(left, right){
 }
 
 },{"by":92,"clone":98,"key":103}],92:[function(require,module,exports){
-arguments[4][16][0].apply(exports,arguments)
-},{"dup":16,"is":93,"key":94}],93:[function(require,module,exports){
+var key = require('key')
+  , is  = require('is')
+
+module.exports = function by(k, v){
+  return function(o){
+    var d = key(k)(o)
+    
+    return d && v && d.toLowerCase && v.toLowerCase ? d.toLowerCase() === v.toLowerCase()
+         : !v ? Boolean(d)
+         : is.fn(v) ? v(d)
+         : d == v
+  }
+}
+},{"is":93,"key":94}],93:[function(require,module,exports){
 arguments[4][5][0].apply(exports,arguments)
 },{"dup":5}],94:[function(require,module,exports){
 arguments[4][10][0].apply(exports,arguments)
@@ -803,7 +816,7 @@ module.exports = function raw(selector, doc){
 }
 },{}],117:[function(require,module,exports){
 module.exports = function lo(d){
-  return d.toLowerCase()
+  return (d || '').toLowerCase()
 }
 
 },{}],118:[function(require,module,exports){
