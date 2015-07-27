@@ -23,7 +23,10 @@
   },
   "author": "Pedram Emrouznejad (https://github.com/pemrouz)",
   "license": "pemrouz.mit-license.org",
-  "dependencies": {},
+  "dependencies": {
+    "colors": "^1.1.2",
+    "through": "^2.3.8"
+  },
   "devDependencies": {
     "browserify": "^10.2.1",
     "colors": "^1.1.2",
