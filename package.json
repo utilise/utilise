@@ -1,6 +1,6 @@
 {
   "name": "utilise",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Lean JavaScript Utilities as Micro-libraries",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
     "build": "node alias.js && npm run bundle && npm run minify && npm run gzip",
-    "version": "npm run build && git add -A dist",
+    "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags"
   },
   "author": "Pedram Emrouznejad (https://github.com/pemrouz)",
