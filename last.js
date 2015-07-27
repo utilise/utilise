@@ -1,1 +1,3 @@
-module.exports = require('last')
+module.exports =  function last(d) {
+  return d[d.length-1]
+}

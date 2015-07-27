@@ -1,1 +1,3 @@
-module.exports = require('falsy')
+module.exports = function falsy(){
+  return false
+}

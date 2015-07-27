@@ -46,6 +46,10 @@ mutations
 
 * There is no polyfilling done here. Recommend using polyfill.io where needed. Some libraries will fail tests (like promise) which wraps native functions like `Promise`, unless you shim first.
 
+* UPDATE: Turns out npm is really bad at resolving things over git, so I've set up the build to pull the deps inside this index repo
+
+* UPDATE: Coveralls seems to be lying. All modules are at 100% coverage.
+
 # API Reference
 
 Please also refer to the respective `test.js` for more cases and examples.

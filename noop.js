@@ -1,1 +1,1 @@
-module.exports = require('noop')
+module.exports = function noop(){}

@@ -1,1 +1,1 @@
-module.exports = require('client')
+module.exports = typeof window != 'undefined'

@@ -1,1 +1,3 @@
-module.exports = require('keys')
+module.exports = function keys(o) {
+  return Object.keys(o || {})
+}

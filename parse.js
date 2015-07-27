@@ -1,1 +1,3 @@
-module.exports = require('parse')
+module.exports = function parse(d){
+  return d && JSON.parse(d)
+}

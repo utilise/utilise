@@ -1,1 +1,1 @@
-module.exports = require('owner')
+module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global

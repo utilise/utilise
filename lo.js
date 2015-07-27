@@ -1,1 +1,3 @@
-module.exports = require('lo')
+module.exports = function lo(d){
+  return (d || '').toLowerCase()
+}
