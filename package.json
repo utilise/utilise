@@ -18,7 +18,8 @@
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
     "build": "node alias.js && npm run bundle && npm run minify && npm run gzip",
-    "preversion": "npm run build"
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "author": "Pedram Emrouznejad (https://github.com/pemrouz)",
   "license": "pemrouz.mit-license.org",
@@ -62,7 +63,6 @@
     "link": "git+https://github.com/utilise/link.git",
     "lo": "git+https://github.com/utilise/lo.git",
     "log": "git+https://github.com/utilise/log.git",
-    "mask": "git+https://github.com/utilise/mask.git",
     "matches": "git+https://github.com/utilise/by.git",
     "mo": "git+https://github.com/utilise/mo.git",
     "noop": "git+https://github.com/utilise/noop.git",
