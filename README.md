@@ -768,6 +768,14 @@ Sends a file on an express route. Server only.
 app.get('/file', send('./file'))
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/split/badge.svg?branch=master)](https://coveralls.io/r/utilise/split?branch=master) [![Build](https://api.travis-ci.org/utilise/split.svg)](https://travis-ci.org/utilise/split) split
+
+Split items 
+
+```js
+['a.b', 'b.c'].map(split('.')) // returns [['a','b'], ['b','c']]
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/str/badge.svg?branch=master)](https://coveralls.io/r/utilise/str?branch=master) [![Build](https://api.travis-ci.org/utilise/str.svg)](https://travis-ci.org/utilise/str) str
 
 Coerces anything into a string
@@ -786,6 +794,14 @@ Converts to a primitive type (only real arrays)
 ```js
 to.arr(NodeList)
 to.arr(arguments)
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/unique/badge.svg?branch=master)](https://coveralls.io/r/utilise/unique?branch=master) [![Build](https://api.travis-ci.org/utilise/unique.svg)](https://travis-ci.org/utilise/unique) unique
+
+Reduce an array to unique values
+
+```js
+[1,1,2,3].reduce(unique) // returns [1,2,3]
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/values/badge.svg?branch=master)](https://coveralls.io/r/utilise/values?branch=master) [![Build](https://api.travis-ci.org/utilise/values.svg)](https://travis-ci.org/utilise/values) values
