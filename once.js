@@ -53,7 +53,7 @@ module.exports = function once(scope) {
     fn.exit = sall()(exit)
     fn.sel = els
 
-    ;['text', 'classed', 'html', 'attr', 'style', 'on'].map(function(op){
+    ;['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'call', 'node'].map(function(op){
       fn[op] = proxy(els[op], wrap(fn), els)
     })
 

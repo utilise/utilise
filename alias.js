@@ -14,7 +14,7 @@ var fs = require('fs')
   , core = ['package.json', 'alias.js']
   , browser = require('./package.json').browser
   , alias = "module.exports = require('{mod}')"
-  , entry = "require('owner').{key} = require('{mod}')"
+  , entry = "require('./owner').{key} = require('{mod}')"
   , modules = keys(require('./package.json').devDependencies)
       .filter(includes('utilise'))
       .map(replace('utilise.', ''))
