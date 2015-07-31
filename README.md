@@ -276,6 +276,14 @@ Reads and returns a file. Server only.
 var template = file('template.html')
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/filter/badge.svg?branch=master)](https://coveralls.io/r/utilise/filter?branch=master) [![Build](https://api.travis-ci.org/utilise/filter.svg)](https://travis-ci.org/utilise/filter) filter
+
+Filters an array
+
+```js
+once(tr, filter(isEven))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/first/badge.svg?branch=master)](https://coveralls.io/r/utilise/first?branch=master) [![Build](https://api.travis-ci.org/utilise/first.svg)](https://travis-ci.org/utilise/first) first
 
 Returns first element in array
@@ -715,6 +723,14 @@ proxy(fn, 5)      // returns a function that invokes fn, but then always returns
 proxy(fn, 5, {})  // same as above, but also changes context variable
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/push/badge.svg?branch=master)](https://coveralls.io/r/utilise/push?branch=master) [![Build](https://api.travis-ci.org/utilise/push.svg)](https://travis-ci.org/utilise/push) push
+
+Push elements to an array
+
+```js
+join.enter().each(push(enter))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/raw/badge.svg?branch=master)](https://coveralls.io/r/utilise/raw?branch=master) [![Build](https://api.travis-ci.org/utilise/raw.svg)](https://travis-ci.org/utilise/raw) raw
 
 Select an element based on a CSS selector, piercing shadow boundaries if the browser supports it.
@@ -770,6 +786,14 @@ Sends a file on an express route. Server only.
 
 ```js
 app.get('/file', send('./file'))
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/sort/badge.svg?branch=master)](https://coveralls.io/r/utilise/sort?branch=master) [![Build](https://api.travis-ci.org/utilise/sort.svg)](https://travis-ci.org/utilise/sort) sort
+
+Sorts elements in an array
+
+```js
+once('tr', sort(Boolean))
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/split/badge.svg?branch=master)](https://coveralls.io/r/utilise/split?branch=master) [![Build](https://api.travis-ci.org/utilise/split.svg)](https://travis-ci.org/utilise/split) split
