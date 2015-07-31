@@ -1156,7 +1156,7 @@ function push(arr) {
 }
 
 function accessorise(o, original){
-  ['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'node'].map(function(op){
+  ['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'node', 'datum'].map(function(op){
     o[op] = proxy(original[op], wrap(o), original)
   })
 
