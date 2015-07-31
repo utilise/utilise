@@ -937,11 +937,8 @@ function link(from, to){
   var key = from + '|' + to
     , from = destructure(from)
     , to = destructure(to)
-    , links = link.links = link.links || {}
-
+    
   if (!from.el || !to.el) return;
-  if (links[key]) return;
-  links[key] = true
   update()
 
   var muto = new MutationObserver(update)
