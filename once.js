@@ -6,7 +6,10 @@ var proxy  = require('utilise/proxy')
 
 module.exports = function once(scope) {
   var parent = scope.node ? scope : sel(scope)
-  return function o(selector, data, key, before) {
+
+  return accessorise(o, parent)
+
+  function o(selector, data, key, before) {
     if (arguments.length == 1) return once(sall(parent)(selector))
     var fn
       , enter = []
@@ -53,11 +56,7 @@ module.exports = function once(scope) {
     fn.exit = sall()(exit)
     fn.sel = els
 
-    ;['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'call', 'node'].map(function(op){
-      fn[op] = proxy(els[op], wrap(fn), els)
-    })
-
-    return fn
+    return accessorise(fn, els)
   }
 }
 
@@ -65,4 +64,12 @@ function push(arr) {
   return function(d){ 
     arr.push(this) 
   }
+}
+
+function accessorise(o, original){
+  ['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'node'].map(function(op){
+    o[op] = proxy(original[op], wrap(o), original)
+  })
+
+  return o
 }
