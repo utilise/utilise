@@ -361,7 +361,7 @@ module.exports = function key(k, v){
          : is.arr(k) ? (k.map(copy), masked)
          : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k]) : v), o)
                                        :   o[k])
-                                : (set ? key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {}))
+                                : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
                                        : key(keys.join('.'))(o[root]))
 
     function copy(d){
@@ -493,8 +493,30 @@ arguments[4][20][0].apply(exports,arguments)
 },{"dup":20,"utilise.sel":67}],67:[function(require,module,exports){
 arguments[4][21][0].apply(exports,arguments)
 },{"dup":21}],68:[function(require,module,exports){
-arguments[4][38][0].apply(exports,arguments)
-},{"dup":38,"utilise.is":69,"utilise.str":70}],69:[function(require,module,exports){
+var is = require('utilise.is')
+  , str = require('utilise.str')
+
+module.exports = function key(k, v){ 
+  var set = arguments.length > 1
+    , keys = str(k).split('.')
+    , root = keys.shift()
+
+  return function deep(o){
+    var masked = {}
+    return !o ? undefined 
+         : !k ? o
+         : is.arr(k) ? (k.map(copy), masked)
+         : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k]) : v), o)
+                                       :   o[k])
+                                : (set ? key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {}))
+                                       : key(keys.join('.'))(o[root]))
+
+    function copy(d){
+      key(d, key(d)(o))(masked)
+    }
+  }
+}
+},{"utilise.is":69,"utilise.str":70}],69:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)
 },{"dup":2}],70:[function(require,module,exports){
 arguments[4][60][0].apply(exports,arguments)
@@ -891,7 +913,7 @@ module.exports = function key(k, v){
          : is.arr(k) ? (k.map(copy), masked)
          : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k]) : v), o)
                                        :   o[k])
-                                : (set ? key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {}))
+                                : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
                                        : key(keys.join('.'))(o[root]))
 
     function copy(d){
