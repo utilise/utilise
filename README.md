@@ -603,24 +603,6 @@ numbers
   .filter(not(is('5')))
 ```
 
-## [![Coverage Status](https://coveralls.io/repos/utilise/objectify/badge.svg?branch=master)](https://coveralls.io/r/utilise/objectify?branch=master) [![Build](https://api.travis-ci.org/utilise/objectify.svg)](https://travis-ci.org/utilise/objectify) objectify
-
-Converts an array to an object. Uses `name` property as key by default if none specified
-
-```js
-objectify([
-  { name: 'foo', value: 1 }
-, { name: 'bar', value: 2 }
-], 'name')
-
-/* returns 
-{ 
-  foo: { name: 'foo', value: 1 }
-, bar: { name: 'bar', value: 2 }
-} 
-*/
-```
-
 ## [![Coverage Status](https://coveralls.io/repos/utilise/once/badge.svg?branch=master)](https://coveralls.io/r/utilise/once?branch=master) [![Build](https://api.travis-ci.org/utilise/once.svg)](https://travis-ci.org/utilise/once) once
 
 Function for building entirely data-driven idempotent components/UI with D3.
@@ -817,12 +799,30 @@ str(function(){ .. }) // returns 'function(){ .. }'
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/to/badge.svg?branch=master)](https://coveralls.io/r/utilise/to?branch=master) [![Build](https://api.travis-ci.org/utilise/to.svg)](https://travis-ci.org/utilise/to) to
 
-Converts to a primitive type (only real arrays)
+**to.arr**: Converts to a primitive type (only real arrays)
 
 ```js
 to.arr(NodeList)
 to.arr(arguments)
 ```
+
+**to.obj**: Converts an array to an object. Uses `id` property as key by default if none specified
+
+```js
+[
+  { name: 'foo', value: 1 }
+, { name: 'bar', value: 2 }
+].reduce(to.obj, 1)
+
+/* returns 
+{ 
+  foo: { name: 'foo', value: 1 }
+, bar: { name: 'bar', value: 2 }
+} 
+*/
+```
+
+Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/unique/badge.svg?branch=master)](https://coveralls.io/r/utilise/unique?branch=master) [![Build](https://api.travis-ci.org/utilise/unique.svg)](https://travis-ci.org/utilise/unique) unique
 
