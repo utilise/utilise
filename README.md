@@ -829,8 +829,10 @@ Note: You should always use an initial value with the reduce function (it doesn'
 Reduce an array to unique values
 
 ```js
-[1,1,2,3].reduce(unique) // returns [1,2,3]
+[1,1,2,3].reduce(unique, 1) // returns [1,2,3]
 ```
+
+Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/values/badge.svg?branch=master)](https://coveralls.io/r/utilise/values?branch=master) [![Build](https://api.travis-ci.org/utilise/values.svg)](https://travis-ci.org/utilise/values) values
 
