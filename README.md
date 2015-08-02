@@ -348,6 +348,8 @@ once('tr', processes)
 ```html
 <tr>
   <td>chrome</td><td>123</td></td>50%</td>
+</tr>
+<tr>
   <td>safari</td><td>456</td></td>50%</td>
 </tr>
 ```
@@ -810,16 +812,18 @@ to.arr(arguments)
 
 ```js
 [
-  { name: 'foo', value: 1 }
-, { name: 'bar', value: 2 }
+  { id: 'foo', value: 1 }
+, { id: 'bar', value: 2 }
 ].reduce(to.obj, 1)
 
 /* returns 
 { 
-  foo: { name: 'foo', value: 1 }
-, bar: { name: 'bar', value: 2 }
+  foo: { id: 'foo', value: 1 }
+, bar: { id: 'bar', value: 2 }
 } 
 */
+
+// or you can use .reduce(to.obj('prop'), 1)
 ```
 
 Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
