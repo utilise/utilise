@@ -276,6 +276,14 @@ Reads and returns a file. Server only.
 var template = file('template.html')
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/filify/badge.svg?branch=master)](https://coveralls.io/r/utilise/filify?branch=master) [![Build](https://api.travis-ci.org/utilise/filify.svg)](https://travis-ci.org/utilise/filify) filify
+
+Browserify transform that resolves `file('filename')` to the actual file
+
+```js
+file('foo') // converted to a string containing the contents of the file foo
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/filter/badge.svg?branch=master)](https://coveralls.io/r/utilise/filter?branch=master) [![Build](https://api.travis-ci.org/utilise/filter.svg)](https://travis-ci.org/utilise/filter) filter
 
 Filters an array
