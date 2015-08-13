@@ -497,12 +497,12 @@ doctors
 
 // you can use with array map to replace ids with corresponding records
 [1, 2, 3]
-  .map(join('doctors')) // returns [ { .. }, { .. }, { .. } ]
+  .map(join('grades')) // returns [ { .. }, { .. }, { .. } ]
 
 // you can use without ripple, if the table (last parameter) is a string 
 // it'll resolve from ripple, but if it's a vanilla array, it'll just use that
 [1, 2, 3]
-  .map(join(doctors)) // returns [ { .. }, { .. }, { .. } ]
+  .map(join(grades)) // returns [ { .. }, { .. }, { .. } ]
 ```
 
 If the second parameter is a string, it uses that as the ripple resource to look in. You can also use a primitive array outside of a ripple context.
