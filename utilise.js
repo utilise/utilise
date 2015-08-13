@@ -630,11 +630,11 @@ module.exports = function join(left, right){
       field = array.join('.')
     }
     
-    var id    = clone(key(left)(d))
-      , val   = ripple(table)
-                  .filter(by('id', id))
-                  .map(key(field))
-                  .pop() || {}
+    var id  = clone(key(left)(d))
+      , val = table
+                .filter(by('id', id))
+                .map(key(field))
+                .pop() || {}
 
     return left 
       ? key(left, val)(d) 
