@@ -817,6 +817,7 @@ module.exports = function once(scope) {
 
     parent.each(function(paData, i){
       var self = this
+
       var elData = data
         , elSelector = selector
 
@@ -830,9 +831,9 @@ module.exports = function once(scope) {
                   : elSelector.split('.').slice(1).join(' ')
 
       var type    = elSelector instanceof HTMLElement
-                  ? wrap(elSelector)
+                  ? dupe(elSelector)
                   : elSelector.split('.')[0] || 'div'
-      
+
       var el = sel(self)
         .selectAll(elSelector.toString())
         .data(elData, key)
@@ -856,6 +857,12 @@ module.exports = function once(scope) {
     fn.sel = els
 
     return accessorise(fn, els)
+  }
+}
+
+function dupe(el){
+  return function(){
+    return el.cloneNode()
   }
 }
 
