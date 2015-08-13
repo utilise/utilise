@@ -613,23 +613,36 @@ arguments[4][14][0].apply(exports,arguments)
 var clone = require('utilise/clone')
   , key = require('utilise/key')
   , by = require('utilise/by')
+  , is = require('utilise/is')
 
 module.exports = function join(left, right){
+  if (arguments.length == 1) {
+    right = left
+    left = null
+  }
+
   return function(d){
-    var array = right.split('.')
-      , table = array.shift()
-      , field = array.join('.')
+    var table = right, field = null
 
-    d[left] = ripple(table)
-      .filter(by('id', clone(d[left])))
-      .map(key(field))
-      .pop() || {}
+    if (is.str(right)) {
+      array = right.split('.')
+      table = ripple(array.shift())
+      field = array.join('.')
+    }
+    
+    var id    = clone(key(left)(d))
+      , val   = ripple(table)
+                  .filter(by('id', id))
+                  .map(key(field))
+                  .pop() || {}
 
-    return d
+    return left 
+      ? key(left, val)(d) 
+      : val
   }
 }
 
-},{"utilise/by":3,"utilise/clone":5,"utilise/key":15}],65:[function(require,module,exports){
+},{"utilise/by":3,"utilise/clone":5,"utilise/is":14,"utilise/key":15}],65:[function(require,module,exports){
 arguments[4][15][0].apply(exports,arguments)
 },{"dup":15,"utilise/is":14,"utilise/str":28}],66:[function(require,module,exports){
 arguments[4][16][0].apply(exports,arguments)
