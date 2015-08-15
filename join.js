@@ -13,7 +13,7 @@ module.exports = function join(left, right){
     var table = right, field = null
 
     if (is.str(right)) {
-      array = right.split('.')
+      var array = right.split('.')
       table = ripple(array.shift())
       field = array.join('.')
     }
