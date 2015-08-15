@@ -525,11 +525,14 @@ module.exports = function filter(fn){
 },{}],52:[function(require,module,exports){
 arguments[4][10][0].apply(exports,arguments)
 },{"dup":10}],53:[function(require,module,exports){
+var is = require('utilise/is')  
+
 module.exports = function flatten(p,v){ 
+  is.arr(v) && (v = v.reduce(flatten, []))
   return (p = p || []), p.concat(v) 
 }
 
-},{}],54:[function(require,module,exports){
+},{"utilise/is":14}],54:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function fn(candid){
