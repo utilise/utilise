@@ -100,6 +100,16 @@ attr('key', 'value')(el) // adds [key=value]
 attr('key', false)(el)   // removes attribute key
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/az/badge.svg?branch=master)](https://coveralls.io/r/utilise/az?branch=master) [![Build](https://api.travis-ci.org/utilise/az.svg)](https://travis-ci.org/utilise/az) az
+
+Sorts array ascendingly based on the value of a key
+
+```js
+array.sort(az('value'))
+```
+
+Since it uses [key](https://github.com/utilise/utilise#--key) internally, you can also sory on a deep key.
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/body/badge.svg?branch=master)](https://coveralls.io/r/utilise/body?branch=master) [![Build](https://api.travis-ci.org/utilise/body.svg)](https://travis-ci.org/utilise/body) body
 
 Get the value of a resource from a ripple instance
@@ -381,6 +391,16 @@ Conditionally executes a function depending on the regex against its arguments. 
 unfiltered = grep(console, 'log', /^(?!.*\[ri\/)/)
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/gt/badge.svg?branch=master)](https://coveralls.io/r/utilise/gt?branch=master) [![Build](https://api.travis-ci.org/utilise/gt.svg)](https://travis-ci.org/utilise/gt) gt
+
+Filters array depending if value of a key is greater than a threshold. 
+
+```js
+array.filter(gt(100, 'value'))
+```
+
+Since it uses [key](https://github.com/utilise/utilise#--key) internally, you can also filter on a deep key.
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/has/badge.svg?branch=master)](https://coveralls.io/r/utilise/has?branch=master) [![Build](https://api.travis-ci.org/utilise/has.svg)](https://travis-ci.org/utilise/has) has
 
 Checks if object has property using `in` keyword
@@ -593,6 +613,16 @@ list
   .map(log)
   .map(op2)
 ```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/lt/badge.svg?branch=master)](https://coveralls.io/r/utilise/lt?branch=master) [![Build](https://api.travis-ci.org/utilise/lt.svg)](https://travis-ci.org/utilise/lt) lt
+
+Filters array depending if value of a key is less than a threshold. 
+
+```js
+array.filter(lt(100, 'value'))
+```
+
+Since it uses [key](https://github.com/utilise/utilise#--key) internally, you can also filter on a deep key.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/mo/badge.svg?branch=master)](https://coveralls.io/r/utilise/mo?branch=master) [![Build](https://api.travis-ci.org/utilise/mo.svg)](https://travis-ci.org/utilise/mo) mo
 

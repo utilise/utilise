@@ -362,20 +362,31 @@ module.exports = function args(indices) {
 },{"utilise/is":14,"utilise/to":29}],35:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)
 },{"dup":1,"utilise/is":14}],36:[function(require,module,exports){
+var key = require('utilise/key')
+
+module.exports = function az(k) {
+  return function(a, b){
+    return key(k)(a) > key(k)(b) ?  1 
+         : key(k)(a) < key(k)(b) ? -1 
+                                 :  0
+  }
+}
+
+},{"utilise/key":15}],37:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)
-},{"dup":2,"utilise/key":15}],37:[function(require,module,exports){
+},{"dup":2,"utilise/key":15}],38:[function(require,module,exports){
 arguments[4][3][0].apply(exports,arguments)
-},{"dup":3,"utilise/is":14,"utilise/key":15}],38:[function(require,module,exports){
+},{"dup":3,"utilise/is":14,"utilise/key":15}],39:[function(require,module,exports){
 module.exports = function chainable(fn) {
   return function(){
     return fn.apply(this, arguments), fn
   }
 }
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 arguments[4][4][0].apply(exports,arguments)
-},{"dup":4}],40:[function(require,module,exports){
+},{"dup":4}],41:[function(require,module,exports){
 arguments[4][5][0].apply(exports,arguments)
-},{"dup":5,"utilise/is":14,"utilise/parse":20,"utilise/str":28}],41:[function(require,module,exports){
+},{"dup":5,"utilise/is":14,"utilise/parse":20,"utilise/str":28}],42:[function(require,module,exports){
 var client = require('utilise/client')
   , colors = !client && require('colors')
   , has = require('utilise/has')
@@ -395,11 +406,11 @@ function colorfill(){
 }
 
 
-},{"colors":72,"utilise/client":4,"utilise/has":12,"utilise/is":14}],42:[function(require,module,exports){
+},{"colors":75,"utilise/client":4,"utilise/has":12,"utilise/is":14}],43:[function(require,module,exports){
 arguments[4][6][0].apply(exports,arguments)
-},{"dup":6}],43:[function(require,module,exports){
+},{"dup":6}],44:[function(require,module,exports){
 arguments[4][7][0].apply(exports,arguments)
-},{"dup":7,"utilise/sel":26}],44:[function(require,module,exports){
+},{"dup":7,"utilise/sel":26}],45:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function debounce(d){
@@ -418,9 +429,9 @@ module.exports = function debounce(d){
   }
   
 }
-},{"utilise/is":14}],45:[function(require,module,exports){
+},{"utilise/is":14}],46:[function(require,module,exports){
 arguments[4][8][0].apply(exports,arguments)
-},{"dup":8,"utilise/has":12}],46:[function(require,module,exports){
+},{"dup":8,"utilise/has":12}],47:[function(require,module,exports){
 var attr = require('utilise/attr')
   , split = require('utilise/split')
   , replace = require('utilise/replace')
@@ -440,7 +451,7 @@ module.exports = function el(selector){
 
   return elem
 }
-},{"utilise/attr":1,"utilise/prepend":21,"utilise/replace":24,"utilise/split":27}],47:[function(require,module,exports){
+},{"utilise/attr":1,"utilise/prepend":21,"utilise/replace":24,"utilise/split":27}],48:[function(require,module,exports){
 var err  = require('utilise/err')('[emitterify]')
   , keys = require('utilise/keys')
   , def  = require('utilise/def')
@@ -495,9 +506,9 @@ module.exports = function emitterify(body) {
     return callback.once = true, body.on(type, callback), body
   }
 }
-},{"utilise/def":8,"utilise/err":9,"utilise/is":14,"utilise/keys":16,"utilise/not":18}],48:[function(require,module,exports){
+},{"utilise/def":8,"utilise/err":9,"utilise/is":14,"utilise/keys":16,"utilise/not":18}],49:[function(require,module,exports){
 arguments[4][9][0].apply(exports,arguments)
-},{"dup":9,"utilise/owner":19,"utilise/to":29}],49:[function(require,module,exports){
+},{"dup":9,"utilise/owner":19,"utilise/to":29}],50:[function(require,module,exports){
 var is = require('utilise/is')
   , not = require('utilise/not')
   , keys = require('utilise/keys')
@@ -512,20 +523,20 @@ module.exports = function extend(to){
     return to
   }
 }
-},{"utilise/copy":6,"utilise/is":14,"utilise/keys":16,"utilise/not":18}],50:[function(require,module,exports){
+},{"utilise/copy":6,"utilise/is":14,"utilise/keys":16,"utilise/not":18}],51:[function(require,module,exports){
 module.exports = function falsy(){
   return false
 }
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = function filter(fn){
   return function(arr){
     return arr.filter(fn)
   }
 }
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 arguments[4][10][0].apply(exports,arguments)
-},{"dup":10}],53:[function(require,module,exports){
+},{"dup":10}],54:[function(require,module,exports){
 var is = require('utilise/is')  
 
 module.exports = function flatten(p,v){ 
@@ -533,16 +544,16 @@ module.exports = function flatten(p,v){
   return (p = p || []), p.concat(v) 
 }
 
-},{"utilise/is":14}],54:[function(require,module,exports){
+},{"utilise/is":14}],55:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function fn(candid){
   return is.fn(candid) ? candid
        : (new Function("return " + candid))()
 }
-},{"utilise/is":14}],55:[function(require,module,exports){
+},{"utilise/is":14}],56:[function(require,module,exports){
 arguments[4][11][0].apply(exports,arguments)
-},{"dup":11,"utilise/datum":7,"utilise/key":15}],56:[function(require,module,exports){
+},{"dup":11,"utilise/datum":7,"utilise/key":15}],57:[function(require,module,exports){
 var to = require('utilise/to')
   , is = require('utilise/is')
 
@@ -554,7 +565,7 @@ module.exports = function grep(o, k, regex){
   }
   return original
 }
-},{"utilise/is":14,"utilise/to":29}],57:[function(require,module,exports){
+},{"utilise/is":14,"utilise/to":29}],58:[function(require,module,exports){
 var client = require('utilise/client')
   , owner = require('utilise/owner')
 
@@ -571,9 +582,18 @@ function polyfill() {
     console.log('*****', d, '*****')
   }
 }
-},{"utilise/client":4,"utilise/owner":19}],58:[function(require,module,exports){
+},{"utilise/client":4,"utilise/owner":19}],59:[function(require,module,exports){
+var key = require('utilise/key')
+
+module.exports = function gt(k, v){
+  return function(d){
+    return key(k)(d) > v
+  }
+}
+
+},{"utilise/key":15}],60:[function(require,module,exports){
 arguments[4][12][0].apply(exports,arguments)
-},{"dup":12}],59:[function(require,module,exports){
+},{"dup":12}],61:[function(require,module,exports){
 var has = require('utilise/has')
 
 module.exports = function header(header, value) {
@@ -586,15 +606,15 @@ module.exports = function header(header, value) {
                                    : d['headers'][header] == value
   }
 }
-},{"utilise/has":12}],60:[function(require,module,exports){
+},{"utilise/has":12}],62:[function(require,module,exports){
 arguments[4][13][0].apply(exports,arguments)
-},{"dup":13}],61:[function(require,module,exports){
+},{"dup":13}],63:[function(require,module,exports){
 module.exports = function includes(pattern){
   return function(d){
     return ~d.indexOf(pattern)
   }
 }
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 var identity = require('utilise/identity')
   , wrap = require('utilise/wrap')
   , is = require('utilise/is')
@@ -611,9 +631,9 @@ module.exports = function inherit(thing) {
       .map(wrap(fn(d)))
   }
 }
-},{"utilise/identity":13,"utilise/is":14,"utilise/wrap":31}],63:[function(require,module,exports){
+},{"utilise/identity":13,"utilise/is":14,"utilise/wrap":31}],65:[function(require,module,exports){
 arguments[4][14][0].apply(exports,arguments)
-},{"dup":14}],64:[function(require,module,exports){
+},{"dup":14}],66:[function(require,module,exports){
 var clone = require('utilise/clone')
   , key = require('utilise/key')
   , by = require('utilise/by')
@@ -646,15 +666,15 @@ module.exports = function join(left, right){
   }
 }
 
-},{"utilise/by":3,"utilise/clone":5,"utilise/is":14,"utilise/key":15}],65:[function(require,module,exports){
+},{"utilise/by":3,"utilise/clone":5,"utilise/is":14,"utilise/key":15}],67:[function(require,module,exports){
 arguments[4][15][0].apply(exports,arguments)
-},{"dup":15,"utilise/is":14,"utilise/str":28}],66:[function(require,module,exports){
+},{"dup":15,"utilise/is":14,"utilise/str":28}],68:[function(require,module,exports){
 arguments[4][16][0].apply(exports,arguments)
-},{"dup":16}],67:[function(require,module,exports){
+},{"dup":16}],69:[function(require,module,exports){
 module.exports =  function last(d) {
   return d[d.length-1]
 }
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 var attr = require('utilise/attr')
   , raw = require('utilise/raw')
   
@@ -688,14 +708,23 @@ function destructure(selector){
 
   return { el: raw(el), attr: attr }
 }
-},{"utilise/attr":1,"utilise/raw":23}],69:[function(require,module,exports){
+},{"utilise/attr":1,"utilise/raw":23}],71:[function(require,module,exports){
 module.exports = function lo(d){
   return (d || '').toLowerCase()
 }
 
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 arguments[4][17][0].apply(exports,arguments)
-},{"dup":17,"utilise/is":14,"utilise/owner":19,"utilise/to":29}],71:[function(require,module,exports){
+},{"dup":17,"utilise/is":14,"utilise/owner":19,"utilise/to":29}],73:[function(require,module,exports){
+var key = require('utilise/key')
+
+module.exports = function lt(k, v){
+  return function(d){
+    return key(k)(d) < v
+  }
+}
+
+},{"utilise/key":15}],74:[function(require,module,exports){
 var owner = require('utilise/owner')
 
 module.exports = mo
@@ -715,9 +744,9 @@ function moFormat(format) {
 function moIso(d) {
   return mo(d).format('YYYY-MM-DD')
 }
-},{"utilise/owner":19}],72:[function(require,module,exports){
+},{"utilise/owner":19}],75:[function(require,module,exports){
 
-},{}],73:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -809,11 +838,11 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],74:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = function noop(){}
-},{}],75:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 arguments[4][18][0].apply(exports,arguments)
-},{"dup":18}],76:[function(require,module,exports){
+},{"dup":18}],79:[function(require,module,exports){
 var proxy  = require('utilise/proxy')  
   , wrap   = require('utilise/wrap')  
   , sall   = require('utilise/sall')  
@@ -896,11 +925,11 @@ function accessorise(o, original){
 
   return o
 }
-},{"utilise/is":14,"utilise/proxy":22,"utilise/sall":25,"utilise/sel":26,"utilise/wrap":31}],77:[function(require,module,exports){
+},{"utilise/is":14,"utilise/proxy":22,"utilise/sall":25,"utilise/sel":26,"utilise/wrap":31}],80:[function(require,module,exports){
 arguments[4][19][0].apply(exports,arguments)
-},{"dup":19,"utilise/client":4}],78:[function(require,module,exports){
+},{"dup":19,"utilise/client":4}],81:[function(require,module,exports){
 arguments[4][20][0].apply(exports,arguments)
-},{"dup":20}],79:[function(require,module,exports){
+},{"dup":20}],82:[function(require,module,exports){
 (function (process){
 var log = require('utilise/log')('[perf]')
   , client = require('utilise/client')
@@ -913,9 +942,9 @@ module.exports =  function perf(fn) {
   return log(fn.name, diff, 'ms'), diff
 }
 }).call(this,require('_process'))
-},{"_process":73,"utilise/client":4,"utilise/log":17}],80:[function(require,module,exports){
+},{"_process":76,"utilise/client":4,"utilise/log":17}],83:[function(require,module,exports){
 arguments[4][21][0].apply(exports,arguments)
-},{"dup":21}],81:[function(require,module,exports){
+},{"dup":21}],84:[function(require,module,exports){
 promise.sync = promiseSync
 promise.null = promiseNull
 promise.noop = promiseNoop
@@ -956,18 +985,18 @@ function promiseNoop(){
 function promiseNull(){
   return promise(null)
 }
-},{}],82:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 arguments[4][22][0].apply(exports,arguments)
-},{"dup":22,"utilise/is":14}],83:[function(require,module,exports){
+},{"dup":22,"utilise/is":14}],86:[function(require,module,exports){
 module.exports = function push(arr){
   return function(d){
     return arr.push(d), arr
   }
 }
 
-},{}],84:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 arguments[4][23][0].apply(exports,arguments)
-},{"dup":23}],85:[function(require,module,exports){
+},{"dup":23}],88:[function(require,module,exports){
 module.exports = function(target, source) {
   var i = 1, n = arguments.length, method
   while (++i < n) target[method = arguments[i]] = rebind(target, source, source[method])
@@ -980,9 +1009,9 @@ function rebind(target, source, method) {
     return value === source ? target : value
   }
 }
-},{}],86:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 arguments[4][24][0].apply(exports,arguments)
-},{"dup":24}],87:[function(require,module,exports){
+},{"dup":24}],90:[function(require,module,exports){
 var is = require('utilise/is')
   , body = require('utilise/body')
   , first = require('utilise/first')
@@ -1000,39 +1029,40 @@ module.exports = function resourcify(ripple){
            )
   }
 }
-},{"utilise/body":2,"utilise/first":10,"utilise/is":14,"utilise/values":30}],88:[function(require,module,exports){
+},{"utilise/body":2,"utilise/first":10,"utilise/is":14,"utilise/values":30}],91:[function(require,module,exports){
 arguments[4][25][0].apply(exports,arguments)
-},{"dup":25,"utilise/sel":26}],89:[function(require,module,exports){
+},{"dup":25,"utilise/sel":26}],92:[function(require,module,exports){
 arguments[4][26][0].apply(exports,arguments)
-},{"dup":26}],90:[function(require,module,exports){
+},{"dup":26}],93:[function(require,module,exports){
 module.exports = function sort(fn){
   return function(arr){
     return arr.sort(fn)
   }
 }
 
-},{}],91:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 arguments[4][27][0].apply(exports,arguments)
-},{"dup":27}],92:[function(require,module,exports){
+},{"dup":27}],95:[function(require,module,exports){
 arguments[4][28][0].apply(exports,arguments)
-},{"dup":28,"utilise/is":14}],93:[function(require,module,exports){
+},{"dup":28,"utilise/is":14}],96:[function(require,module,exports){
 arguments[4][29][0].apply(exports,arguments)
-},{"dup":29}],94:[function(require,module,exports){
+},{"dup":29}],97:[function(require,module,exports){
 module.exports = function unique(matched, value, i){
   if (i === 1) matched = [matched]
   if (!~matched.indexOf(value)) matched.push(value)
   return matched
 }
 
-},{}],95:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 arguments[4][30][0].apply(exports,arguments)
-},{"dup":30,"utilise/from":11,"utilise/keys":16}],96:[function(require,module,exports){
+},{"dup":30,"utilise/from":11,"utilise/keys":16}],99:[function(require,module,exports){
 arguments[4][31][0].apply(exports,arguments)
-},{"dup":31}],97:[function(require,module,exports){
+},{"dup":31}],100:[function(require,module,exports){
 require('./owner').all = require('./all.js')
 require('./owner').append = require('./append.js')
 require('./owner').args = require('./args.js')
 require('./owner').attr = require('./attr.js')
+require('./owner').az = require('./az.js')
 require('./owner').body = require('./body.js')
 require('./owner').by = require('./by.js')
 require('./owner').chainable = require('./chainable.js')
@@ -1055,6 +1085,7 @@ require('./owner').fn = require('./fn.js')
 require('./owner').from = require('./from.js')
 require('./owner').grep = require('./grep.js')
 require('./owner').group = require('./group.js')
+require('./owner').gt = require('./gt.js')
 require('./owner').has = require('./has.js')
 require('./owner').header = require('./header.js')
 require('./owner').identity = require('./identity.js')
@@ -1068,6 +1099,7 @@ require('./owner').last = require('./last.js')
 require('./owner').link = require('./link.js')
 require('./owner').lo = require('./lo.js')
 require('./owner').log = require('./log.js')
+require('./owner').lt = require('./lt.js')
 require('./owner').mo = require('./mo.js')
 require('./owner').noop = require('./noop.js')
 require('./owner').not = require('./not.js')
@@ -1093,5 +1125,5 @@ require('./owner').unique = require('./unique.js')
 require('./owner').values = require('./values.js')
 require('./owner').wrap = require('./wrap.js')
 
-},{"./all.js":32,"./append.js":33,"./args.js":34,"./attr.js":35,"./body.js":36,"./by.js":37,"./chainable.js":38,"./client.js":39,"./clone.js":40,"./colorfill.js":41,"./copy.js":42,"./datum.js":43,"./debounce.js":44,"./def.js":45,"./el.js":46,"./emitterify.js":47,"./err.js":48,"./extend.js":49,"./falsy.js":50,"./filter.js":51,"./first.js":52,"./flatten.js":53,"./fn.js":54,"./from.js":55,"./grep.js":56,"./group.js":57,"./has.js":58,"./header.js":59,"./identity.js":60,"./includes.js":61,"./inherit.js":62,"./is.js":63,"./join.js":64,"./key.js":65,"./keys.js":66,"./last.js":67,"./link.js":68,"./lo.js":69,"./log.js":70,"./mo.js":71,"./noop.js":74,"./not.js":75,"./once.js":76,"./owner":77,"./owner.js":77,"./parse.js":78,"./perf.js":79,"./prepend.js":80,"./promise.js":81,"./proxy.js":82,"./push.js":83,"./raw.js":84,"./rebind.js":85,"./replace.js":86,"./resourcify.js":87,"./sall.js":88,"./sel.js":89,"./sort.js":90,"./split.js":91,"./str.js":92,"./to.js":93,"./unique.js":94,"./values.js":95,"./wrap.js":96}]},{},[97])(97)
+},{"./all.js":32,"./append.js":33,"./args.js":34,"./attr.js":35,"./az.js":36,"./body.js":37,"./by.js":38,"./chainable.js":39,"./client.js":40,"./clone.js":41,"./colorfill.js":42,"./copy.js":43,"./datum.js":44,"./debounce.js":45,"./def.js":46,"./el.js":47,"./emitterify.js":48,"./err.js":49,"./extend.js":50,"./falsy.js":51,"./filter.js":52,"./first.js":53,"./flatten.js":54,"./fn.js":55,"./from.js":56,"./grep.js":57,"./group.js":58,"./gt.js":59,"./has.js":60,"./header.js":61,"./identity.js":62,"./includes.js":63,"./inherit.js":64,"./is.js":65,"./join.js":66,"./key.js":67,"./keys.js":68,"./last.js":69,"./link.js":70,"./lo.js":71,"./log.js":72,"./lt.js":73,"./mo.js":74,"./noop.js":77,"./not.js":78,"./once.js":79,"./owner":80,"./owner.js":80,"./parse.js":81,"./perf.js":82,"./prepend.js":83,"./promise.js":84,"./proxy.js":85,"./push.js":86,"./raw.js":87,"./rebind.js":88,"./replace.js":89,"./resourcify.js":90,"./sall.js":91,"./sel.js":92,"./sort.js":93,"./split.js":94,"./str.js":95,"./to.js":96,"./unique.js":97,"./values.js":98,"./wrap.js":99}]},{},[100])(100)
 });
