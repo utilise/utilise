@@ -3,7 +3,7 @@ var parse = require('utilise/parse')
   , is = require('utilise/is')
 
 module.exports = function clone(d) {
-  return !is.fn(d) 
+  return !is.fn(d) && !is.str(d)
        ? parse(str(d))
        : d
 }

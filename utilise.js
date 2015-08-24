@@ -42,7 +42,7 @@ var parse = require('utilise/parse')
   , is = require('utilise/is')
 
 module.exports = function clone(d) {
-  return !is.fn(d) 
+  return !is.fn(d) && !is.str(d)
        ? parse(str(d))
        : d
 }
@@ -655,7 +655,7 @@ module.exports = function join(left, right){
       field = array.join('.')
     }
     
-    var id  = clone(key(left)(d))
+    var id  = key(left)(d)
       , val = table
                 .filter(by('id', id))
                 .map(key(field))
