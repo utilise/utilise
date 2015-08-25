@@ -10,7 +10,7 @@ module.exports = function join(left, right){
   }
 
   return function(d){
-    var table = right, field = null
+    var table = right || [], field = null
 
     if (is.str(right)) {
       var array = right.split('.')

@@ -175,9 +175,9 @@ function isDef(d) {
 
 function isIn(set) {
   return function(d){
-    return  set.indexOf 
-         ? ~set.indexOf(d)
-         :  d in set
+    return !set ? false  
+         : set.indexOf ? ~set.indexOf(d)
+         : d in set
   }
 }
 },{}],15:[function(require,module,exports){
@@ -647,7 +647,7 @@ module.exports = function join(left, right){
   }
 
   return function(d){
-    var table = right, field = null
+    var table = right || [], field = null
 
     if (is.str(right)) {
       var array = right.split('.')
@@ -844,6 +844,12 @@ module.exports = function noop(){}
 },{}],78:[function(require,module,exports){
 arguments[4][18][0].apply(exports,arguments)
 },{"dup":18}],79:[function(require,module,exports){
+module.exports = function nullify(fn){
+  return function(){
+    return fn.apply(this, arguments) ? true : null
+  }
+}
+},{}],80:[function(require,module,exports){
 var proxy  = require('utilise/proxy')  
   , wrap   = require('utilise/wrap')  
   , sall   = require('utilise/sall')  
@@ -926,11 +932,11 @@ function accessorise(o, original){
 
   return o
 }
-},{"utilise/is":14,"utilise/proxy":22,"utilise/sall":25,"utilise/sel":26,"utilise/wrap":31}],80:[function(require,module,exports){
+},{"utilise/is":14,"utilise/proxy":22,"utilise/sall":25,"utilise/sel":26,"utilise/wrap":31}],81:[function(require,module,exports){
 arguments[4][19][0].apply(exports,arguments)
-},{"dup":19,"utilise/client":4}],81:[function(require,module,exports){
+},{"dup":19,"utilise/client":4}],82:[function(require,module,exports){
 arguments[4][20][0].apply(exports,arguments)
-},{"dup":20}],82:[function(require,module,exports){
+},{"dup":20}],83:[function(require,module,exports){
 (function (process){
 var log = require('utilise/log')('[perf]')
   , client = require('utilise/client')
@@ -943,9 +949,9 @@ module.exports =  function perf(fn) {
   return log(fn.name, diff, 'ms'), diff
 }
 }).call(this,require('_process'))
-},{"_process":76,"utilise/client":4,"utilise/log":17}],83:[function(require,module,exports){
+},{"_process":76,"utilise/client":4,"utilise/log":17}],84:[function(require,module,exports){
 arguments[4][21][0].apply(exports,arguments)
-},{"dup":21}],84:[function(require,module,exports){
+},{"dup":21}],85:[function(require,module,exports){
 promise.sync = promiseSync
 promise.null = promiseNull
 promise.noop = promiseNoop
@@ -986,18 +992,18 @@ function promiseNoop(){
 function promiseNull(){
   return promise(null)
 }
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 arguments[4][22][0].apply(exports,arguments)
-},{"dup":22,"utilise/is":14}],86:[function(require,module,exports){
+},{"dup":22,"utilise/is":14}],87:[function(require,module,exports){
 module.exports = function push(arr){
   return function(d){
     return arr.push(d), arr
   }
 }
 
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 arguments[4][23][0].apply(exports,arguments)
-},{"dup":23}],88:[function(require,module,exports){
+},{"dup":23}],89:[function(require,module,exports){
 module.exports = function(target, source) {
   var i = 1, n = arguments.length, method
   while (++i < n) target[method = arguments[i]] = rebind(target, source, source[method])
@@ -1010,9 +1016,9 @@ function rebind(target, source, method) {
     return value === source ? target : value
   }
 }
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 arguments[4][24][0].apply(exports,arguments)
-},{"dup":24}],90:[function(require,module,exports){
+},{"dup":24}],91:[function(require,module,exports){
 var is = require('utilise/is')
   , body = require('utilise/body')
   , first = require('utilise/first')
@@ -1030,35 +1036,35 @@ module.exports = function resourcify(ripple){
            )
   }
 }
-},{"utilise/body":2,"utilise/first":10,"utilise/is":14,"utilise/values":30}],91:[function(require,module,exports){
+},{"utilise/body":2,"utilise/first":10,"utilise/is":14,"utilise/values":30}],92:[function(require,module,exports){
 arguments[4][25][0].apply(exports,arguments)
-},{"dup":25,"utilise/sel":26}],92:[function(require,module,exports){
+},{"dup":25,"utilise/sel":26}],93:[function(require,module,exports){
 arguments[4][26][0].apply(exports,arguments)
-},{"dup":26}],93:[function(require,module,exports){
+},{"dup":26}],94:[function(require,module,exports){
 module.exports = function sort(fn){
   return function(arr){
     return arr.sort(fn)
   }
 }
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 arguments[4][27][0].apply(exports,arguments)
-},{"dup":27}],95:[function(require,module,exports){
+},{"dup":27}],96:[function(require,module,exports){
 arguments[4][28][0].apply(exports,arguments)
-},{"dup":28,"utilise/is":14}],96:[function(require,module,exports){
+},{"dup":28,"utilise/is":14}],97:[function(require,module,exports){
 arguments[4][29][0].apply(exports,arguments)
-},{"dup":29}],97:[function(require,module,exports){
+},{"dup":29}],98:[function(require,module,exports){
 module.exports = function unique(matched, value, i){
   if (i === 1) matched = [matched]
   if (!~matched.indexOf(value)) matched.push(value)
   return matched
 }
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 arguments[4][30][0].apply(exports,arguments)
-},{"dup":30,"utilise/from":11,"utilise/keys":16}],99:[function(require,module,exports){
+},{"dup":30,"utilise/from":11,"utilise/keys":16}],100:[function(require,module,exports){
 arguments[4][31][0].apply(exports,arguments)
-},{"dup":31}],100:[function(require,module,exports){
+},{"dup":31}],101:[function(require,module,exports){
 require('./owner').all = require('./all.js')
 require('./owner').append = require('./append.js')
 require('./owner').args = require('./args.js')
@@ -1104,6 +1110,7 @@ require('./owner').lt = require('./lt.js')
 require('./owner').mo = require('./mo.js')
 require('./owner').noop = require('./noop.js')
 require('./owner').not = require('./not.js')
+require('./owner').nullify = require('./nullify.js')
 require('./owner').once = require('./once.js')
 require('./owner').owner = require('./owner.js')
 require('./owner').parse = require('./parse.js')
@@ -1126,5 +1133,5 @@ require('./owner').unique = require('./unique.js')
 require('./owner').values = require('./values.js')
 require('./owner').wrap = require('./wrap.js')
 
-},{"./all.js":32,"./append.js":33,"./args.js":34,"./attr.js":35,"./az.js":36,"./body.js":37,"./by.js":38,"./chainable.js":39,"./client.js":40,"./clone.js":41,"./colorfill.js":42,"./copy.js":43,"./datum.js":44,"./debounce.js":45,"./def.js":46,"./el.js":47,"./emitterify.js":48,"./err.js":49,"./extend.js":50,"./falsy.js":51,"./filter.js":52,"./first.js":53,"./flatten.js":54,"./fn.js":55,"./from.js":56,"./grep.js":57,"./group.js":58,"./gt.js":59,"./has.js":60,"./header.js":61,"./identity.js":62,"./includes.js":63,"./inherit.js":64,"./is.js":65,"./join.js":66,"./key.js":67,"./keys.js":68,"./last.js":69,"./link.js":70,"./lo.js":71,"./log.js":72,"./lt.js":73,"./mo.js":74,"./noop.js":77,"./not.js":78,"./once.js":79,"./owner":80,"./owner.js":80,"./parse.js":81,"./perf.js":82,"./prepend.js":83,"./promise.js":84,"./proxy.js":85,"./push.js":86,"./raw.js":87,"./rebind.js":88,"./replace.js":89,"./resourcify.js":90,"./sall.js":91,"./sel.js":92,"./sort.js":93,"./split.js":94,"./str.js":95,"./to.js":96,"./unique.js":97,"./values.js":98,"./wrap.js":99}]},{},[100])(100)
+},{"./all.js":32,"./append.js":33,"./args.js":34,"./attr.js":35,"./az.js":36,"./body.js":37,"./by.js":38,"./chainable.js":39,"./client.js":40,"./clone.js":41,"./colorfill.js":42,"./copy.js":43,"./datum.js":44,"./debounce.js":45,"./def.js":46,"./el.js":47,"./emitterify.js":48,"./err.js":49,"./extend.js":50,"./falsy.js":51,"./filter.js":52,"./first.js":53,"./flatten.js":54,"./fn.js":55,"./from.js":56,"./grep.js":57,"./group.js":58,"./gt.js":59,"./has.js":60,"./header.js":61,"./identity.js":62,"./includes.js":63,"./inherit.js":64,"./is.js":65,"./join.js":66,"./key.js":67,"./keys.js":68,"./last.js":69,"./link.js":70,"./lo.js":71,"./log.js":72,"./lt.js":73,"./mo.js":74,"./noop.js":77,"./not.js":78,"./nullify.js":79,"./once.js":80,"./owner":81,"./owner.js":81,"./parse.js":82,"./perf.js":83,"./prepend.js":84,"./promise.js":85,"./proxy.js":86,"./push.js":87,"./raw.js":88,"./rebind.js":89,"./replace.js":90,"./resourcify.js":91,"./sall.js":92,"./sel.js":93,"./sort.js":94,"./split.js":95,"./str.js":96,"./to.js":97,"./unique.js":98,"./values.js":99,"./wrap.js":100}]},{},[101])(101)
 });
