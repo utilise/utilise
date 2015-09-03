@@ -774,6 +774,15 @@ raw('.foo')
 
 D3 rebind function to rebind accessors. See the [docs here](https://github.com/mbostock/d3/wiki/Internals#rebind).
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/remove/badge.svg?branch=master)](https://coveralls.io/r/utilise/remove?branch=master) [![Build](https://api.travis-ci.org/utilise/remove.svg)](https://travis-ci.org/utilise/remove) remove
+
+Remove item(s) from an array by value or property
+
+```js
+array.forEach(remove(2))
+array.forEach(remove('key', 'value'))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/replace/badge.svg?branch=master)](https://coveralls.io/r/utilise/replace?branch=master) [![Build](https://api.travis-ci.org/utilise/replace.svg)](https://travis-ci.org/utilise/replace) replace
 
 Replace a value in a string
@@ -912,6 +921,14 @@ Buffers output to a stream destination. Useful when you need the whole input rat
 stream
   .pipe(via(minify))
   .pipe(via(replace))
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/wait/badge.svg?branch=master)](https://coveralls.io/r/utilise/wait?branch=master) [![Build](https://api.travis-ci.org/utilise/wait.svg)](https://travis-ci.org/utilise/wait) wait
+
+Only invoke handler if condition fulfilled. Useful for determining execution based on declarative pattern matching.
+
+```js
+o.once(wait(msg => msg.id)(handler))
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/wrap/badge.svg?branch=master)](https://coveralls.io/r/utilise/wrap?branch=master) [![Build](https://api.travis-ci.org/utilise/wrap.svg)](https://travis-ci.org/utilise/wrap) wrap

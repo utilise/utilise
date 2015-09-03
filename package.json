@@ -89,6 +89,7 @@
     "utilise.push": "*",
     "utilise.raw": "*",
     "utilise.rebind": "*",
+    "utilise.remove": "*",
     "utilise.replace": "*",
     "utilise.resourcify": "*",
     "utilise.sall": "*",
@@ -101,6 +102,8 @@
     "utilise.unique": "*",
     "utilise.values": "*",
     "utilise.via": "*",
-    "utilise.wrap": "*"
+    "utilise.wait": "*",
+    "utilise.wrap": "*",
+    "utilise.za": "*"
   }
 }
