@@ -654,7 +654,7 @@ numbers
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/nullify/badge.svg?branch=master)](https://coveralls.io/r/utilise/nullify?branch=master) [![Build](https://api.travis-ci.org/utilise/nullify.svg)](https://travis-ci.org/utilise/nullify) nullify
 
-Converts a truthy/falsy to truthy/null. This is a useful utility for D3 functions which expect a null value to remove as opposed to just a falsy.
+Converts a truthy/falsy to true/null. This is a useful utility for D3 functions which expect a null value to remove as opposed to just a falsy.
 
 ```js
 selection
