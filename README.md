@@ -652,6 +652,15 @@ numbers
   .filter(not(is('5')))
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/nullify/badge.svg?branch=master)](https://coveralls.io/r/utilise/nullify?branch=master) [![Build](https://api.travis-ci.org/utilise/nullify.svg)](https://travis-ci.org/utilise/nullify) nullify
+
+Converts a truthy/falsy to truthy/null. This is a useful utility for D3 functions which expect a null value to remove as opposed to just a falsy.
+
+```js
+selection
+  .attr('disabled', nullify(isDisabled))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/once/badge.svg?branch=master)](https://coveralls.io/r/utilise/once?branch=master) [![Build](https://api.travis-ci.org/utilise/once.svg)](https://travis-ci.org/utilise/once) once
 
 Function for building entirely data-driven idempotent components/UI with D3.
