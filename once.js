@@ -33,7 +33,8 @@ module.exports = function once(scope) {
 
       var type    = elSelector instanceof HTMLElement
                   ? dupe(elSelector)
-                  : elSelector.split('.')[0] || 'div'
+                  : elSelector.split('.')[0].split('>').pop().trim() || 'div'
+
 
       var el = sel(self)
         .selectAll(elSelector.toString())
@@ -74,7 +75,7 @@ function push(arr) {
 }
 
 function accessorise(o, original){
-  ['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'node', 'datum'].map(function(op){
+  ['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'node', 'datum', 'property'].map(function(op){
     o[op] = proxy(original[op], wrap(o), original)
   })
 
