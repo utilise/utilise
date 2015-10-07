@@ -1,4 +1,4 @@
-var is = require('is')
+var is = require('utilise/is')
 
 module.exports = function nullify(fn){
   return is.fn(fn) ? function(){
