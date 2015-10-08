@@ -409,6 +409,14 @@ Checks if object has property using `in` keyword
 has(object, 'prop')
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/hashcode/badge.svg?branch=master)](https://coveralls.io/r/utilise/hashcode?branch=master) [![Build](https://api.travis-ci.org/utilise/hashcode.svg)](https://travis-ci.org/utilise/hashcode) hashcode
+
+Converts string to unique numerical equivalent - same as Java hashcode function.
+
+```js
+hashcode('foobar') // -1268878963
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/header/badge.svg?branch=master)](https://coveralls.io/r/utilise/header?branch=master) [![Build](https://api.travis-ci.org/utilise/header.svg)](https://travis-ci.org/utilise/header) header
 
 Extract the value of a header from a ripple resource
@@ -893,6 +901,15 @@ to.arr(arguments)
 
 Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/time/badge.svg?branch=master)](https://coveralls.io/r/utilise/time?branch=master) [![Build](https://api.travis-ci.org/utilise/time.svg)](https://travis-ci.org/utilise/time) time
+
+Alias for `setTimeout` with duration as first parameter for better readability
+
+```js
+time(10, function(){ .. })
+time(20, function(){ .. })
+time(30, function(){ .. })
+```
 ## [![Coverage Status](https://coveralls.io/repos/utilise/unique/badge.svg?branch=master)](https://coveralls.io/r/utilise/unique?branch=master) [![Build](https://api.travis-ci.org/utilise/unique.svg)](https://travis-ci.org/utilise/unique) unique
 
 Reduce an array to unique values
