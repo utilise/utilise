@@ -10,7 +10,9 @@ module.exports = function once(scope) {
   return accessorise(o, parent)
 
   function o(selector, data, key, before) {
-    if (arguments.length == 1) return once(sall(parent)(selector))
+    if (arguments.length == 1 && !is.fn(selector)) return once(sall(parent)(selector))
+    if (arguments.length == 1 &&  is.fn(selector)) data = 1
+
     var fn
       , enter = []
       , exit = []
