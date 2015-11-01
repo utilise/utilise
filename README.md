@@ -771,6 +771,12 @@ proxy(fn, 5)      // returns a function that invokes fn, but then always returns
 proxy(fn, 5, {})  // same as above, but also changes context variable
 ```
 
+This is also useful for functional inheritance:
+
+```js
+bill.total = proxy(bill.subtotal, bill.vat)
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/push/badge.svg?branch=master)](https://coveralls.io/r/utilise/push?branch=master) [![Build](https://api.travis-ci.org/utilise/push.svg)](https://travis-ci.org/utilise/push) push
 
 Push elements to an array
