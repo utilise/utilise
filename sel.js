@@ -1,3 +1,3 @@
-module.exports = function sel(){
-  return d3.select.apply(this, arguments)
+module.exports = function sel(el){
+  return el.node ? el : d3.select(el)
 }

@@ -5,7 +5,7 @@ module.exports = function all(selector, doc){
   var prefix = !doc && document.head.createShadowRoot ? 'html /deep/ ' : ''
   return to.arr((doc || document).querySelectorAll(prefix+selector))
 }
-},{"utilise/to":70}],2:[function(require,module,exports){
+},{"utilise/to":106}],2:[function(require,module,exports){
 module.exports = function append(v) {
   return function(d){
     return d+v
@@ -26,7 +26,7 @@ module.exports = function args(indices) {
     }
   }
 }
-},{"utilise/is":35,"utilise/to":70}],4:[function(require,module,exports){
+},{"utilise/is":91,"utilise/to":106}],4:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function attr(d, name, value) {
@@ -39,7 +39,7 @@ module.exports = function attr(d, name, value) {
       && d.attributes.getNamedItem(name).value
 }
 
-},{"utilise/is":35}],5:[function(require,module,exports){
+},{"utilise/is":91}],5:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function az(k) {
@@ -53,7 +53,7 @@ module.exports = function az(k) {
   }
 }
 
-},{"utilise/key":37}],6:[function(require,module,exports){
+},{"utilise/key":92}],6:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function body(ripple){
@@ -62,7 +62,7 @@ module.exports = function body(ripple){
     return res && res.body
   }
 }
-},{"utilise/key":37}],7:[function(require,module,exports){
+},{"utilise/key":92}],7:[function(require,module,exports){
 var key = require('utilise/key')
   , is  = require('utilise/is')
 
@@ -77,7 +77,7 @@ module.exports = function by(k, v){
          : d == v
   }
 }
-},{"utilise/is":35,"utilise/key":37}],8:[function(require,module,exports){
+},{"utilise/is":91,"utilise/key":92}],8:[function(require,module,exports){
 module.exports = function chainable(fn) {
   return function(){
     return fn.apply(this, arguments), fn
@@ -96,7 +96,7 @@ module.exports = function clone(d) {
        : d
 }
 
-},{"utilise/is":35,"utilise/parse":52,"utilise/str":67}],11:[function(require,module,exports){
+},{"utilise/is":91,"utilise/parse":97,"utilise/str":105}],11:[function(require,module,exports){
 var client = require('utilise/client')
   , colors = !client && require('colors')
   , has = require('utilise/has')
@@ -116,7 +116,7 @@ function colorfill(){
 }
 
 
-},{"colors":45,"utilise/client":9,"utilise/has":29,"utilise/is":35}],12:[function(require,module,exports){
+},{"colors":45,"utilise/client":79,"utilise/has":89,"utilise/is":91}],12:[function(require,module,exports){
 module.exports = function copy(from, to){ 
   return function(d){ 
     return to[d] = from[d], d
@@ -128,7 +128,7 @@ var sel = require('utilise/sel')
 module.exports = function datum(node){
   return sel(node).datum()
 }
-},{"utilise/sel":64}],14:[function(require,module,exports){
+},{"utilise/sel":103}],14:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function debounce(d){
@@ -147,7 +147,7 @@ module.exports = function debounce(d){
   }
   
 }
-},{"utilise/is":35}],15:[function(require,module,exports){
+},{"utilise/is":91}],15:[function(require,module,exports){
 var has = require('utilise/has')
 
 module.exports = function def(o, p, v, w){
@@ -155,7 +155,7 @@ module.exports = function def(o, p, v, w){
   return o[p]
 }
 
-},{"utilise/has":29}],16:[function(require,module,exports){
+},{"utilise/has":89}],16:[function(require,module,exports){
 var attr = require('utilise/attr')
   , split = require('utilise/split')
   , replace = require('utilise/replace')
@@ -175,7 +175,7 @@ module.exports = function el(selector){
 
   return elem
 }
-},{"utilise/attr":4,"utilise/prepend":54,"utilise/replace":61,"utilise/split":66}],17:[function(require,module,exports){
+},{"utilise/attr":76,"utilise/prepend":98,"utilise/replace":101,"utilise/split":104}],17:[function(require,module,exports){
 var err  = require('utilise/err')('[emitterify]')
   , keys = require('utilise/keys')
   , def  = require('utilise/def')
@@ -230,7 +230,7 @@ module.exports = function emitterify(body) {
     return callback.once = true, body.on(type, callback), body
   }
 }
-},{"utilise/def":15,"utilise/err":18,"utilise/is":35,"utilise/keys":38,"utilise/not":48}],18:[function(require,module,exports){
+},{"utilise/def":83,"utilise/err":85,"utilise/is":91,"utilise/keys":93,"utilise/not":95}],18:[function(require,module,exports){
 var owner = require('utilise/owner')
   , to = require('utilise/to')
 
@@ -242,7 +242,7 @@ module.exports = function err(prefix){
     return console.error.apply(console, args), d
   }
 }
-},{"utilise/owner":51,"utilise/to":70}],19:[function(require,module,exports){
+},{"utilise/owner":96,"utilise/to":106}],19:[function(require,module,exports){
 var is = require('utilise/is')
   , not = require('utilise/not')
   , keys = require('utilise/keys')
@@ -257,7 +257,7 @@ module.exports = function extend(to){
     return to
   }
 }
-},{"utilise/copy":12,"utilise/is":35,"utilise/keys":38,"utilise/not":48}],20:[function(require,module,exports){
+},{"utilise/copy":81,"utilise/is":91,"utilise/keys":93,"utilise/not":95}],20:[function(require,module,exports){
 module.exports = function falsy(){
   return false
 }
@@ -280,14 +280,14 @@ module.exports = function flatten(p,v){
   return (p = p || []), p.concat(v) 
 }
 
-},{"utilise/is":35}],24:[function(require,module,exports){
+},{"utilise/is":91}],24:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function fn(candid){
   return is.fn(candid) ? candid
        : (new Function("return " + candid))()
 }
-},{"utilise/is":35}],25:[function(require,module,exports){
+},{"utilise/is":91}],25:[function(require,module,exports){
 var datum = require('utilise/datum')
   , key = require('utilise/key')
 
@@ -303,7 +303,7 @@ function from(o){
 function fromParent(k){
   return datum(this.parentNode)[k]
 }
-},{"utilise/datum":13,"utilise/key":37}],26:[function(require,module,exports){
+},{"utilise/datum":82,"utilise/key":92}],26:[function(require,module,exports){
 var to = require('utilise/to')
   , is = require('utilise/is')
 
@@ -315,7 +315,7 @@ module.exports = function grep(o, k, regex){
   }
   return original
 }
-},{"utilise/is":35,"utilise/to":70}],27:[function(require,module,exports){
+},{"utilise/is":91,"utilise/to":106}],27:[function(require,module,exports){
 var client = require('utilise/client')
   , owner = require('utilise/owner')
 
@@ -332,7 +332,7 @@ function polyfill() {
     console.log('*****', d, '*****')
   }
 }
-},{"utilise/client":9,"utilise/owner":51}],28:[function(require,module,exports){
+},{"utilise/client":79,"utilise/owner":96}],28:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function gt(k, v){
@@ -341,7 +341,7 @@ module.exports = function gt(k, v){
   }
 }
 
-},{"utilise/key":37}],29:[function(require,module,exports){
+},{"utilise/key":92}],29:[function(require,module,exports){
 module.exports = function has(o, k) {
   return k in o
 }
@@ -370,7 +370,7 @@ module.exports = function header(header, value) {
                                    : d['headers'][header] == value
   }
 }
-},{"utilise/has":29}],32:[function(require,module,exports){
+},{"utilise/has":89}],32:[function(require,module,exports){
 module.exports = function identity(d) {
   return d
 }
@@ -397,7 +397,7 @@ module.exports = function inherit(thing) {
       .map(wrap(fn(d)))
   }
 }
-},{"utilise/identity":32,"utilise/is":35,"utilise/wrap":74}],35:[function(require,module,exports){
+},{"utilise/identity":90,"utilise/is":91,"utilise/wrap":108}],35:[function(require,module,exports){
 module.exports = is
 is.fn     = isFunction
 is.str    = isString
@@ -503,7 +503,7 @@ module.exports = function join(left, right){
   }
 }
 
-},{"utilise/by":7,"utilise/clone":10,"utilise/is":35,"utilise/key":37}],37:[function(require,module,exports){
+},{"utilise/by":78,"utilise/clone":80,"utilise/is":91,"utilise/key":92}],37:[function(require,module,exports){
 var is = require('utilise/is')
   , str = require('utilise/str')
 
@@ -528,7 +528,7 @@ module.exports = function key(k, v){
     }
   }
 }
-},{"utilise/is":35,"utilise/str":67}],38:[function(require,module,exports){
+},{"utilise/is":91,"utilise/str":105}],38:[function(require,module,exports){
 module.exports = function keys(o) {
   return Object.keys(o || {})
 }
@@ -570,7 +570,7 @@ function destructure(selector){
 
   return { el: raw(el), attr: attr }
 }
-},{"utilise/attr":4,"utilise/raw":58}],41:[function(require,module,exports){
+},{"utilise/attr":76,"utilise/raw":100}],41:[function(require,module,exports){
 module.exports = function lo(d){
   return (d || '').toLowerCase()
 }
@@ -589,7 +589,7 @@ module.exports = function log(prefix){
     return console.log.apply(console, args), d
   }
 }
-},{"utilise/is":35,"utilise/owner":51,"utilise/to":70}],43:[function(require,module,exports){
+},{"utilise/is":91,"utilise/owner":96,"utilise/to":106}],43:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function lt(k, v){
@@ -598,7 +598,7 @@ module.exports = function lt(k, v){
   }
 }
 
-},{"utilise/key":37}],44:[function(require,module,exports){
+},{"utilise/key":92}],44:[function(require,module,exports){
 var owner = require('utilise/owner')
 
 module.exports = mo
@@ -618,7 +618,7 @@ function moFormat(format) {
 function moIso(d) {
   return mo(d).format('YYYY-MM-DD')
 }
-},{"utilise/owner":51}],45:[function(require,module,exports){
+},{"utilise/owner":96}],45:[function(require,module,exports){
 
 },{}],46:[function(require,module,exports){
 // shim for using process in browser
@@ -731,74 +731,114 @@ module.exports = function nullify(fn){
   : fn ? true
   : null
 }
-},{"utilise/is":35}],50:[function(require,module,exports){
-var proxy  = require('utilise/proxy')  
-  , wrap   = require('utilise/wrap')  
-  , sall   = require('utilise/sall')  
-  , sel    = require('utilise/sel')  
-  , is     = require('utilise/is')  
+},{"utilise/is":91}],50:[function(require,module,exports){
+var emitterify = require('utilise/emitterify')  
+  , extend     = require('utilise/extend')  
+  , proxy      = require('utilise/proxy')  
+  , wrap       = require('utilise/wrap')  
+  , sall       = require('utilise/sall')  
+  , sel        = require('utilise/sel')  
+  , is         = require('utilise/is')  
 
-module.exports = function once(scope) {
-  var parent = scope.node ? scope : sel(scope)
+module.exports = once
 
-  return accessorise(o, parent)
+function once(parents){
+  return enhance(spawn(parents = sall()(parents)), parents)
+}
 
-  function o(selector, data, key, before) {
-    if (arguments.length == 1 && !is.fn(selector)) return once(sall(parent)(selector))
+function spawn(parents){
+  return function o(selector, data, key, before){ 
+    if (arguments.length == 1 && !is.fn(selector)) return once(sall(parents)(selector))
     if (arguments.length == 1 &&  is.fn(selector)) data = 1
+    var enter = [], exit = [], els = []
+  
+    parents.each(function(pd, pi){
+      var opts = options(data, selector, pd, pi)
 
-    var fn
-      , enter = []
-      , exit = []
-      , els = []
-
-    parent.each(function(paData, i){
-      var self = this
-
-      var elData = data
-        , elSelector = selector
-
-      if (is.fn(elSelector)) elSelector = elSelector(paData, i)
-      if (is.fn(elData))     elData = elData(paData, i)
-      if (!elData)           elData = []
-      if (!is.arr(elData))   elData = [elData]
-
-      var classes = elSelector instanceof HTMLElement
-                  ? elSelector.className
-                  : elSelector.split('.').slice(1).join(' ')
-
-      var type    = elSelector instanceof HTMLElement
-                  ? dupe(elSelector)
-                  : elSelector.split('.')[0].split('>').pop().trim() || 'div'
-
-
-      var el = sel(self)
-        .selectAll(elSelector.toString())
-        .data(elData, key)
+      var el = sel(this)
+        .selectAll(opts.selector)
+        .data(opts.data, key)
   
       el.exit()
         .remove()
         .each(push(exit))
 
       el.enter()
-        .insert(type, before)
-        .classed(classes, 1)
+        .insert(opts.tag, before)
+        .classed(opts.classes, 1)
         .each(push(enter))
 
       el.each(push(els))
     })
 
-    els = sall()(els)
-    fn = once(els)
-    fn.enter = sall()(enter)
-    fn.exit = sall()(exit)
-    fn.sel = els
-
-    return accessorise(fn, els)
+    return extend(once(els = sall()(els)))({ 
+      enter: sall()(enter)
+    , exit: sall()(exit)
+    , sel: els
+    })
   }
 }
 
-function dupe(el){
+function options(data, selector, pd, pi){
+  if (is.fn(selector)) selector = selector(pd, pi)
+  if (is.fn(data))     data = data(pd, pi)
+  if (is.str(data))    data = [data]
+  if (!data)           data = []
+  if (!is.arr(data))   data = [data]
+
+  var classes = selector instanceof HTMLElement
+              ? selector.className
+              : selector.split('.').slice(1).join(' ')
+
+  var tag     = selector instanceof HTMLElement
+              ? clone(selector)
+              : selector.split('.')[0].split('>').pop().trim() || 'div'
+
+  return {
+    data: data
+  , selector: selector.toString()
+  , tag: tag
+  , classes: classes
+  }
+}
+
+function enhance(fn, els){
+  return accessors(fn, els)
+       , events(fn, els)
+       , fn
+}
+
+function accessors(fn, els){
+  ;['text', 'classed', 'html', 'attr', 'style', 'each', 'node', 'datum', 'property'].map(function(op){
+    fn[op] = proxy(els[op], wrap(fn), els)
+  })
+  
+  return fn
+}
+
+function events(fn, els){
+  els.each(function(){ emitterify(this) })
+
+  ;['on', 'once', 'emit'].map(function(op){ 
+    fn[op] = function(type, listener){
+      var args = arguments
+      els.each(function(){ 
+        this[op].apply(this, args)
+        if (op == 'on') {
+          var self = this
+            , ev = type.split('.').shift()
+          this.addEventListener(ev, function(){ 
+            this.emit(ev, self.__data__)
+          })
+        }
+      })
+    }
+  })
+
+  return fn
+}
+
+function clone(el){
   return function(){
     return el.cloneNode()
   }
@@ -809,19 +849,11 @@ function push(arr) {
     arr.push(this) 
   }
 }
-
-function accessorise(o, original){
-  ['text', 'classed', 'html', 'attr', 'style', 'on', 'each', 'node', 'datum', 'property'].map(function(op){
-    o[op] = proxy(original[op], wrap(o), original)
-  })
-
-  return o
-}
-},{"utilise/is":35,"utilise/proxy":56,"utilise/sall":63,"utilise/sel":64,"utilise/wrap":74}],51:[function(require,module,exports){
+},{"utilise/emitterify":84,"utilise/extend":86,"utilise/is":91,"utilise/proxy":99,"utilise/sall":102,"utilise/sel":103,"utilise/wrap":108}],51:[function(require,module,exports){
 (function (global){
 module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"utilise/client":9}],52:[function(require,module,exports){
+},{"utilise/client":79}],52:[function(require,module,exports){
 module.exports = function parse(d){
   return d && JSON.parse(d)
 }
@@ -830,15 +862,20 @@ module.exports = function parse(d){
 var log = require('utilise/log')('[perf]')
   , client = require('utilise/client')
 
-module.exports =  function perf(fn) {
-  var start = client ? performance.now() : process.hrtime()
-  fn()
-  var diff = client ? performance.now() - start : process.hrtime(start)
-  !client && (diff = (diff[0]*1e3 + diff[1]/1e6))
-  return log(fn.name, diff, 'ms'), diff
+module.exports =  function perf(fn, msg) {
+  return function(){ console.log('args', arguments)
+    /* istanbul ignore next */
+    var start  = client ? performance.now() : process.hrtime()
+      , retval = fn.apply(this, arguments)
+      , diff   = client ? performance.now() - start : process.hrtime(start)
+
+    !client && (diff = (diff[0]*1e3 + diff[1]/1e6))
+    log(msg || fn.name, diff, 'ms'), diff
+    return retval
+  }
 }
 }).call(this,require('_process'))
-},{"_process":46,"utilise/client":9,"utilise/log":42}],54:[function(require,module,exports){
+},{"_process":46,"utilise/client":79,"utilise/log":94}],54:[function(require,module,exports){
 module.exports = function prepend(v) {
   return function(d){
     return v+d
@@ -895,7 +932,7 @@ module.exports = function proxy(fn, ret, ctx){
     return is.fn(ret) ? ret.call(ctx || this, result) : ret || result
   }
 }
-},{"utilise/identity":32,"utilise/is":35}],57:[function(require,module,exports){
+},{"utilise/identity":90,"utilise/is":91}],57:[function(require,module,exports){
 module.exports = function push(arr){
   return function(d){
     return arr.push(d), arr
@@ -951,7 +988,7 @@ module.exports = function resourcify(ripple){
            )
   }
 }
-},{"utilise/body":6,"utilise/first":22,"utilise/is":35,"utilise/values":72}],63:[function(require,module,exports){
+},{"utilise/body":77,"utilise/first":87,"utilise/is":91,"utilise/values":107}],63:[function(require,module,exports){
 var sel = require('utilise/sel')
 
 module.exports = function sall(scope){
@@ -959,12 +996,14 @@ module.exports = function sall(scope){
              : scope.node ? scope 
              : sel(scope)
   return function(selector){
-    return parent.selectAll(selector)
+    return selector.node ? selector
+         : selector.nodeName ? sel(selector)
+         : parent.selectAll(selector)
   }
 }
-},{"utilise/sel":64}],64:[function(require,module,exports){
-module.exports = function sel(){
-  return d3.select.apply(this, arguments)
+},{"utilise/sel":103}],64:[function(require,module,exports){
+module.exports = function sel(el){
+  return el.node ? el : d3.select(el)
 }
 },{}],65:[function(require,module,exports){
 module.exports = function sort(fn){
@@ -990,7 +1029,7 @@ module.exports = function str(d){
        : is.obj(d) ? JSON.stringify(d)
        : String(d)
 }
-},{"utilise/is":35}],68:[function(require,module,exports){
+},{"utilise/is":91}],68:[function(require,module,exports){
 module.exports = function time(ms, fn) {
   return setTimeout(fn, ms)
 }
@@ -1093,20 +1132,23 @@ function toObject(d) {
   }
 }
 },{}],71:[function(require,module,exports){
-module.exports = function unique(matched, value, i){
-  if (i === 0) matched = [matched]
-  if (!~matched.indexOf(value)) matched.push(value)
-  return matched
+var is = require('utilise/is')
+
+module.exports = function unique(d, i){
+  if (!i) unique.matched = []
+  return !is.in(unique.matched)(d) 
+       ? unique.matched.push(d)
+       : false 
 }
 
-},{}],72:[function(require,module,exports){
+},{"utilise/is":91}],72:[function(require,module,exports){
 var keys = require('utilise/keys')
   , from = require('utilise/from')
 
 module.exports = function values(o) {
   return !o ? [] : keys(o).map(from(o))
 }
-},{"utilise/from":25,"utilise/keys":38}],73:[function(require,module,exports){
+},{"utilise/from":88,"utilise/keys":93}],73:[function(require,module,exports){
 module.exports = function wait(condition){
   return function(handler){
     return function(){
@@ -1137,5 +1179,71 @@ module.exports = function za(k) {
   }
 }
 
-},{"utilise/key":37}]},{},[69])(69)
+},{"utilise/key":92}],76:[function(require,module,exports){
+arguments[4][4][0].apply(exports,arguments)
+},{"dup":4,"utilise/is":91}],77:[function(require,module,exports){
+arguments[4][6][0].apply(exports,arguments)
+},{"dup":6,"utilise/key":92}],78:[function(require,module,exports){
+arguments[4][7][0].apply(exports,arguments)
+},{"dup":7,"utilise/is":91,"utilise/key":92}],79:[function(require,module,exports){
+arguments[4][9][0].apply(exports,arguments)
+},{"dup":9}],80:[function(require,module,exports){
+arguments[4][10][0].apply(exports,arguments)
+},{"dup":10,"utilise/is":91,"utilise/parse":97,"utilise/str":105}],81:[function(require,module,exports){
+arguments[4][12][0].apply(exports,arguments)
+},{"dup":12}],82:[function(require,module,exports){
+arguments[4][13][0].apply(exports,arguments)
+},{"dup":13,"utilise/sel":103}],83:[function(require,module,exports){
+arguments[4][15][0].apply(exports,arguments)
+},{"dup":15,"utilise/has":89}],84:[function(require,module,exports){
+arguments[4][17][0].apply(exports,arguments)
+},{"dup":17,"utilise/def":83,"utilise/err":85,"utilise/is":91,"utilise/keys":93,"utilise/not":95}],85:[function(require,module,exports){
+arguments[4][18][0].apply(exports,arguments)
+},{"dup":18,"utilise/owner":96,"utilise/to":106}],86:[function(require,module,exports){
+arguments[4][19][0].apply(exports,arguments)
+},{"dup":19,"utilise/copy":81,"utilise/is":91,"utilise/keys":93,"utilise/not":95}],87:[function(require,module,exports){
+arguments[4][22][0].apply(exports,arguments)
+},{"dup":22}],88:[function(require,module,exports){
+arguments[4][25][0].apply(exports,arguments)
+},{"dup":25,"utilise/datum":82,"utilise/key":92}],89:[function(require,module,exports){
+arguments[4][29][0].apply(exports,arguments)
+},{"dup":29}],90:[function(require,module,exports){
+arguments[4][32][0].apply(exports,arguments)
+},{"dup":32}],91:[function(require,module,exports){
+arguments[4][35][0].apply(exports,arguments)
+},{"dup":35}],92:[function(require,module,exports){
+arguments[4][37][0].apply(exports,arguments)
+},{"dup":37,"utilise/is":91,"utilise/str":105}],93:[function(require,module,exports){
+arguments[4][38][0].apply(exports,arguments)
+},{"dup":38}],94:[function(require,module,exports){
+arguments[4][42][0].apply(exports,arguments)
+},{"dup":42,"utilise/is":91,"utilise/owner":96,"utilise/to":106}],95:[function(require,module,exports){
+arguments[4][48][0].apply(exports,arguments)
+},{"dup":48}],96:[function(require,module,exports){
+arguments[4][51][0].apply(exports,arguments)
+},{"dup":51,"utilise/client":79}],97:[function(require,module,exports){
+arguments[4][52][0].apply(exports,arguments)
+},{"dup":52}],98:[function(require,module,exports){
+arguments[4][54][0].apply(exports,arguments)
+},{"dup":54}],99:[function(require,module,exports){
+arguments[4][56][0].apply(exports,arguments)
+},{"dup":56,"utilise/identity":90,"utilise/is":91}],100:[function(require,module,exports){
+arguments[4][58][0].apply(exports,arguments)
+},{"dup":58}],101:[function(require,module,exports){
+arguments[4][61][0].apply(exports,arguments)
+},{"dup":61}],102:[function(require,module,exports){
+arguments[4][63][0].apply(exports,arguments)
+},{"dup":63,"utilise/sel":103}],103:[function(require,module,exports){
+arguments[4][64][0].apply(exports,arguments)
+},{"dup":64}],104:[function(require,module,exports){
+arguments[4][66][0].apply(exports,arguments)
+},{"dup":66}],105:[function(require,module,exports){
+arguments[4][67][0].apply(exports,arguments)
+},{"dup":67,"utilise/is":91}],106:[function(require,module,exports){
+arguments[4][70][0].apply(exports,arguments)
+},{"dup":70}],107:[function(require,module,exports){
+arguments[4][72][0].apply(exports,arguments)
+},{"dup":72,"utilise/from":88,"utilise/keys":93}],108:[function(require,module,exports){
+arguments[4][74][0].apply(exports,arguments)
+},{"dup":74}]},{},[69])(69)
 });

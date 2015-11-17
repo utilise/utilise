@@ -1,5 +1,8 @@
-module.exports = function unique(matched, value, i){
-  if (i === 0) matched = [matched]
-  if (!~matched.indexOf(value)) matched.push(value)
-  return matched
+var is = require('utilise/is')
+
+module.exports = function unique(d, i){
+  if (!i) unique.matched = []
+  return !is.in(unique.matched)(d) 
+       ? unique.matched.push(d)
+       : false 
 }

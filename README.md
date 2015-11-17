@@ -346,7 +346,7 @@ cities: { 1: 'London', 2: 'New York', 3: 'Paris' }
 users
   .map(key('city'))
   .map(from(cities))
-  .reduce(unique)     // returns [ 'London', 'New York' ]
+  .filter(unique)     // returns [ 'London', 'New York' ]
 ```
 
 `from.parent` returns the value of a property from the parent datum. Useful if you generate a fixed number of columns, whose values depend on the parent. 
@@ -694,6 +694,17 @@ The return value is essentially a D3 join selection (enter/update/exit), so you 
 
 There are two further optional arguments you can use `(selector, data[, key[, before]])`. The key function has the exact same meaning as normal (how to key data), which D3 defaults to by index. The before parameter can be used to force the insertion before a specific element à la `.insert(something, before)` as opposed to just `.append(something)`.
 
+Once will also emitterify elements as well as the selection so you can fluently listen/proxy events. You can create custom events, use namespaces for unique listeners, and listeners on events like "click" will trigger from both real user interaction from the DOM as well as via `.emit`.
+
+```js
+once('list-component', 1)
+  .on('selected', d => alert(d))
+
+once('list-component')
+  ('.items', [1,2,3])
+    .on('click', d => this.parentNode.emit('selected', d))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/owner/badge.svg?branch=master)](https://coveralls.io/r/utilise/owner?branch=master) [![Build](https://api.travis-ci.org/utilise/owner.svg)](https://travis-ci.org/utilise/owner) owner
 
 Either window or global dependeing on executing context
@@ -731,10 +742,24 @@ function addMorePipes(stream){
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/perf/badge.svg?branch=master)](https://coveralls.io/r/utilise/perf?branch=master) [![Build](https://api.travis-ci.org/utilise/perf.svg)](https://travis-ci.org/utilise/perf) perf
 
-Evaluate how long a function takes in milliseconds. 
+Completely unobtrusive way to evaluate how long a function takes in milliseconds. 
+
+If you have the following function call:
 
 ```js
-perf(function(){ .. })  // Evaluates the function, logs the time taken, and returns time in ms
+fn(args)
+```
+
+You wrap a `perf` around `fn` to see how long it takes:
+
+```js
+perf(fn)(args)  // Evaluates the function, logs the time taken in ms, and returns same value original fn would
+```
+
+You can also add an optional message to the log:
+
+```js
+perf(fn, 'foo')(args)  
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/prepend/badge.svg?branch=master)](https://coveralls.io/r/utilise/prepend?branch=master) [![Build](https://api.travis-ci.org/utilise/prepend.svg)](https://travis-ci.org/utilise/prepend) prepend
@@ -827,17 +852,17 @@ resourcify(ripple)('foo bar baz') // returns undefined, since no baz resource
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/sall/badge.svg?branch=master)](https://coveralls.io/r/utilise/sall?branch=master) [![Build](https://api.travis-ci.org/utilise/sall.svg)](https://travis-ci.org/utilise/sall) sall
 
-Convenience function for `d3.selectAll`. Returns 
+Convenience function for `d3.selectAll`. If either argument is already a D3 selection, it will not double wrap it.
 
 ```js
 sall(parent)(selector)
 ```
 
-Parent can be selection/string/node. If no parent, selects globally.
+Parent/selector can be selection/string/node. If no parent, selects globally.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/sel/badge.svg?branch=master)](https://coveralls.io/r/utilise/sel?branch=master) [![Build](https://api.travis-ci.org/utilise/sel.svg)](https://travis-ci.org/utilise/sel) sel
 
-Convenience function for `d3.select`.
+Convenience function for `d3.select`. If the argument is already a D3 selection, it will not double wrap it.
 
 ```js
 sel(string)
@@ -918,13 +943,11 @@ time(30, function(){ .. })
 ```
 ## [![Coverage Status](https://coveralls.io/repos/utilise/unique/badge.svg?branch=master)](https://coveralls.io/r/utilise/unique?branch=master) [![Build](https://api.travis-ci.org/utilise/unique.svg)](https://travis-ci.org/utilise/unique) unique
 
-Reduce an array to unique values
+Filter an array to unique values
 
 ```js
-[1,1,2,3].reduce(unique, 1) // returns [1,2,3]
+[1,1,2,3].filter(unique, 1) // returns [1,2,3]
 ```
-
-Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/values/badge.svg?branch=master)](https://coveralls.io/r/utilise/values?branch=master) [![Build](https://api.travis-ci.org/utilise/values.svg)](https://travis-ci.org/utilise/values) values
 

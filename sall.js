@@ -5,6 +5,8 @@ module.exports = function sall(scope){
              : scope.node ? scope 
              : sel(scope)
   return function(selector){
-    return parent.selectAll(selector)
+    return selector.node ? selector
+         : selector.nodeName ? sel(selector)
+         : parent.selectAll(selector)
   }
 }
