@@ -229,6 +229,20 @@ Defines a property, if does not already exist, returning the value
 def(object, prop, value[, writable])  // returns value
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/defaults/badge.svg?branch=master)](https://coveralls.io/r/utilise/defaults?branch=master) [![Build](https://api.travis-ci.org/utilise/defaults.svg)](https://travis-ci.org/utilise/defaults) defaults
+
+Sets default values for state on components if not already specified. Normally appears at the top of components:
+
+```js
+var state = defaults(this, {
+  values: []
+  focused: true
+})  
+
+state.focused 
+state.values
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/el/badge.svg?branch=master)](https://coveralls.io/r/utilise/el?branch=master) [![Build](https://api.travis-ci.org/utilise/el.svg)](https://travis-ci.org/utilise/el) el
 
 Creates a node from a CSS selector
@@ -874,6 +888,15 @@ Sends a file on an express route. Server only.
 
 ```js
 app.get('/file', send('./file'))
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/slice/badge.svg?branch=master)](https://coveralls.io/r/utilise/slice?branch=master) [![Build](https://api.travis-ci.org/utilise/slice.svg)](https://travis-ci.org/utilise/slice) slice
+
+Slice all strings in an array
+
+```js
+['Hi name', 'Bye name']
+  .map(slice(0, 2)) // ['Hi', 'By']
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/sort/badge.svg?branch=master)](https://coveralls.io/r/utilise/sort?branch=master) [![Build](https://api.travis-ci.org/utilise/sort.svg)](https://travis-ci.org/utilise/sort) sort

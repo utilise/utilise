@@ -5,6 +5,7 @@ var emitterify = require('utilise/emitterify')
   , sall       = require('utilise/sall')  
   , sel        = require('utilise/sel')  
   , is         = require('utilise/is')  
+  , to         = require('utilise/to')  
 
 module.exports = once
 
@@ -87,17 +88,16 @@ function events(fn, els){
 
   ;['on', 'once', 'emit'].map(function(op){ 
     fn[op] = function(type, listener){
-      var args = arguments
-      els.each(function(){ 
+      var args = to.arr(arguments)
+      els.each(function(d){ 
+        if (op == 'emit' && args.length == 1) args[1] = d
         this[op].apply(this, args)
-        if (op == 'on') {
-          var self = this
-            , ev = type.split('.').shift()
-          this.addEventListener(ev, function(){ 
-            this.emit(ev, self.__data__)
-          })
-        }
+        if (op != 'on') return
+        var self = this
+          , ev = type.split('.').shift()
+        this.addEventListener(ev, redispatch)
       })
+      return fn
     }
   })
 
@@ -114,4 +114,9 @@ function push(arr) {
   return function(d){ 
     arr.push(this) 
   }
+}
+
+function redispatch(event){
+  d3.event = event
+  this.emit(event.type, this.__data__)
 }

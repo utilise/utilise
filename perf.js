@@ -9,6 +9,7 @@ module.exports =  function perf(fn, msg) {
       , diff   = client ? performance.now() - start : process.hrtime(start)
 
     !client && (diff = (diff[0]*1e3 + diff[1]/1e6))
+    diff = Math.round(diff*100)/100
     log(msg || fn.name, diff, 'ms'), diff
     return retval
   }
