@@ -2,7 +2,7 @@ var log = require('utilise/log')('[perf]')
   , client = require('utilise/client')
 
 module.exports =  function perf(fn, msg) {
-  return function(){ console.log('args', arguments)
+  return function(){
     /* istanbul ignore next */
     var start  = client ? performance.now() : process.hrtime()
       , retval = fn.apply(this, arguments)
