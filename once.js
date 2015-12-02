@@ -36,6 +36,7 @@ function spawn(parents){
         .each(push(enter))
 
       el.each(push(els))
+        .each(function(){ this.draw && this.draw() })
     })
 
     return extend(once(els = sall()(els)))({ 
@@ -76,27 +77,37 @@ function enhance(fn, els){
 }
 
 function accessors(fn, els){
-  ;['text', 'classed', 'html', 'attr', 'style', 'each', 'node', 'datum', 'property'].map(function(op){
-    fn[op] = proxy(els[op], wrap(fn), els)
+  ;['text', 'classed', 'html', 'attr', 'style', 'each', 'node', 'datum', 'property', 'remove'].map(function(op){
+    fn[op] = proxy(els[op], op == 'node' ? 0 : wrap(fn), els)
   })
   
   return fn
 }
 
 function events(fn, els){
-  els.each(function(){ emitterify(this) })
+  els.each(function(){ 
+    var self = this
+
+    if (self.on) return
+    if (!self.host) emitterify(self) 
+
+    ;['on', 'once', 'emit'].map(function(op){ 
+      if (self.host) return self[op] = self.host[op] 
+      var fn = self[op]
+      self[op] = function(type, d){
+        var args = to.arr(arguments)  
+        if (op == 'emit' && args.length == 1) args[1] = self.__data__
+        fn.apply(self, args)
+        if (op == 'on') self.addEventListener(type.split('.').shift(), redispatch)
+      }
+
+    })
+  })
 
   ;['on', 'once', 'emit'].map(function(op){ 
-    fn[op] = function(type, listener){
+    fn[op] = function(type){
       var args = to.arr(arguments)
-      els.each(function(d){ 
-        if (op == 'emit' && args.length == 1) args[1] = d
-        this[op].apply(this, args)
-        if (op != 'on') return
-        var self = this
-          , ev = type.split('.').shift()
-        this.addEventListener(ev, redispatch)
-      })
+      els.each(function(d){ this[op].apply(this, args) })
       return fn
     }
   })

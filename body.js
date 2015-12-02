@@ -1,5 +1,3 @@
-var key = require('utilise/key')
-
 module.exports = function body(ripple){
   return function(name){
     var res = ripple.resources[name]

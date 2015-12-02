@@ -6,12 +6,12 @@ module.exports = function key(k, v){
     , keys = str(k).split('.')
     , root = keys.shift()
 
-  return function deep(o){
+  return function deep(o, i){
     var masked = {}
     return !o ? undefined 
          : !k ? o
          : is.arr(k) ? (k.map(copy), masked)
-         : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k]) : v), o)
+         : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k], i) : v), o)
                                        :   o[k])
                                 : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
                                        : key(keys.join('.'))(o[root]))
