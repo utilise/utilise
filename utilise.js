@@ -870,13 +870,15 @@ function memoize(els, op, o) {
   var fn = els[op]
     , skip = ['each', 'datum', 'remove', 'classed']
     , singular = op == 'html' || op == 'text'
+    , classed = op == 'classed'
 
   return function(name, value){
     if (singular) value = name
 
-    return singular && arguments.length < 1         ? (fn.apply(els, arguments))
-        : !singular && arguments.length < 2         ? (fn.apply(els, arguments))
+    return classed  && arguments.length < 2         ? (fn.apply(els, arguments))
         :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
+        :  singular && arguments.length < 1         ? (fn.apply(els, arguments))
+        : !singular && arguments.length < 2         ? (fn.apply(els, arguments))
         : (els.each(function(){
             var current = singular ? sel(this)[op]() : sel(this)[op](name)
               , target  = is.fn(value) ? value.apply(this, arguments) : value
