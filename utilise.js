@@ -31,10 +31,15 @@ var is = require('utilise/is')
 
 module.exports = function attr(d, name, value) {
   d = d.node ? d.node() : d
-  if (is.str(d)) return function(el){ return attr(this.nodeName || this.node ? this : el, d) }
+  var args = arguments.length
 
-  return arguments.length > 2 && value === false ? d.removeAttribute(name)
-       : arguments.length > 2                    ? (d.setAttribute(name, value), value)
+  if (is.str(d)) return function(el){ 
+    var node = this.nodeName || this.node ? this : el
+    return attr.apply(this, args > 1 ? [node, d, name] : [node, d]) 
+  }
+
+  return args > 2 && value === false ? d.removeAttribute(name)
+       : args > 2                    ? (d.setAttribute(name, value), value)
        : d.attributes.getNamedItem(name) 
       && d.attributes.getNamedItem(name).value
 }
@@ -747,6 +752,7 @@ module.exports = function nullify(fn){
 var emitterify = require('utilise/emitterify')  
   , extend     = require('utilise/extend')  
   , proxy      = require('utilise/proxy')  
+  , attr       = require('utilise/attr')  
   , wrap       = require('utilise/wrap')  
   , sall       = require('utilise/sall')  
   , sel        = require('utilise/sel')  
@@ -822,15 +828,15 @@ function enhance(fn, els){
        , fn
 }
 
-function accessors(fn, els){
-  ;['text', 'classed', 'html', 'attr', 'style', 'each', 'node', 'datum', 'property', 'remove'].map(function(op){
-    fn[op] = proxy(els[op], op == 'node' ? 0 : wrap(fn), els)
+function accessors(o, els){
+  ;['text', 'property', 'attr', 'style', 'html', 'classed', 'each', 'node', 'datum', 'remove'].map(function(op){
+    o[op] = proxy(memoize(els, op), op == 'node' ? 0 : wrap(o), els)
   })
   
-  return fn
+  return o
 }
 
-function events(fn, els){
+function events(o, els){
   els.each(function(){ 
     var self = this
 
@@ -851,14 +857,39 @@ function events(fn, els){
   })
 
   ;['on', 'once', 'emit'].map(function(op){ 
-    fn[op] = function(type){
+    o[op] = function(type){
       var args = to.arr(arguments)
       els.each(function(d){ this[op].apply(this, args) })
-      return fn
+      return o
     }
   })
 
-  return fn
+  return o
+}
+
+function memoize(els, op) {
+  var fn = els[op]
+
+  if (is.in(['each', 'node', 'datum', 'remove', 'classed'])(op)) return fn
+
+  return function(name, value){
+    var singular = op == 'html' || op == 'text'
+
+    if (arguments.length < 1 &&  singular) 
+      return fn.apply(els, arguments)
+
+    if (arguments.length < 2 && !singular) 
+      return fn.apply(els, arguments)
+
+    if (singular)
+      value = name
+
+    els.each(function(){
+      var current = singular ? sel(this)[op]() : sel(this)[op](name)
+      if (current !== value) singular ? sel(this)[op](value) : sel(this)[op](name, value)
+    })  
+  }
+
 }
 
 function clone(el){
@@ -877,7 +908,7 @@ function redispatch(event){
   d3.event = event
   this.emit(event.type, this.__data__)
 }
-},{"utilise/emitterify":18,"utilise/extend":20,"utilise/is":36,"utilise/proxy":57,"utilise/sall":63,"utilise/sel":64,"utilise/to":71,"utilise/wrap":75}],52:[function(require,module,exports){
+},{"utilise/attr":4,"utilise/emitterify":18,"utilise/extend":20,"utilise/is":36,"utilise/proxy":57,"utilise/sall":63,"utilise/sel":64,"utilise/to":71,"utilise/wrap":75}],52:[function(require,module,exports){
 (function (global){
 module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

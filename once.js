@@ -1,6 +1,7 @@
 var emitterify = require('utilise/emitterify')  
   , extend     = require('utilise/extend')  
   , proxy      = require('utilise/proxy')  
+  , attr       = require('utilise/attr')  
   , wrap       = require('utilise/wrap')  
   , sall       = require('utilise/sall')  
   , sel        = require('utilise/sel')  
@@ -76,15 +77,15 @@ function enhance(fn, els){
        , fn
 }
 
-function accessors(fn, els){
-  ;['text', 'classed', 'html', 'attr', 'style', 'each', 'node', 'datum', 'property', 'remove'].map(function(op){
-    fn[op] = proxy(els[op], op == 'node' ? 0 : wrap(fn), els)
+function accessors(o, els){
+  ;['text', 'property', 'attr', 'style', 'html', 'classed', 'each', 'node', 'datum', 'remove'].map(function(op){
+    o[op] = proxy(memoize(els, op), op == 'node' ? 0 : wrap(o), els)
   })
   
-  return fn
+  return o
 }
 
-function events(fn, els){
+function events(o, els){
   els.each(function(){ 
     var self = this
 
@@ -105,14 +106,39 @@ function events(fn, els){
   })
 
   ;['on', 'once', 'emit'].map(function(op){ 
-    fn[op] = function(type){
+    o[op] = function(type){
       var args = to.arr(arguments)
       els.each(function(d){ this[op].apply(this, args) })
-      return fn
+      return o
     }
   })
 
-  return fn
+  return o
+}
+
+function memoize(els, op) {
+  var fn = els[op]
+
+  if (is.in(['each', 'node', 'datum', 'remove', 'classed'])(op)) return fn
+
+  return function(name, value){
+    var singular = op == 'html' || op == 'text'
+
+    if (arguments.length < 1 &&  singular) 
+      return fn.apply(els, arguments)
+
+    if (arguments.length < 2 && !singular) 
+      return fn.apply(els, arguments)
+
+    if (singular)
+      value = name
+
+    els.each(function(){
+      var current = singular ? sel(this)[op]() : sel(this)[op](name)
+      if (current !== value) singular ? sel(this)[op](value) : sel(this)[op](name, value)
+    })  
+  }
+
 }
 
 function clone(el){
