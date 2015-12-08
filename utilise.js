@@ -886,7 +886,9 @@ function memoize(els, op) {
 
     els.each(function(){
       var current = singular ? sel(this)[op]() : sel(this)[op](name)
-      if (current !== value) singular ? sel(this)[op](value) : sel(this)[op](name, value)
+        , target  = is.fn(value) ? value.apply(this, arguments) : value
+
+      if (current !== target) singular ? sel(this)[op](target) : sel(this)[op](name, target)
     })  
   }
 
