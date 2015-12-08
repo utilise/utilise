@@ -751,7 +751,6 @@ module.exports = function nullify(fn){
 },{"utilise/is":36}],51:[function(require,module,exports){
 var emitterify = require('utilise/emitterify')  
   , extend     = require('utilise/extend')  
-  , proxy      = require('utilise/proxy')  
   , attr       = require('utilise/attr')  
   , wrap       = require('utilise/wrap')  
   , sall       = require('utilise/sall')  
@@ -830,7 +829,7 @@ function enhance(fn, els){
 
 function accessors(o, els){
   ;['text', 'property', 'attr', 'style', 'html', 'classed', 'each', 'node', 'datum', 'remove'].map(function(op){
-    o[op] = proxy(memoize(els, op), op == 'node' ? 0 : wrap(o), els)
+    o[op] = memoize(els, op, o)
   })
   
   return o
@@ -867,29 +866,23 @@ function events(o, els){
   return o
 }
 
-function memoize(els, op) {
+function memoize(els, op, o) {
   var fn = els[op]
-
-  if (is.in(['each', 'node', 'datum', 'remove', 'classed'])(op)) return fn
+    , skip = ['each', 'datum', 'remove', 'classed']
+    , singular = op == 'html' || op == 'text'
 
   return function(name, value){
-    var singular = op == 'html' || op == 'text'
+    if (singular) value = name
 
-    if (arguments.length < 1 &&  singular) 
-      return fn.apply(els, arguments)
+    return singular && arguments.length < 1         ? (fn.apply(els, arguments))
+        : !singular && arguments.length < 2         ? (fn.apply(els, arguments))
+        :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
+        : (els.each(function(){
+            var current = singular ? sel(this)[op]() : sel(this)[op](name)
+              , target  = is.fn(value) ? value.apply(this, arguments) : value
 
-    if (arguments.length < 2 && !singular) 
-      return fn.apply(els, arguments)
-
-    if (singular)
-      value = name
-
-    els.each(function(){
-      var current = singular ? sel(this)[op]() : sel(this)[op](name)
-        , target  = is.fn(value) ? value.apply(this, arguments) : value
-
-      if (current !== target) singular ? sel(this)[op](target) : sel(this)[op](name, target)
-    })  
+            if (current !== target) singular ? sel(this)[op](value) : sel(this)[op](name, value)
+          }), o)
   }
 
 }
@@ -910,7 +903,7 @@ function redispatch(event){
   d3.event = event
   this.emit(event.type, this.__data__)
 }
-},{"utilise/attr":4,"utilise/emitterify":18,"utilise/extend":20,"utilise/is":36,"utilise/proxy":57,"utilise/sall":63,"utilise/sel":64,"utilise/to":71,"utilise/wrap":75}],52:[function(require,module,exports){
+},{"utilise/attr":4,"utilise/emitterify":18,"utilise/extend":20,"utilise/is":36,"utilise/sall":63,"utilise/sel":64,"utilise/to":71,"utilise/wrap":75}],52:[function(require,module,exports){
 (function (global){
 module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
