@@ -455,6 +455,14 @@ Identity function, returns what it is passed in
 identity(5) // returns 5
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/iff/badge.svg?branch=master)](https://coveralls.io/r/utilise/iff?branch=master) [![Build](https://api.travis-ci.org/utilise/iff.svg)](https://travis-ci.org/utilise/iff) iff
+
+Only invoke second function if condition fulfilled. Useful for finer-grained control over skipping certain operations
+
+```js
+sel(el).property('value', iff(cond)(setValue))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/includes/badge.svg?branch=master)](https://coveralls.io/r/utilise/includes?branch=master) [![Build](https://api.travis-ci.org/utilise/includes.svg)](https://travis-ci.org/utilise/includes) includes
 
 Checks if string or array contains the pattern or element (uses indexOf common to strings and arrays)

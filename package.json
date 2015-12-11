@@ -65,6 +65,7 @@
     "utilise.hashcode": "*",
     "utilise.header": "*",
     "utilise.identity": "*",
+    "utilise.iff": "*",
     "utilise.includes": "*",
     "utilise.inherit": "*",
     "utilise.is": "*",
