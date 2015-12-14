@@ -91,6 +91,7 @@
     "utilise.proxy": "*",
     "utilise.push": "*",
     "utilise.raw": "*",
+    "utilise.ready": "*",
     "utilise.rebind": "*",
     "utilise.remove": "*",
     "utilise.replace": "*",
