@@ -832,6 +832,14 @@ Push elements to an array
 join.enter().each(push(enter))
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/ready/badge.svg?branch=master)](https://coveralls.io/r/utilise/ready?branch=master) [![Build](https://api.travis-ci.org/utilise/ready.svg)](https://travis-ci.org/utilise/ready) ready
+
+Calls the function once `document.body` is ready or immediately if it already is
+
+```js
+ready(fn)
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/raw/badge.svg?branch=master)](https://coveralls.io/r/utilise/raw?branch=master) [![Build](https://api.travis-ci.org/utilise/raw.svg)](https://travis-ci.org/utilise/raw) raw
 
 Select an element based on a CSS selector, piercing shadow boundaries if the browser supports it.

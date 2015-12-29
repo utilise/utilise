@@ -2,6 +2,7 @@ var is = require('utilise/is')
 
 module.exports = function attr(d, name, value) {
   d = d.node ? d.node() : d
+  d = d.host || d
   var args = arguments.length
 
   if (is.str(d)) return function(el){ 

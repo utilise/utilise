@@ -31,6 +31,7 @@ var is = require('utilise/is')
 
 module.exports = function attr(d, name, value) {
   d = d.node ? d.node() : d
+  d = d.host || d
   var args = arguments.length
 
   if (is.str(d)) return function(el){ 
@@ -335,21 +336,23 @@ module.exports = function grep(o, k, regex){
 },{"utilise/is":37,"utilise/to":73}],28:[function(require,module,exports){
 var client = require('utilise/client')
   , owner = require('utilise/owner')
+  , noop = require('utilise/noop')
 
 module.exports = function group(prefix, fn){
   if (!owner.console) return fn()
   if (!console.groupCollapsed) polyfill()
   console.groupCollapsed(prefix)
-  fn()
+  var ret = fn()
   console.groupEnd(prefix)
+  return ret
 }
 
 function polyfill() {
   console.groupCollapsed = console.groupEnd = function(d){
-    console.log('*****', d, '*****')
+    (console.log || noop)('*****', d, '*****')
   }
 }
-},{"utilise/client":9,"utilise/owner":53}],29:[function(require,module,exports){
+},{"utilise/client":9,"utilise/noop":49,"utilise/owner":53}],29:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function gt(k, v){
@@ -764,6 +767,7 @@ var emitterify = require('utilise/emitterify')
   , wrap       = require('utilise/wrap')  
   , sall       = require('utilise/sall')  
   , sel        = require('utilise/sel')  
+  , key        = require('utilise/key')  
   , is         = require('utilise/is')  
   , to         = require('utilise/to')  
 
@@ -840,17 +844,31 @@ function accessors(o, els){
   ;['text', 'property', 'attr', 'style', 'html', 'classed', 'each', 'node', 'datum', 'remove'].map(function(op){
     o[op] = memoize(els, op, o)
   })
+
+  ;['draw'].map(lookup(o, els))
   
   return o
+}
+
+function lookup(o, els) {
+  return function(op){
+    o[op] = function() {
+      var args = arguments
+      els.each(function(){
+        this[op].apply(this, args)
+      })
+      return o
+    }
+  }
 }
 
 function events(o, els){
   els.each(function(){ 
     var self = this
-
-    if (self.on) return
+    if (self.evented) return
     if (!self.host) emitterify(self) 
-
+    self.evented = true
+  
     ;['on', 'once', 'emit'].map(function(op){ 
       if (self.host) return self[op] = self.host[op] 
       var fn = self[op]
@@ -876,15 +894,17 @@ function events(o, els){
 }
 
 function memoize(els, op, o) {
-  var fn = els[op]
-    , skip = ['each', 'datum', 'remove', 'classed']
-    , singular = op == 'html' || op == 'text'
-    , classed = op == 'classed'
+  var singular = op == 'html' || op == 'text'
+    , property = op == 'property'
+    , classed  = op == 'classed'
+    , skip     = ['each', 'datum', 'remove', 'classed']
+    , fn       = els[op]
 
   return function(name, value){
     if (singular) value = name
 
-    return classed  && arguments.length < 2         ? (fn.apply(els, arguments))
+    return property                                 ? (deepProperty(fn, els, arguments))
+        :  classed  && arguments.length < 2         ? (fn.apply(els, arguments))
         :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
         :  singular && arguments.length < 1         ? (fn.apply(els, arguments))
         : !singular && arguments.length < 2         ? (fn.apply(els, arguments))
@@ -895,7 +915,19 @@ function memoize(els, op, o) {
             if (current !== target) singular ? sel(this)[op](value) : sel(this)[op](name, value)
           }), o)
   }
+}
 
+function deepProperty(fn, els, args) {
+  var name  = args[0] 
+
+  return !is.in(name)('.') ? fn.apply(els, args)
+       : args.length == 2  ? els.each(set)
+                           : key(name)(els.node())
+
+  function set() {
+    var value = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
+    key(name, value)(this)
+  }
 }
 
 function clone(el){
@@ -914,7 +946,7 @@ function redispatch(event){
   d3.event = event
   this.emit(event.type, this.__data__)
 }
-},{"utilise/attr":4,"utilise/emitterify":18,"utilise/extend":20,"utilise/is":37,"utilise/sall":65,"utilise/sel":66,"utilise/to":73,"utilise/wrap":77}],53:[function(require,module,exports){
+},{"utilise/attr":4,"utilise/emitterify":18,"utilise/extend":20,"utilise/is":37,"utilise/key":39,"utilise/sall":65,"utilise/sel":66,"utilise/to":73,"utilise/wrap":77}],53:[function(require,module,exports){
 (function (global){
 module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
