@@ -165,9 +165,10 @@ var extend = require('utilise/extend')
   , is = require('utilise/is')
 
 module.exports = function defaults(o, k, v){
+  if (o.host) o = o.host
   return is.obj(k) 
        ? (keys(k).map(function(i) { set(i, k[i]) }), o)
-       : (set(k, v), v)
+       : (set(k, v), o[k])
 
   function set(k, v) {
     if (!is.def(o[k])) o[k] = v
@@ -180,10 +181,8 @@ var attr = require('utilise/attr')
   , prepend = require('utilise/prepend')
 
 module.exports = function el(selector){
-  var attrs = selector.split('[')
-        .map(replace(']', ''))
-        .map(split('='))
-    , css  = attrs.shift().shift().split('.')
+  var attrs = []
+    , css = selector.replace(/\[(.+?)=(.*?)\]/g, function($1, $2, $3){ attrs.push([$2, $3]); return '' }).split('.')
     , tag  = css.shift()
     , elem = document.createElement(tag)
 
@@ -288,7 +287,7 @@ module.exports = function filter(fn){
 
 },{}],23:[function(require,module,exports){
 module.exports = function first(d){
-  return d[0]
+  return d && d[0]
 }
 },{}],24:[function(require,module,exports){
 var is = require('utilise/is')  
@@ -563,7 +562,7 @@ module.exports = function keys(o) {
 }
 },{}],41:[function(require,module,exports){
 module.exports =  function last(d) {
-  return d[d.length-1]
+  return d && d[d.length-1]
 }
 },{}],42:[function(require,module,exports){
 var attr = require('utilise/attr')
@@ -801,6 +800,7 @@ function spawn(parents){
 
       el.each(push(els))
         .each(function(){ this.draw && this.draw() })
+        .order()
     })
 
     return extend(once(els = sall()(els)))({ 
@@ -820,9 +820,10 @@ function options(data, selector, pd, pi){
 
   var classes = selector instanceof HTMLElement
               ? selector.className
-              : selector.split('.').slice(1).join(' ')
+              : selector.toString().split('.').slice(1).join(' ')
 
-  var tag     = selector instanceof HTMLElement
+  var tag     = is.fn(selector) ? selector
+              : selector instanceof HTMLElement
               ? clone(selector)
               : selector.split('.')[0].split('>').pop().trim() || 'div'
 
@@ -903,7 +904,7 @@ function memoize(els, op, o) {
   return function(name, value){
     if (singular) value = name
 
-    return property                                 ? (deepProperty(fn, els, arguments))
+    return property                                 ? (deepProperty(els, arguments))
         :  classed  && arguments.length < 2         ? (fn.apply(els, arguments))
         :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
         :  singular && arguments.length < 1         ? (fn.apply(els, arguments))
@@ -917,16 +918,17 @@ function memoize(els, op, o) {
   }
 }
 
-function deepProperty(fn, els, args) {
+function deepProperty(els, args) {
   var name  = args[0] 
+  
+  return args.length == 2 
+       ? els.each(set)
+       : key(name)(els.node())
 
-  return !is.in(name)('.') ? fn.apply(els, args)
-       : args.length == 2  ? els.each(set)
-                           : key(name)(els.node())
-
-  function set() {
-    var value = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
-    key(name, value)(this)
+  function set() { 
+    var target = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
+      , current = key(name)(this)
+    if (current !== target) key(name, wrap(target))(this)
   }
 }
 

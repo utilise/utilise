@@ -38,6 +38,7 @@ function spawn(parents){
 
       el.each(push(els))
         .each(function(){ this.draw && this.draw() })
+        .order()
     })
 
     return extend(once(els = sall()(els)))({ 
@@ -57,9 +58,10 @@ function options(data, selector, pd, pi){
 
   var classes = selector instanceof HTMLElement
               ? selector.className
-              : selector.split('.').slice(1).join(' ')
+              : selector.toString().split('.').slice(1).join(' ')
 
-  var tag     = selector instanceof HTMLElement
+  var tag     = is.fn(selector) ? selector
+              : selector instanceof HTMLElement
               ? clone(selector)
               : selector.split('.')[0].split('>').pop().trim() || 'div'
 
@@ -140,7 +142,7 @@ function memoize(els, op, o) {
   return function(name, value){
     if (singular) value = name
 
-    return property                                 ? (deepProperty(fn, els, arguments))
+    return property                                 ? (deepProperty(els, arguments))
         :  classed  && arguments.length < 2         ? (fn.apply(els, arguments))
         :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
         :  singular && arguments.length < 1         ? (fn.apply(els, arguments))
@@ -154,16 +156,17 @@ function memoize(els, op, o) {
   }
 }
 
-function deepProperty(fn, els, args) {
+function deepProperty(els, args) {
   var name  = args[0] 
+  
+  return args.length == 2 
+       ? els.each(set)
+       : key(name)(els.node())
 
-  return !is.in(name)('.') ? fn.apply(els, args)
-       : args.length == 2  ? els.each(set)
-                           : key(name)(els.node())
-
-  function set() {
-    var value = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
-    key(name, value)(this)
+  function set() { 
+    var target = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
+      , current = key(name)(this)
+    if (current !== target) key(name, wrap(target))(this)
   }
 }
 

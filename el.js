@@ -4,10 +4,8 @@ var attr = require('utilise/attr')
   , prepend = require('utilise/prepend')
 
 module.exports = function el(selector){
-  var attrs = selector.split('[')
-        .map(replace(']', ''))
-        .map(split('='))
-    , css  = attrs.shift().shift().split('.')
+  var attrs = []
+    , css = selector.replace(/\[(.+?)=(.*?)\]/g, function($1, $2, $3){ attrs.push([$2, $3]); return '' }).split('.')
     , tag  = css.shift()
     , elem = document.createElement(tag)
 

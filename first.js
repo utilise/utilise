@@ -1,3 +1,3 @@
 module.exports = function first(d){
-  return d[0]
+  return d && d[0]
 }
