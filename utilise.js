@@ -878,6 +878,7 @@ function events(o, els){
         if (op == 'emit' && args.length == 1) args[1] = self.__data__
         fn.apply(self, args)
         if (op == 'on') self.addEventListener(type.split('.').shift(), redispatch)
+        return self
       }
 
     })
