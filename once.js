@@ -143,7 +143,7 @@ function memoize(els, op, o) {
   return function(name, value){
     if (singular) value = name
 
-    return property                                 ? (deepProperty(els, arguments))
+    return property                                 ? (deepProperty(els, arguments, o))
         :  classed  && arguments.length < 2         ? (fn.apply(els, arguments))
         :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
         :  singular && arguments.length < 1         ? (fn.apply(els, arguments))
@@ -157,11 +157,11 @@ function memoize(els, op, o) {
   }
 }
 
-function deepProperty(els, args) {
+function deepProperty(els, args, o) {
   var name  = args[0] 
-  
+
   return args.length == 2 
-       ? els.each(set)
+       ? (els.each(set), o)
        : key(name)(els.node())
 
   function set() { 
