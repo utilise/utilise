@@ -920,7 +920,7 @@ function memoize(els, op, o) {
 }
 
 function deepProperty(els, args, o) {
-  var name  = args[0] 
+  var name = args[0] 
 
   return args.length == 2 
        ? (els.each(set), o)
@@ -929,7 +929,8 @@ function deepProperty(els, args, o) {
   function set() { 
     var target = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
       , current = key(name)(this)
-    if (current !== target) key(name, wrap(target))(this)
+
+    if (target !== undefined && current !== target) key(name, wrap(target))(this)
   }
 }
 
