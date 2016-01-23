@@ -848,6 +848,13 @@ Select an element based on a CSS selector, piercing shadow boundaries if the bro
 raw('.foo')
 ```
 
+Narrow search space by also passing in a node
+
+```js
+raw('li', ul)
+```
+
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/rebind/badge.svg?branch=master)](https://coveralls.io/r/utilise/rebind?branch=master) [![Build](https://api.travis-ci.org/utilise/rebind.svg)](https://travis-ci.org/utilise/rebind) rebind
 
 D3 rebind function to rebind accessors. See the [docs here](https://github.com/mbostock/d3/wiki/Internals#rebind).
