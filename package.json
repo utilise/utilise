@@ -67,7 +67,6 @@
     "utilise.identity": "*",
     "utilise.iff": "*",
     "utilise.includes": "*",
-    "utilise.inherit": "*",
     "utilise.is": "*",
     "utilise.join": "*",
     "utilise.key": "*",

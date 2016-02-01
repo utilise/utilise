@@ -1,190 +1,227 @@
 var emitterify = require('utilise/emitterify')  
-  , extend     = require('utilise/extend')  
-  , attr       = require('utilise/attr')  
-  , wrap       = require('utilise/wrap')  
-  , sall       = require('utilise/sall')  
-  , sel        = require('utilise/sel')  
-  , key        = require('utilise/key')  
-  , is         = require('utilise/is')  
-  , to         = require('utilise/to')  
+  , deep = require('utilise/key')  
 
 module.exports = once
 
-function once(parents){
-  return enhance(spawn(parents = sall()(parents)), parents)
-}
+function once(nodes, enter, exit) {
+  var n = c.nodes = Array === nodes.constructor ? nodes
+        : 'string' === typeof nodes ? document.querySelectorAll(nodes)
+        : [nodes]
 
-function spawn(parents){
-  return function o(selector, data, key, before){ 
-    if (arguments.length == 1 && !is.fn(selector)) return once(sall(parents)(selector))
-    if (arguments.length == 1 &&  is.fn(selector)) data = 1
-    var enter = [], exit = [], els = []
-  
-    parents.each(function(pd, pi){
-      var opts = options(data, selector, pd, pi)
+  var p = n.length
+  while (p-- > 0) if (!n[p].evented) event(n[p])
 
-      var el = sel(this)
-        .selectAll(opts.selector)
-        .data(opts.data, key)
-  
-      el.exit()
-        .remove()
-        .each(push(exit))
-
-      el.enter()
-        .insert(opts.tag, before)
-        .classed(opts.classes, 1)
-        .each(push(enter))
-
-      el.each(push(els))
-        .each(function(){ this.draw && this.draw() })
-        .order()
-    })
-
-    return extend(once(els = sall()(els)))({ 
-      enter: sall()(enter)
-    , exit: sall()(exit)
-    , sel: els
-    })
+  c.node  = function() { return n[0] }
+  c.enter = function() { return once(enter) }
+  c.exit  = function() { return once(exit) }
+  c.text  = function(value){ 
+    var fn = 'function' === typeof value
+    return arguments.length === 0 ? n[0].textContent : (this.each(function(d){
+      var r = '' + (fn ? value.call(this, d) : value), t
+      if (this.textContent !== r) 
+        !(t = this.firstChild) ? this.appendChild(document.createTextNode(r))
+        : t.nodeName === '#text' ? t.nodeValue = r
+        : this.textContent = r
+    }), this)
   }
-}
-
-function options(data, selector, pd, pi){
-  if (is.fn(selector)) selector = selector(pd, pi)
-  if (is.fn(data))     data = data(pd, pi)
-  if (is.str(data))    data = [data]
-  if (!data)           data = []
-  if (!is.arr(data))   data = [data]
-
-  var classes = selector instanceof HTMLElement
-              ? selector.className
-              : selector.toString().split('.').slice(1).join(' ')
-
-  var tag     = is.fn(selector) ? selector
-              : selector instanceof HTMLElement
-              ? clone(selector)
-              : selector.split('.')[0].split('>').pop().trim() || 'div'
-
-  return {
-    data: data
-  , selector: selector.toString()
-  , tag: tag
-  , classes: classes
+  c.html = function(value){
+    var fn = 'function' === typeof value
+    return arguments.length === 0 ? n[0].innerHTML : (this.each(function(d){
+      var r = '' + (fn ? value.call(this, d) : value), t
+      if (this.innerHTML !== r) this.innerHTML = r
+    }), this)
   }
-}
+  c.attr = function(key, value){
+    var fn = 'function' === typeof value
+    return arguments.length === 1 ? n[0].getAttribute(key) : (this.each(function(d){
+      var r = fn ? value.call(this, d) : value
+           if (!r && this.hasAttribute(key)) this.removeAttribute(key)
+      else if ( r && this.getAttribute(key) !== r) this.setAttribute(key, r)
+    }), this) 
+  }
+  c.classed = function(key, value){
+    var fn = 'function' === typeof value
+    return arguments.length === 1 ? n[0].classList.contains(key) : (this.each(function(d){
+      var r = fn ? value.call(this, d) : value
+           if ( r && !this.classList.contains(key)) this.classList.add(key)
+      else if (!r &&  this.classList.contains(key)) this.classList.remove(key)
+    }), this) 
+  }
+  c.property = function(key, value){
+    var fn = 'function' === typeof value
+    return arguments.length === 1 ? deep(key)(n[0]) : (this.each(function(d){
+      var r = fn ? value.call(this, d) : value
+      if (r !== undefined && deep(key)(this) !== r) deep(key, function(){ return r })(this)
+    }), this) 
+  }
+  c.each = function(fn){
+    p = 0; while(node = n[p++])
+      fn.call(node, node.__data__, p)
+    return this
+  }
+  c.remove = function(){
+    this.each(function(d){
+      this.parentNode.removeChild(this)
+    }) 
+    return this
+  }
+  c.draw = proxy('draw', c)
+  c.once = proxy('once', c)
+  c.emit = proxy('emit', c)
+  c.on   = proxy('on', c)
 
-function enhance(fn, els){
-  return accessors(fn, els)
-       , events(fn, els)
-       , fn
-}
-
-function accessors(o, els){
-  ;['text', 'property', 'attr', 'style', 'html', 'classed', 'each', 'node', 'datum', 'remove'].map(function(op){
-    o[op] = memoize(els, op, o)
-  })
-
-  ;['draw'].map(lookup(o, els))
+  return c
   
-  return o
-}
+  function c(s, d, k, b) {
+    var lpar = n.length
+      , selector
+      , data
+      , tag
+      , tnodes = []
+      , tenter = []
+      , texit  = []
+      , parent
+      , child
+      , j = 0
+      , i = 0
+      , attrs = [], css = []
 
-function lookup(o, els) {
-  return function(op){
-    o[op] = function() {
-      var args = arguments
-      els.each(function(){
-        this[op].apply(this, args)
-      })
-      return o
+    p = lpar + 1
+    if (arguments.length === 1) {
+      if ('string' !== typeof s) return once(s)
+
+      while (--p > 0) 
+        tnodes = tnodes.concat(Array.prototype.slice.call(n[lpar - p].querySelectorAll(s),0))
+
+      return once(tnodes)
     }
-  }
-}
 
-function events(o, els){
-  els.each(function(){ 
-    var self = this
-    if (self.evented) return
-    if (!self.host) emitterify(self) 
-    self.evented = true
-  
-    ;['on', 'once', 'emit'].map(function(op){ 
-      if (self.host) return self[op] = self.host[op] 
-      var fn = self[op]
-      self[op] = function(type, d){
-        var args = to.arr(arguments)  
-        if (op == 'emit' && args.length == 1) args[1] = self.__data__
-        fn.apply(self, args)
-        if (op == 'on') self.addEventListener(type.split('.').shift(), redispatch)
-        return self
+    if (d === 1 && 'string' === typeof s && arguments.length == 2) {
+      while (--p > 0) { 
+        parent = n[lpar - p]
+        j = parent.children.length
+
+        while (j-- > 0) { 
+          if (parent.children[j].matches(s)) {
+            tnodes[tnodes.length] = parent.children[j] 
+            break
+          }
+        }
+
+        if (j < 0) {
+          tag = /([^\.\[]*)/.exec(s)[1] || 'div'
+          parent.appendChild(child = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag))
+          
+          attrs = [], css = []
+
+          s.replace(/\[(.+?)="(.*?)"\]/g, function($1, $2, $3){ return attrs[attrs.length] = [$2, $3], '' })
+           .replace(/\.([^.]+)/g, function($1, $2){ return css[css.length] = $2, ''})
+
+          for (i = 0; i < attrs.length; i++) 
+            child.setAttribute(attrs[i][0], attrs[i][1])
+
+          for (i = 0; i < css.length; i++) 
+            child.classList.add(css[i])
+
+          child.__data__ = parent.__data__ || 1
+        }
+      }
+      return once(tnodes, tenter, texit)
+    }
+
+    while (--p > 0) {
+      parent   = n[lpar - p]
+      selector = 'function' === typeof s ? s(parent.__data__) : s
+      data     = 'function' === typeof d ? d(parent.__data__) : d
+
+      if (data === 1)                 data = parent.__data__ || [1]
+      if ('string'   === typeof data) data = [data]
+      if (!data)                      data = []
+      if (data.constructor !== Array) data = [data]
+
+      var lall = parent.children.length
+        , l = lall + 1
+        , lnod  = data.length
+        , nodes = new Array(lnod)
+
+      j = 0
+      while (--l > 0) { 
+        child = parent.children[lall - l]
+
+        if (!child.matches(selector)) continue
+
+        if (++j > lnod) {
+          lall--
+          parent.removeChild(texit[texit.length] = child)
+          continue
+        }
+
+        child.__data__ = data[j-1]
+        tnodes[tnodes.length] = nodes[j-1] = child
+        if ('function' === typeof nodes[j-1].draw) nodes[j-1].draw()
       }
 
-    })
-  })
+      while (j++ < lnod) {
+        tag = selector.call ? selector(data[j-1], j-1)
+            : /([^\.\[]*)/.exec(selector)[1] || 'div'
 
-  ;['on', 'once', 'emit'].map(function(op){ 
-    o[op] = function(type){
-      var args = to.arr(arguments)
-      els.each(function(d){ this[op].apply(this, args) })
-      return o
+        b ? parent.insertBefore(nodes[j-1] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag), parent.querySelector(b))
+          : parent.appendChild(nodes[j-1] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag))
+        
+        attrs = [], css = []
+
+        selector
+          .toString()
+          .replace(/\[(.+?)="(.*?)"\]/g, function($1, $2, $3){ return attrs[attrs.length] = [$2, $3], '' })
+          .replace(/\.([^.]+)/g, function($1, $2){ return css[css.length] = $2, ''})
+
+        for (i = 0; i < attrs.length; i++) 
+          nodes[j-1].setAttribute(attrs[i][0], attrs[i][1])
+
+        for (i = 0; i < css.length; i++) 
+          nodes[j-1].classList.add(css[i])
+
+        nodes[j-1].__data__ = data[j-1]
+      }
     }
-  })
 
-  return o
+    return once(tnodes, tenter, texit)
+  }
+
 }
 
-function memoize(els, op, o) {
-  var singular = op == 'html' || op == 'text'
-    , property = op == 'property'
-    , classed  = op == 'classed'
-    , skip     = ['each', 'datum', 'remove', 'classed']
-    , fn       = els[op]
+function event(node) {
+  if (!node.on) emitterify(node)
+  var on = node.on
+    , emit = node.emit
 
-  return function(name, value){
-    if (singular) value = name
+  node.evented = true
 
-    return property                                 ? (deepProperty(els, arguments, o))
-        :  classed  && arguments.length < 2         ? (fn.apply(els, arguments))
-        :  is.in(skip)(op)                          ? (fn.apply(els, arguments), o)
-        :  singular && arguments.length < 1         ? (fn.apply(els, arguments))
-        : !singular && arguments.length < 2         ? (fn.apply(els, arguments))
-        : (els.each(function(){
-            var current = singular ? sel(this)[op]() : sel(this)[op](name)
-              , target  = is.fn(value) ? value.apply(this, arguments) : value
+  node.on = function(type) {
+    node.addEventListener(type.split('.').shift(), reemit)
+    on.apply(node, arguments)
+    return node
+  }
 
-            if (current !== target) singular ? sel(this)[op](value) : sel(this)[op](name, value)
-          }), o)
+  node.emit = function(type, detail, p) {
+    var params = p || { detail: detail, bubbles: false, cancelable: false }
+    ;(node.host || node).dispatchEvent(new window.CustomEvent(type, params))
+    return node
+  }
+
+  function reemit(event){
+    if ('object' === typeof window.d3) window.d3.event = event
+    var isCustom = event.constructor.name === 'CustomEvent' || ~(event.toString().indexOf('CustomEvent'))
+    emit(event.type, (isCustom && event.detail) || this.__data__)
   }
 }
 
-function deepProperty(els, args, o) {
-  var name = args[0] 
-
-  return args.length == 2 
-       ? (els.each(set), o)
-       : key(name)(els.node())
-
-  function set() { 
-    var target = is.fn(args[1]) ? args[1].apply(this, arguments) : args[1]
-      , current = key(name)(this)
-
-    if (target !== undefined && current !== target) key(name, wrap(target))(this)
-  }
-}
-
-function clone(el){
+function proxy(fn, c) {
   return function(){
-    return el.cloneNode()
+    var args = arguments
+    c.each(function(d){
+      this[fn] && this[fn].apply(this, args)
+    }) 
+    return c 
   }
-}
-
-function push(arr) {
-  return function(d){ 
-    arr.push(this) 
-  }
-}
-
-function redispatch(event){
-  d3.event = event
-  this.emit(event.type, this.__data__)
 }

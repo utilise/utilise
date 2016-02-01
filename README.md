@@ -473,44 +473,6 @@ files
   .filter(includes('.js'))
 ```
 
-## [![Coverage Status](https://coveralls.io/repos/utilise/inherit/badge.svg?branch=master)](https://coveralls.io/r/utilise/inherit?branch=master) [![Build](https://api.travis-ci.org/utilise/inherit.svg)](https://travis-ci.org/utilise/inherit) inherit
-
-Inherits parent data
-
-```js
-once('div', { name: 'sth' })
-  ('li', inherit)
-    ('span', key('name'))
-      .text(String)
-```
-
-```html
-<div>
-  <li>
-    <span>sth</span>
-  </li>
-</div>
-```
-
-If a number is provided, returns an array of inherited parent datum
-
-```js
-once('div', { name: 'sth' })
-  ('li', inherit(3))
-    ('span', key('name'))
-      .text(String)
-```
-
-```html
-<div>
-  <li>
-    <span>sth</span>
-    <span>sth</span>
-    <span>sth</span>
-  </li>
-</div>
-```
-
 ## [![Coverage Status](https://coveralls.io/repos/utilise/is/badge.svg?branch=master)](https://coveralls.io/r/utilise/is?branch=master) [![Build](https://api.travis-ci.org/utilise/is.svg)](https://travis-ci.org/utilise/is) is
 
 Various basic flavours of checking
