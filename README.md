@@ -231,16 +231,35 @@ def(object, prop, value[, writable])  // returns value
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/defaults/badge.svg?branch=master)](https://coveralls.io/r/utilise/defaults?branch=master) [![Build](https://api.travis-ci.org/utilise/defaults.svg)](https://travis-ci.org/utilise/defaults) defaults
 
-Sets default values for state on components if not already specified. Normally appears at the top of components:
+Sets default values for properties on an object if not already defined. Normally used at the beginning of [components](https://github.com/pemrouz/vanilla#vanilla) to default state values and expose API:
 
 ```js
-var state = defaults(this, {
+var state = defaults(this.state, {
   values: []
-  focused: true
+, focused: true
 })  
 
-state.focused 
-state.values
+// state.focused == this.state.focused == true
+// state.values  == this.state.values  == []
+```
+
+To idempotently define API on an element:
+
+```js
+defaults(this, { toggle, spin })  
+
+// this.spin()
+// this.toggle()
+```
+
+In case you need to default and reference a property for another property, you can default them individually rather than via an object literal.
+
+```js
+defaults(state, 'numbers', [1,2,3,4,5])
+defaults(state, 'odd', state.numbers.filter(d => d % 2))
+
+// state.numbers == [1,2,3,4,5]
+// state.odd == [1,3,5]
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/el/badge.svg?branch=master)](https://coveralls.io/r/utilise/el?branch=master) [![Build](https://api.travis-ci.org/utilise/el.svg)](https://travis-ci.org/utilise/el) el
