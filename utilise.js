@@ -880,7 +880,7 @@ function once(nodes, enter, exit) {
       selector = 'function' === typeof s ? s(parent.__data__) : s
       data     = 'function' === typeof d ? d(parent.__data__) : d
 
-      if (data === 1)                 data = parent.__data__ || [1]
+      if (d === 1)                    data = parent.__data__ || [1]
       if ('string'   === typeof data) data = [data]
       if (!data)                      data = []
       if (data.constructor !== Array) data = [data]
