@@ -849,6 +849,7 @@ function once(nodes, enter, exit) {
         while (j-- > 0) { 
           if (parent.children[j].matches(s)) {
             tnodes[tnodes.length] = parent.children[j] 
+            parent.children[j].__data__ = parent.__data__ || 1
             break
           }
         }
