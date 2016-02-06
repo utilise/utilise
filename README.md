@@ -293,6 +293,14 @@ err = err('[module/prefix]')
 err('something went wrong!') // [module/prefix] something went wrong
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/escape/badge.svg?branch=master)](https://coveralls.io/r/utilise/escape?branch=master) [![Build](https://api.travis-ci.org/utilise/escape.svg)](https://travis-ci.org/utilise/escape) escape
+
+Escapes HTML
+
+```js
+escape = escape('<div></div>') // '&lt;div&gt;&lt;/div&gt;'
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/extend/badge.svg?branch=master)](https://coveralls.io/r/utilise/extend?branch=master) [![Build](https://api.travis-ci.org/utilise/extend.svg)](https://travis-ci.org/utilise/extend) extend
 
 Extends an object with properties from another, not overwriting properties by default
@@ -930,6 +938,48 @@ str(undefined)        // returns ''
 str(function(){ .. }) // returns 'function(){ .. }'
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/stripws/badge.svg?branch=master)](https://coveralls.io/r/utilise/stripws?branch=master) [![Build](https://api.travis-ci.org/utilise/stripws.svg)](https://travis-ci.org/utilise/stripws) stripws
+
+Strips the whitespace between tags (but not between attributes), which is useful to make declarative testing less brittle and less sensitive
+
+```js
+stripws`
+  <div>
+    foo
+  </div>
+`         
+// <div>foo</div>
+
+stripws('<a>\n   <b>')  
+// '<a><b>'
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/tdraw/badge.svg?branch=master)](https://coveralls.io/r/utilise/tdraw?branch=master) [![Build](https://api.travis-ci.org/utilise/tdraw.svg)](https://travis-ci.org/utilise/tdraw) tdraw
+
+Simple stub for the `draw` function to test components. Takes a DOM element, a render function and some initial state. Sets the initial `.state`, the `.draw` function and renders the element. 
+
+```js
+t.plan(2)
+
+const host = tdraw(el('ux-button'), button, { label: 'foo', spinning: true })
+
+host.spin(true)
+t.ok(includes(`class="is-spinning"`)(host.outerHTML))
+
+host.spin(false)
+t.notOk(includes(`class="is-spinning"`)(host.outerHTML))
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/time/badge.svg?branch=master)](https://coveralls.io/r/utilise/time?branch=master) [![Build](https://api.travis-ci.org/utilise/time.svg)](https://travis-ci.org/utilise/time) time
+
+Alias for `setTimeout` with duration as first parameter for better readability
+
+```js
+time(10, function(){ .. })
+time(20, function(){ .. })
+time(30, function(){ .. })
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/to/badge.svg?branch=master)](https://coveralls.io/r/utilise/to?branch=master) [![Build](https://api.travis-ci.org/utilise/to.svg)](https://travis-ci.org/utilise/to) to
 
 **to.arr**: Converts to a primitive type (only real arrays)
@@ -959,15 +1009,6 @@ to.arr(arguments)
 
 Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
 
-## [![Coverage Status](https://coveralls.io/repos/utilise/time/badge.svg?branch=master)](https://coveralls.io/r/utilise/time?branch=master) [![Build](https://api.travis-ci.org/utilise/time.svg)](https://travis-ci.org/utilise/time) time
-
-Alias for `setTimeout` with duration as first parameter for better readability
-
-```js
-time(10, function(){ .. })
-time(20, function(){ .. })
-time(30, function(){ .. })
-```
 ## [![Coverage Status](https://coveralls.io/repos/utilise/unique/badge.svg?branch=master)](https://coveralls.io/r/utilise/unique?branch=master) [![Build](https://api.travis-ci.org/utilise/unique.svg)](https://travis-ci.org/utilise/unique) unique
 
 Filter an array to unique values
