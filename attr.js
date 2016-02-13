@@ -1,17 +1,18 @@
 var is = require('utilise/is')
 
-module.exports = function attr(d, name, value) {
-  d = d.node ? d.node() : d
-  d = d.host || d
+module.exports = function attr(name, value) {
   var args = arguments.length
+  
+  return !is.str(name) && args == 2 ? attr(arguments[1]).call(this, arguments[0])
+       : !is.str(name) && args == 3 ? attr(arguments[1], arguments[2]).call(this, arguments[0])
+       :  function(el){
+            el = this.nodeName || is.fn(this.node) ? this : el
+            el = el.node ? el.node() : el
+            el = el.host || el
 
-  if (is.str(d)) return function(el){ 
-    var node = this.nodeName || this.node ? this : el
-    return attr.apply(this, args > 1 ? [node, d, name] : [node, d]) 
-  }
-
-  return args > 2 && value === false ? d.removeAttribute(name)
-       : args > 2                    ? (d.setAttribute(name, value), value)
-       : d.attributes.getNamedItem(name) 
-      && d.attributes.getNamedItem(name).value
+            return args > 1 && value === false ? el.removeAttribute(name)
+                 : args > 1                    ? (el.setAttribute(name, value), value)
+                 : el.attributes.getNamedItem(name) 
+                && el.attributes.getNamedItem(name).value
+          } 
 }
