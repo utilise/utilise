@@ -1,6 +1,7 @@
 module.exports = function draw(host, fn, state) {
-  host.state = state
-  host.draw = function(d){ return fn && fn.call(host, host.state) }
-  host.draw()
+  var el = host.node ? host.node() : host
+  el.state = state || {}
+  el.draw = function(d){ return fn && fn.call(el, el.state) }
+  el.draw()
   return host
 }

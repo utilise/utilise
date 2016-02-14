@@ -1170,9 +1170,10 @@ module.exports = function stripws(d){
 }
 },{"utilise/is":37}],72:[function(require,module,exports){
 module.exports = function draw(host, fn, state) {
-  host.state = state
-  host.draw = function(d){ return fn && fn.call(host, host.state) }
-  host.draw()
+  var el = host.node ? host.node() : host
+  el.state = state || {}
+  el.draw = function(d){ return fn && fn.call(el, el.state) }
+  el.draw()
   return host
 }
 },{}],73:[function(require,module,exports){
