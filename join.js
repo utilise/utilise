@@ -9,9 +9,9 @@ module.exports = function join(left, right){
     left = null
   }
 
-  return function(d){
+  return function(d, uid){
     var table = right || [], field = null
-
+    if (!uid || is.num(uid)) uid = 'id'
     if (is.str(right)) {
       var array = right.split('.')
       table = ripple(array.shift())
@@ -20,7 +20,7 @@ module.exports = function join(left, right){
     
     var id  = key(left)(d)
       , val = table
-                .filter(by('id', id))
+                .filter(by(uid, id))
                 .map(key(field))
                 .pop() || {}
 

@@ -303,7 +303,7 @@ escape = escape('<div></div>') // '&lt;div&gt;&lt;/div&gt;'
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/extend/badge.svg?branch=master)](https://coveralls.io/r/utilise/extend?branch=master) [![Build](https://api.travis-ci.org/utilise/extend.svg)](https://travis-ci.org/utilise/extend) extend
 
-Extends an object with properties from another, not overwriting properties by default
+Extends an object with properties from another, not overwriting properties by default. See also [extend](https://github.com/utilise/utilise#--overwrite).
 
 ```js
 to = { foo: 1 }
@@ -716,6 +716,16 @@ once('list-component')
     .on('click', d => this.parentNode.emit('selected', d))
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/overwrite/badge.svg?branch=master)](https://coveralls.io/r/utilise/overwrite?branch=master) [![Build](https://api.travis-ci.org/utilise/overwrite.svg)](https://travis-ci.org/utilise/overwrite) overwrite
+
+Extends an object with properties from another, overwriting existing properties. See also [extend](https://github.com/utilise/utilise#--extend).
+
+```js
+to = { foo: 1 }
+from = { foo: 2, bar: 3 }
+overwrite(to)(from)  // to == { foo: 2, bar: 3 }
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/owner/badge.svg?branch=master)](https://coveralls.io/r/utilise/owner?branch=master) [![Build](https://api.travis-ci.org/utilise/owner.svg)](https://travis-ci.org/utilise/owner) owner
 
 Either window or global dependeing on executing context
@@ -773,6 +783,14 @@ You can also add an optional message to the log:
 perf(fn, 'foo')(args)  
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/pop/badge.svg?branch=master)](https://coveralls.io/r/utilise/pop?branch=master) [![Build](https://api.travis-ci.org/utilise/pop.svg)](https://travis-ci.org/utilise/pop) pop
+
+Pops an element from an array, updates the internal log (if versioned), and emits a standardised change event (if emitterified). See also other [functional versioned operators](https://github.com/utilise/utilise#--set).
+
+```js
+pop(users)
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/prepend/badge.svg?branch=master)](https://coveralls.io/r/utilise/prepend?branch=master) [![Build](https://api.travis-ci.org/utilise/prepend.svg)](https://travis-ci.org/utilise/prepend) prepend
 
 Prepend something to a string
@@ -815,10 +833,10 @@ bill.total = proxy(bill.subtotal, bill.vat)
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/push/badge.svg?branch=master)](https://coveralls.io/r/utilise/push?branch=master) [![Build](https://api.travis-ci.org/utilise/push.svg)](https://travis-ci.org/utilise/push) push
 
-Push elements to an array
+Pushes an element to an array, updates the internal log (if versioned), and emits a standardised change event (if emitterified). See also other [functional versioned operators](https://github.com/utilise/utilise#--set).
 
 ```js
-join.enter().each(push(enter))
+push({ firstname: 'foo', lastname: 'bar' })(users)
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/ready/badge.svg?branch=master)](https://coveralls.io/r/utilise/ready?branch=master) [![Build](https://api.travis-ci.org/utilise/ready.svg)](https://travis-ci.org/utilise/ready) ready
@@ -850,11 +868,10 @@ D3 rebind function to rebind accessors. See the [docs here](https://github.com/m
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/remove/badge.svg?branch=master)](https://coveralls.io/r/utilise/remove?branch=master) [![Build](https://api.travis-ci.org/utilise/remove.svg)](https://travis-ci.org/utilise/remove) remove
 
-Remove item(s) from an array by value or property
+Removes a key from an object, updates the internal log (if versioned), and emits a standardised change event (if emitterified). See also other [functional versioned operators](https://github.com/utilise/utilise#--set).
 
 ```js
-array.forEach(remove(2))
-array.forEach(remove('key', 'value'))
+remove('key')(object)
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/replace/badge.svg?branch=master)](https://coveralls.io/r/utilise/replace?branch=master) [![Build](https://api.travis-ci.org/utilise/replace.svg)](https://travis-ci.org/utilise/replace) replace
@@ -901,6 +918,27 @@ Sends a file on an express route. Server only.
 ```js
 app.get('/file', send('./file'))
 ```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/set/badge.svg?branch=master)](https://coveralls.io/r/utilise/set?branch=master) [![Build](https://api.travis-ci.org/utilise/set.svg)](https://travis-ci.org/utilise/set) set
+
+Takes an atomic diff and applies it to an object, updating the internal log (if [versioned](https://github.com/pemrouz/versioned/issues/1)), and emitting a standardised change event (if emitterified). An atomic diff is an object in the format `{ type, key, value }` where type can be either of `add | update | remove`. 
+
+```js
+set({ key, value, type })(object)
+```
+
+Note that this, as will all utilities here, is fully graceful and will work with: 
+
+* A vanilla object - just applies diff
+* An emitterified object i.e. has a .on/.emit - applies the diff and emits log event
+* An emitterified, versioned object (has a .log) - applies diff, emits event, and updates immutable/diff log
+
+See also the more ergonomic functional versioned operators which use this generic operator, but set most of the values for you:
+
+* [pop](https://github.com/utilise/utilise#--pop)
+* [push](https://github.com/utilise/utilise#--push)
+* [update](https://github.com/utilise/utilise#--update)
+* [remove](https://github.com/utilise/utilise#--remove)
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/slice/badge.svg?branch=master)](https://coveralls.io/r/utilise/slice?branch=master) [![Build](https://api.travis-ci.org/utilise/slice.svg)](https://travis-ci.org/utilise/slice) slice
 
@@ -1015,6 +1053,14 @@ Filter an array to unique values
 
 ```js
 [1,1,2,3].filter(unique, 1) // returns [1,2,3]
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/update/badge.svg?branch=master)](https://coveralls.io/r/utilise/update?branch=master) [![Build](https://api.travis-ci.org/utilise/update.svg)](https://travis-ci.org/utilise/update) update
+
+Updates a value at a key, updates the internal log (if versioned), and emits a standardised change event (if emitterified). See also other [functional versioned operators](https://github.com/utilise/utilise#--update).
+
+```js
+update('key', value)(object)
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/values/badge.svg?branch=master)](https://coveralls.io/r/utilise/values?branch=master) [![Build](https://api.travis-ci.org/utilise/values.svg)](https://travis-ci.org/utilise/values) values

@@ -5,7 +5,7 @@ module.exports = function all(selector, doc){
   var prefix = !doc && document.head.createShadowRoot ? 'html /deep/ ' : ''
   return to.arr((doc || document).querySelectorAll(prefix+selector))
 }
-},{"utilise/to":75}],2:[function(require,module,exports){
+},{"utilise/to":78}],2:[function(require,module,exports){
 module.exports = function append(v) {
   return function(d){
     return d+v
@@ -26,7 +26,7 @@ module.exports = function args(indices) {
     }
   }
 }
-},{"utilise/is":37,"utilise/to":75}],4:[function(require,module,exports){
+},{"utilise/is":37,"utilise/to":78}],4:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function attr(name, value) {
@@ -101,7 +101,7 @@ module.exports = function clone(d) {
        : d
 }
 
-},{"utilise/is":37,"utilise/parse":54,"utilise/str":70}],11:[function(require,module,exports){
+},{"utilise/is":37,"utilise/parse":55,"utilise/str":73}],11:[function(require,module,exports){
 var client = require('utilise/client')
   , colors = !client && require('colors')
   , has = require('utilise/has')
@@ -133,7 +133,7 @@ var sel = require('utilise/sel')
 module.exports = function datum(node){
   return sel(node).datum()
 }
-},{"utilise/sel":66}],14:[function(require,module,exports){
+},{"utilise/sel":68}],14:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function debounce(d){
@@ -193,25 +193,28 @@ module.exports = function el(selector){
 
   return elem
 }
-},{"utilise/attr":4,"utilise/prepend":56,"utilise/replace":64,"utilise/split":69}],18:[function(require,module,exports){
+},{"utilise/attr":4,"utilise/prepend":58,"utilise/replace":66,"utilise/split":72}],18:[function(require,module,exports){
 var err  = require('utilise/err')('[emitterify]')
   , keys = require('utilise/keys')
   , def  = require('utilise/def')
   , not  = require('utilise/not')
   , is   = require('utilise/is')
   
-module.exports = function emitterify(body) {
-  return def(body, 'on', on, 1)
+module.exports = function emitterify(body, dparam) {
+  return def(body, 'emit', emit, 1)
        , def(body, 'once', once, 1)
-       , def(body, 'emit', emit, 1)
+       , def(body, 'on', on, 1)
        , body
 
   function emit(type, param, filter) {
     var ns = type.split('.')[1]
       , id = type.split('.')[0]
       , li = body.on[id] || []
-      , tt = li.length-1
-      , pm = is.arr(param) ? param : [param || body]
+      , tt = li.length - 1
+      , tp = is.def(param)  ? param 
+           : is.def(dparam) ? dparam
+           : [body]
+      , pm = is.arr(tp) ? tp : [tp]
 
     if (ns) return invoke(li, ns, pm), body
 
@@ -260,7 +263,7 @@ module.exports = function err(prefix){
     return console.error.apply(console, args), d
   }
 }
-},{"utilise/owner":53,"utilise/to":75}],20:[function(require,module,exports){
+},{"utilise/owner":54,"utilise/to":78}],20:[function(require,module,exports){
 module.exports = function escape(str) {
   return str.replace(/[&<>'"]/g, function(char){
     return safe[char]
@@ -348,7 +351,7 @@ module.exports = function grep(o, k, regex){
   }
   return original
 }
-},{"utilise/is":37,"utilise/to":75}],29:[function(require,module,exports){
+},{"utilise/is":37,"utilise/to":78}],29:[function(require,module,exports){
 var client = require('utilise/client')
   , owner = require('utilise/owner')
   , noop = require('utilise/noop')
@@ -367,7 +370,7 @@ function polyfill() {
     (console.log || noop)('*****', d, '*****')
   }
 }
-},{"utilise/client":9,"utilise/noop":49,"utilise/owner":53}],30:[function(require,module,exports){
+},{"utilise/client":9,"utilise/noop":49,"utilise/owner":54}],30:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function gt(k, v){
@@ -393,19 +396,17 @@ module.exports = function hashcode(str) {
 }
 
 },{}],33:[function(require,module,exports){
-var has = require('utilise/has')
+var key = require('utilise/key')
 
 module.exports = function header(header, value) {
   var getter = arguments.length == 1
   return function(d){ 
-    return !d                      ? null
-         : !has(d, 'headers')      ? null
-         : !has(d.headers, header) ? null
-         : getter                  ? d['headers'][header]
-                                   : d['headers'][header] == value
+    return !d || !d.headers ? null
+         : getter ? key(header)(d.headers)
+                  : key(header)(d.headers) == value
   }
 }
-},{"utilise/has":31}],34:[function(require,module,exports){
+},{"utilise/key":39}],34:[function(require,module,exports){
 module.exports = function identity(d) {
   return d
 }
@@ -509,9 +510,9 @@ module.exports = function join(left, right){
     left = null
   }
 
-  return function(d){
+  return function(d, uid){
     var table = right || [], field = null
-
+    if (!uid || is.num(uid)) uid = 'id'
     if (is.str(right)) {
       var array = right.split('.')
       table = ripple(array.shift())
@@ -520,7 +521,7 @@ module.exports = function join(left, right){
     
     var id  = key(left)(d)
       , val = table
-                .filter(by('id', id))
+                .filter(by(uid, id))
                 .map(key(field))
                 .pop() || {}
 
@@ -531,8 +532,8 @@ module.exports = function join(left, right){
 }
 
 },{"utilise/by":7,"utilise/clone":10,"utilise/is":37,"utilise/key":39}],39:[function(require,module,exports){
-var is = require('utilise/is')
-  , str = require('utilise/str')
+var str = require('utilise/str')
+  , is = require('utilise/is')
 
 module.exports = function key(k, v){ 
   var set = arguments.length > 1
@@ -541,13 +542,14 @@ module.exports = function key(k, v){
 
   return function deep(o, i){
     var masked = {}
+
     return !o ? undefined 
-         : !k ? o
+         : !is.num(k) && !k ? o
          : is.arr(k) ? (k.map(copy), masked)
          : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k], i) : v), o)
-                                       :   o[k])
-                                : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
-                                       : key(keys.join('.'))(o[root]))
+                                         :   o[k])
+                                  : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
+                                         : key(keys.join('.'))(o[root]))
 
     function copy(k){
       var val = key(k)(o)
@@ -555,7 +557,7 @@ module.exports = function key(k, v){
     }
   }
 }
-},{"utilise/is":37,"utilise/str":70}],40:[function(require,module,exports){
+},{"utilise/is":37,"utilise/str":73}],40:[function(require,module,exports){
 module.exports = function keys(o) {
   return Object.keys(o || {})
 }
@@ -597,7 +599,7 @@ function destructure(selector){
 
   return { el: raw(el), attr: attr }
 }
-},{"utilise/attr":4,"utilise/raw":60}],43:[function(require,module,exports){
+},{"utilise/attr":4,"utilise/raw":62}],43:[function(require,module,exports){
 module.exports = function lo(d){
   return (d || '').toLowerCase()
 }
@@ -616,7 +618,7 @@ module.exports = function log(prefix){
     return console.log.apply(console, args), d
   }
 }
-},{"utilise/is":37,"utilise/owner":53,"utilise/to":75}],45:[function(require,module,exports){
+},{"utilise/is":37,"utilise/owner":54,"utilise/to":78}],45:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function lt(k, v){
@@ -645,7 +647,7 @@ function moFormat(format) {
 function moIso(d) {
   return mo(d).format('YYYY-MM-DD')
 }
-},{"utilise/owner":53}],47:[function(require,module,exports){
+},{"utilise/owner":54}],47:[function(require,module,exports){
 
 },{}],48:[function(require,module,exports){
 // shim for using process in browser
@@ -988,14 +990,27 @@ function proxy(fn, c) {
   }
 }
 },{"utilise/emitterify":18,"utilise/key":39}],53:[function(require,module,exports){
+var is = require('utilise/is')
+  , keys = require('utilise/keys')
+  , copy = require('utilise/copy')
+
+module.exports = function overwrite(to){ 
+  return function(from){
+    keys(from)
+      .map(copy(from, to))
+        
+    return to
+  }
+}
+},{"utilise/copy":12,"utilise/is":37,"utilise/keys":40}],54:[function(require,module,exports){
 (function (global){
 module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"utilise/client":9}],54:[function(require,module,exports){
+},{"utilise/client":9}],55:[function(require,module,exports){
 module.exports = function parse(d){
   return d && JSON.parse(d)
 }
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (process){
 var log = require('utilise/log')('[perf]')
   , client = require('utilise/client')
@@ -1014,13 +1029,23 @@ module.exports =  function perf(fn, msg) {
   }
 }
 }).call(this,require('_process'))
-},{"_process":48,"utilise/client":9,"utilise/log":44}],56:[function(require,module,exports){
+},{"_process":48,"utilise/client":9,"utilise/log":44}],57:[function(require,module,exports){
+var last = require('utilise/last')
+  , set = require('utilise/set')
+  , is = require('utilise/is')
+
+module.exports = function pop(o){
+  return is.arr(o) 
+       ? set({ key: o.length - 1, value: last(o), type: 'remove' })(o)
+       : o 
+}
+},{"utilise/is":37,"utilise/last":41,"utilise/set":69}],58:[function(require,module,exports){
 module.exports = function prepend(v) {
   return function(d){
     return v+d
   }
 }
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 promise.sync = promiseSync
 promise.null = promiseNull
 promise.noop = promiseNoop
@@ -1061,7 +1086,7 @@ function promiseNoop(){
 function promiseNull(){
   return promise(null)
 }
-},{}],58:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var is = require('utilise/is')
   , identity = require('utilise/identity')
 
@@ -1071,24 +1096,28 @@ module.exports = function proxy(fn, ret, ctx){
     return is.fn(ret) ? ret.call(ctx || this, result) : ret || result
   }
 }
-},{"utilise/identity":34,"utilise/is":37}],59:[function(require,module,exports){
-module.exports = function push(arr){
-  return function(d){
-    return arr.push(d), arr
+},{"utilise/identity":34,"utilise/is":37}],61:[function(require,module,exports){
+var set = require('utilise/set')
+  , is = require('utilise/is')
+
+module.exports = function push(value){
+  return function(o){
+    return is.arr(o) 
+         ? set({ key: o.length, value: value, type: 'add' })(o)
+         : o 
   }
 }
-
-},{}],60:[function(require,module,exports){
+},{"utilise/is":37,"utilise/set":69}],62:[function(require,module,exports){
 module.exports = function raw(selector, doc){
   var prefix = !doc && document.head.createShadowRoot ? 'html /deep/ ' : ''
   return (doc ? doc : document).querySelector(prefix+selector)
 }
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = function ready(fn){
-  return document.body ? fn() : document.addEventListener('DOMContentLoaded', fn)
+  return document.body ? fn() : document.addEventListener('DOMContentLoaded', fn.bind(this))
 }
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = function(target, source) {
   var i = 1, n = arguments.length, method
   while (++i < n) target[method = arguments[i]] = rebind(target, source, source[method])
@@ -1101,20 +1130,22 @@ function rebind(target, source, method) {
     return value === source ? target : value
   }
 }
-},{}],63:[function(require,module,exports){
-module.exports = function remove(k, v) {
-  return function(d, i, a) {
-    !v ? (d == k)    && a.splice(i,1)
-       : (d[k] == v) && a.splice(i,1)
+},{}],65:[function(require,module,exports){
+var set = require('utilise/set')
+  , key = require('utilise/key')
+  
+module.exports = function remove(k){
+  return function(o){
+    return set({ key: k, value: key(k)(o), type: 'remove' })(o)
   }
 }
-},{}],64:[function(require,module,exports){
+},{"utilise/key":39,"utilise/set":69}],66:[function(require,module,exports){
 module.exports = function replace(from, to){
   return function(d){
     return d.replace(from, to)
   }
 }
-},{}],65:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 var sel = require('utilise/sel')
 
 module.exports = function sall(scope){
@@ -1127,31 +1158,92 @@ module.exports = function sall(scope){
          : parent.selectAll(selector)
   }
 }
-},{"utilise/sel":66}],66:[function(require,module,exports){
+},{"utilise/sel":68}],68:[function(require,module,exports){
 module.exports = function sel(el){
   return el.node ? el : d3.select(el)
 }
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
+var last = require('utilise/last')
+  , key = require('utilise/key')
+  , str = require('utilise/str')
+  , is = require('utilise/is')
+
+module.exports = exports = function set(diff) {
+  return function(o) {
+    if (!o || !is.obj(o) || !diff || !is.obj(diff)) return o
+    var key = str(diff.key)
+    act.raw[diff.type](o, key, diff.value)
+    return set.commit(o, { key: key, value: diff.value, type: diff.type })
+  }
+}
+
+exports.commit = function commit(o, diff) {
+  var log = o.log
+
+  if (log) log.push({ 
+    diff: diff
+  , value: act.imm[diff.type](last(log).value, diff.key.split('.'), diff.value) 
+  })
+
+  if (o.emit) o.emit('log', diff)
+
+  return o
+}
+
+function leaf(o, k, v){
+  var path = k.split('.')
+    , tail = path.pop()
+    , body = key(path.join('.'))(o)
+
+  return { body: body, tail: tail }
+}
+
+var act = {
+  raw: {
+    add   : function(o, k, v) { var l = leaf(o, k); return is.arr(l.body) ? l.body.splice(l.tail, 0, v) : key(k, v)(o) }
+  , update: function(o, k, v) { return key(k, v)(o) }
+  , remove: function(o, k, v) { 
+      var l = leaf(o, k)
+      return is.arr(l.body) ? l.body.splice(l.tail, 1)
+           : l.body         ? delete l.body[l.tail]
+           : false 
+    }
+  }
+, imm: {
+    update: function(o, k, v) { return o.setIn(k, v) }
+  , remove: function(o, k, v) { return o.deleteIn(k) }
+  , add   : function(o, k, v) { 
+      var path = k.slice(0, -1)
+        , tail = k.slice(-1)
+        , last = o.getIn(path)
+
+      return last && last.splice 
+           ? o.setIn(path, last.splice(tail, 0, v))
+           : o.setIn(k, v)
+    }
+  }
+}
+},{"utilise/is":37,"utilise/key":39,"utilise/last":41,"utilise/str":73}],70:[function(require,module,exports){
 module.exports = function slice(from, to){
   return function(d){
     return d.slice(from, to)
   }
 }
-},{}],68:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = function sort(fn){
   return function(arr){
     return arr.sort(fn)
   }
 }
 
-},{}],69:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = function split(delimiter){
   return function(d){
     return d.split(delimiter)
   }
 }
 
-},{}],70:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 var is = require('utilise/is') 
 
 module.exports = function str(d){
@@ -1161,14 +1253,14 @@ module.exports = function str(d){
        : is.obj(d) ? JSON.stringify(d)
        : String(d)
 }
-},{"utilise/is":37}],71:[function(require,module,exports){
+},{"utilise/is":37}],74:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function stripws(d){
   return (is.arr(d) ? d[0] : d)
     .replace(/[\s]{2,}/gim, '')
 }
-},{"utilise/is":37}],72:[function(require,module,exports){
+},{"utilise/is":37}],75:[function(require,module,exports){
 module.exports = function draw(host, fn, state) {
   var el = host.node ? host.node() : host
   el.state = state || {}
@@ -1176,11 +1268,11 @@ module.exports = function draw(host, fn, state) {
   el.draw()
   return host
 }
-},{}],73:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = function time(ms, fn) {
   return setTimeout(fn, ms)
 }
-},{}],74:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 require('./owner').all = require('./all.js')
 require('./owner').append = require('./append.js')
 require('./owner').args = require('./args.js')
@@ -1231,9 +1323,11 @@ require('./owner').noop = require('./noop.js')
 require('./owner').not = require('./not.js')
 require('./owner').nullify = require('./nullify.js')
 require('./owner').once = require('./once.js')
+require('./owner').overwrite = require('./overwrite.js')
 require('./owner').owner = require('./owner.js')
 require('./owner').parse = require('./parse.js')
 require('./owner').perf = require('./perf.js')
+require('./owner').pop = require('./pop.js')
 require('./owner').prepend = require('./prepend.js')
 require('./owner').promise = require('./promise.js')
 require('./owner').proxy = require('./proxy.js')
@@ -1245,6 +1339,7 @@ require('./owner').remove = require('./remove.js')
 require('./owner').replace = require('./replace.js')
 require('./owner').sall = require('./sall.js')
 require('./owner').sel = require('./sel.js')
+require('./owner').set = require('./set.js')
 require('./owner').slice = require('./slice.js')
 require('./owner').sort = require('./sort.js')
 require('./owner').split = require('./split.js')
@@ -1254,12 +1349,13 @@ require('./owner').tdraw = require('./tdraw.js')
 require('./owner').time = require('./time.js')
 require('./owner').to = require('./to.js')
 require('./owner').unique = require('./unique.js')
+require('./owner').update = require('./update.js')
 require('./owner').values = require('./values.js')
 require('./owner').wait = require('./wait.js')
 require('./owner').wrap = require('./wrap.js')
 require('./owner').za = require('./za.js')
 
-},{"./all.js":1,"./append.js":2,"./args.js":3,"./attr.js":4,"./az.js":5,"./body.js":6,"./by.js":7,"./chainable.js":8,"./client.js":9,"./clone.js":10,"./colorfill.js":11,"./copy.js":12,"./datum.js":13,"./debounce.js":14,"./def.js":15,"./defaults.js":16,"./el.js":17,"./emitterify.js":18,"./err.js":19,"./escape.js":20,"./extend.js":21,"./falsy.js":22,"./filter.js":23,"./first.js":24,"./flatten.js":25,"./fn.js":26,"./from.js":27,"./grep.js":28,"./group.js":29,"./gt.js":30,"./has.js":31,"./hashcode.js":32,"./header.js":33,"./identity.js":34,"./iff.js":35,"./includes.js":36,"./is.js":37,"./join.js":38,"./key.js":39,"./keys.js":40,"./last.js":41,"./link.js":42,"./lo.js":43,"./log.js":44,"./lt.js":45,"./mo.js":46,"./noop.js":49,"./not.js":50,"./nullify.js":51,"./once.js":52,"./owner":53,"./owner.js":53,"./parse.js":54,"./perf.js":55,"./prepend.js":56,"./promise.js":57,"./proxy.js":58,"./push.js":59,"./raw.js":60,"./ready.js":61,"./rebind.js":62,"./remove.js":63,"./replace.js":64,"./sall.js":65,"./sel.js":66,"./slice.js":67,"./sort.js":68,"./split.js":69,"./str.js":70,"./stripws.js":71,"./tdraw.js":72,"./time.js":73,"./to.js":75,"./unique.js":76,"./values.js":77,"./wait.js":78,"./wrap.js":79,"./za.js":80}],75:[function(require,module,exports){
+},{"./all.js":1,"./append.js":2,"./args.js":3,"./attr.js":4,"./az.js":5,"./body.js":6,"./by.js":7,"./chainable.js":8,"./client.js":9,"./clone.js":10,"./colorfill.js":11,"./copy.js":12,"./datum.js":13,"./debounce.js":14,"./def.js":15,"./defaults.js":16,"./el.js":17,"./emitterify.js":18,"./err.js":19,"./escape.js":20,"./extend.js":21,"./falsy.js":22,"./filter.js":23,"./first.js":24,"./flatten.js":25,"./fn.js":26,"./from.js":27,"./grep.js":28,"./group.js":29,"./gt.js":30,"./has.js":31,"./hashcode.js":32,"./header.js":33,"./identity.js":34,"./iff.js":35,"./includes.js":36,"./is.js":37,"./join.js":38,"./key.js":39,"./keys.js":40,"./last.js":41,"./link.js":42,"./lo.js":43,"./log.js":44,"./lt.js":45,"./mo.js":46,"./noop.js":49,"./not.js":50,"./nullify.js":51,"./once.js":52,"./overwrite.js":53,"./owner":54,"./owner.js":54,"./parse.js":55,"./perf.js":56,"./pop.js":57,"./prepend.js":58,"./promise.js":59,"./proxy.js":60,"./push.js":61,"./raw.js":62,"./ready.js":63,"./rebind.js":64,"./remove.js":65,"./replace.js":66,"./sall.js":67,"./sel.js":68,"./set.js":69,"./slice.js":70,"./sort.js":71,"./split.js":72,"./str.js":73,"./stripws.js":74,"./tdraw.js":75,"./time.js":76,"./to.js":78,"./unique.js":79,"./update.js":80,"./values.js":81,"./wait.js":82,"./wrap.js":83,"./za.js":84}],78:[function(require,module,exports){
 module.exports = { 
   arr: toArray
 , obj: toObject
@@ -1283,7 +1379,7 @@ function toObject(d) {
     return p
   }
 }
-},{}],76:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 var is = require('utilise/is')
 
 module.exports = function unique(d, i){
@@ -1293,14 +1389,22 @@ module.exports = function unique(d, i){
        : false 
 }
 
-},{"utilise/is":37}],77:[function(require,module,exports){
+},{"utilise/is":37}],80:[function(require,module,exports){
+var set = require('utilise/set')
+  
+module.exports = function update(key, value){
+  return function(o){
+    return set({ key: key, value: value, type: 'update' })(o)
+  }
+}
+},{"utilise/set":69}],81:[function(require,module,exports){
 var keys = require('utilise/keys')
   , from = require('utilise/from')
 
 module.exports = function values(o) {
   return !o ? [] : keys(o).map(from(o))
 }
-},{"utilise/from":27,"utilise/keys":40}],78:[function(require,module,exports){
+},{"utilise/from":27,"utilise/keys":40}],82:[function(require,module,exports){
 module.exports = function wait(condition){
   return function(handler){
     return function(){
@@ -1311,13 +1415,13 @@ module.exports = function wait(condition){
     }
   }
 }
-},{}],79:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = function wrap(d){
   return function(){
     return d
   }
 }
-},{}],80:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var key = require('utilise/key')
 
 module.exports = function za(k) {
@@ -1331,5 +1435,5 @@ module.exports = function za(k) {
   }
 }
 
-},{"utilise/key":39}]},{},[74])(74)
+},{"utilise/key":39}]},{},[77])(77)
 });

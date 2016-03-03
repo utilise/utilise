@@ -1,12 +1,10 @@
-var has = require('utilise/has')
+var key = require('utilise/key')
 
 module.exports = function header(header, value) {
   var getter = arguments.length == 1
   return function(d){ 
-    return !d                      ? null
-         : !has(d, 'headers')      ? null
-         : !has(d.headers, header) ? null
-         : getter                  ? d['headers'][header]
-                                   : d['headers'][header] == value
+    return !d || !d.headers ? null
+         : getter ? key(header)(d.headers)
+                  : key(header)(d.headers) == value
   }
 }

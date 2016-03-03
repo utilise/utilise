@@ -1,6 +1,8 @@
-module.exports = function remove(k, v) {
-  return function(d, i, a) {
-    !v ? (d == k)    && a.splice(i,1)
-       : (d[k] == v) && a.splice(i,1)
+var set = require('utilise/set')
+  , key = require('utilise/key')
+  
+module.exports = function remove(k){
+  return function(o){
+    return set({ key: k, value: key(k)(o), type: 'remove' })(o)
   }
 }

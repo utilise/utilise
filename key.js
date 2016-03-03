@@ -1,5 +1,5 @@
-var is = require('utilise/is')
-  , str = require('utilise/str')
+var str = require('utilise/str')
+  , is = require('utilise/is')
 
 module.exports = function key(k, v){ 
   var set = arguments.length > 1
@@ -8,13 +8,14 @@ module.exports = function key(k, v){
 
   return function deep(o, i){
     var masked = {}
+
     return !o ? undefined 
-         : !k ? o
+         : !is.num(k) && !k ? o
          : is.arr(k) ? (k.map(copy), masked)
          : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k], i) : v), o)
-                                       :   o[k])
-                                : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
-                                       : key(keys.join('.'))(o[root]))
+                                         :   o[k])
+                                  : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
+                                         : key(keys.join('.'))(o[root]))
 
     function copy(k){
       var val = key(k)(o)
