@@ -1008,6 +1008,21 @@ host.spin(false)
 t.notOk(includes(`class="is-spinning"`)(host.outerHTML))
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/th/badge.svg?branch=master)](https://coveralls.io/r/utilise/th?branch=master) [![Build](https://api.travis-ci.org/utilise/th.svg)](https://travis-ci.org/utilise/th) th
+
+Invokes a function with the `this` variable, then the arguments. Useful for using arrow syntax with functions that need the context variable.
+
+```js
+// instead of:
+// input.on('keyup', log)
+// function log(){
+//  console.log(this.value)
+// }
+
+const log = el => d => console.log(el.value)
+input.on('keyup', th(log))
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/time/badge.svg?branch=master)](https://coveralls.io/r/utilise/time?branch=master) [![Build](https://api.travis-ci.org/utilise/time.svg)](https://travis-ci.org/utilise/time) time
 
 Alias for `setTimeout` with duration as first parameter for better readability
