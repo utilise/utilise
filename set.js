@@ -1,60 +1,62 @@
-var last = require('utilise/last')
-  , key = require('utilise/key')
-  , str = require('utilise/str')
-  , is = require('utilise/is')
+var act = { add: add, update: update, remove: remove }
+  , emitterify = require('utilise/emitterify')
+  , def = require('utilise/def')
+  , is  = require('utilise/is')
+  , str = JSON.stringify
+  , parse = JSON.parse
 
-module.exports = exports = function set(diff) {
-  return function(o) {
-    if (!o || !is.obj(o) || !diff || !is.obj(diff)) return o
-    var key = str(diff.key)
-    act.raw[diff.type](o, key, diff.value)
-    return set.commit(o, { key: key, value: diff.value, type: diff.type })
-  }
-}
+module.exports = function set(d) {
+  return function(o, existing) {
+    if (!is.obj(o))
+      return o
 
-exports.commit = function commit(o, diff) {
-  var log = o.log
+    if (!is.obj(d)) { 
+      var s = str(o)
+        , log = existing || o.log || []
+        , log = log.concat({ type: 'update', value: parse(s), time: log.length })
+        , root = parse(s)
 
-  if (log) log.push({ 
-    diff: diff
-  , value: act.imm[diff.type](last(log).value, diff.key.split('.'), diff.value) 
-  })
-
-  if (o.emit) o.emit('log', diff)
-
-  return o
-}
-
-function leaf(o, k, v){
-  var path = k.split('.')
-    , tail = path.pop()
-    , body = key(path.join('.'))(o)
-
-  return { body: body, tail: tail }
-}
-
-var act = {
-  raw: {
-    add   : function(o, k, v) { var l = leaf(o, k); return is.arr(l.body) ? l.body.splice(l.tail, 0, v) : key(k, v)(o) }
-  , update: function(o, k, v) { return key(k, v)(o) }
-  , remove: function(o, k, v) { 
-      var l = leaf(o, k)
-      return is.arr(l.body) ? l.body.splice(l.tail, 1)
-           : l.body         ? delete l.body[l.tail]
-           : false 
+      return def(emitterify(root, null), 'log', log), root
     }
-  }
-, imm: {
-    update: function(o, k, v) { return o.setIn(k, v) }
-  , remove: function(o, k, v) { return o.deleteIn(k) }
-  , add   : function(o, k, v) { 
-      var path = k.slice(0, -1)
-        , tail = k.slice(-1)
-        , last = o.getIn(path)
 
-      return last && last.splice 
-           ? o.setIn(path, last.splice(tail, 0, v))
-           : o.setIn(k, v)
-    }
+    if (is.def(d.key))
+      apply(o, d.type, (d.key = '' + d.key).split('.'), d.value)
+
+    if (o.log) 
+      o.log.push((d.time = o.log.length, d))
+
+    if (o.emit)
+      o.emit('change', d)
+
+    return o
   }
+}
+
+function apply(body, type, path, value) {
+  var next = path.shift()
+
+  if (path.length) { 
+    if (!(next in body)) 
+      if (type == 'remove') return
+      else body[next] = {}
+    apply(body[next], type, path, value)
+  }
+  else 
+    act[type](body, next, value)
+}
+
+function add(o, k, v) {
+  is.arr(o) 
+    ? o.splice(k, 0, v) 
+    : (o[k] = v)
+}
+
+function update(o, k, v) { 
+  o[k] = v 
+}
+
+function remove(o, k, v) { 
+  is.arr(o) 
+    ? o.splice(k, 1)
+    : delete o[k]
 }

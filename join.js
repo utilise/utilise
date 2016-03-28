@@ -10,6 +10,7 @@ module.exports = function join(left, right){
   }
 
   return function(d, uid){
+    if (d === null || d === undefined) return undefined
     var table = right || [], field = null
     if (!uid || is.num(uid)) uid = 'id'
     if (is.str(right)) {

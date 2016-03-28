@@ -262,6 +262,15 @@ defaults(state, 'odd', state.numbers.filter(d => d % 2))
 // state.odd == [1,3,5]
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/done/badge.svg?branch=master)](https://coveralls.io/r/utilise/done?branch=master) [![Build](https://api.travis-ci.org/utilise/done.svg)](https://travis-ci.org/utilise/done) done
+
+Given a versioned object, attaches a one-time callback for a response on the latest change. This is an alternative and more robust pattern than using random correlation ID's to link request-responses over a decoupled channel.
+
+```js
+done(push(newUser)(users))
+  (d => !d.invalid && showConfirmation())
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/el/badge.svg?branch=master)](https://coveralls.io/r/utilise/el?branch=master) [![Build](https://api.travis-ci.org/utilise/el.svg)](https://travis-ci.org/utilise/el) el
 
 Creates a node from a CSS selector
@@ -921,7 +930,7 @@ app.get('/file', send('./file'))
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/set/badge.svg?branch=master)](https://coveralls.io/r/utilise/set?branch=master) [![Build](https://api.travis-ci.org/utilise/set.svg)](https://travis-ci.org/utilise/set) set
 
-Takes an atomic diff and applies it to an object, updating the internal log (if [versioned](https://github.com/pemrouz/versioned/issues/1)), and emitting a standardised change event (if emitterified). An atomic diff is an object in the format `{ type, key, value }` where type can be either of `add | update | remove`. 
+Takes an atomic diff and applies it to an object, updating the internal log, and emitting a standardised change event (if emitterified). An atomic diff is an object in the format `{ type, key, value, time }` where type can be either of `add | update | remove`. 
 
 ```js
 set({ key, value, type })(object)
