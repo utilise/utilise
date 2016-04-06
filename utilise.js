@@ -74,7 +74,7 @@ var key = require('utilise/key')
 module.exports = function by(k, v){
   var exists = arguments.length == 1
   return function(o){
-    var d = key(k)(o)
+    var d = is.fn(k) ? k(o) : key(k)(o)
     
     return d && v && d.toLowerCase && v.toLowerCase ? d.toLowerCase() === v.toLowerCase()
          : exists ? Boolean(d)
@@ -565,10 +565,12 @@ module.exports = function key(k, v){
   }
 }
 },{"utilise/is":38,"utilise/str":74}],41:[function(require,module,exports){
-module.exports = function keys(o) {
-  return Object.keys(o || {})
+var is = require('utilise/is')
+
+module.exports = function keys(o) { 
+  return Object.keys(is.obj(o) ? o : {})
 }
-},{}],42:[function(require,module,exports){
+},{"utilise/is":38}],42:[function(require,module,exports){
 module.exports =  function last(d) {
   return d && d[d.length-1]
 }
@@ -843,8 +845,7 @@ function once(nodes, enter, exit) {
   return c
   
   function c(s, d, k, b) {
-    var lpar = n.length
-      , selector
+    var selector
       , data
       , tag
       , tnodes = []
@@ -854,27 +855,27 @@ function once(nodes, enter, exit) {
       , child
       , j = 0
       , i = 0
+      , p = 0
       , attrs = [], css = []
 
-    p = lpar + 1
+
+    // reselect
     if (arguments.length === 1) {
       if ('string' !== typeof s) return once(s)
 
-      while (--p > 0) 
-        tnodes = tnodes.concat(Array.prototype.slice.call(n[lpar - p].querySelectorAll(s),0))
+      while (parent = n[p++]) 
+        tnodes = tnodes.concat(Array.prototype.slice.call(parent.querySelectorAll(s), 0))
 
       return once(tnodes)
     }
 
+    // shortcut
     if (d === 1 && 'string' === typeof s && arguments.length == 2) {
-      while (--p > 0) { 
-        parent = n[lpar - p]
+      while (parent = n[p++]) { 
         j = parent.children.length
-
-        while (j-- > 0) { 
-          if (parent.children[j].matches(s)) {
-            tnodes[tnodes.length] = parent.children[j] 
-            parent.children[j].__data__ = parent.__data__ || 1
+        while (child = parent.children[--j])  {
+          if (child.matches(s)) {
+            tnodes[tnodes.length] = child        
             break
           }
         }
@@ -893,51 +894,48 @@ function once(nodes, enter, exit) {
 
           for (i = 0; i < css.length; i++) 
             child.classList.add(css[i])
-
-          child.__data__ = parent.__data__ || 1
         }
+
+        child.__data__ = parent.__data__ || 1
+        if ('function' === typeof child.draw) child.draw()
       }
+
       return once(tnodes, tenter, texit)
     }
 
-    while (--p > 0) {
-      parent   = n[lpar - p]
+    // main loop
+    while (parent = n[p++]) {
       selector = 'function' === typeof s ? s(parent.__data__) : s
       data     = 'function' === typeof d ? d(parent.__data__) : d
 
       if (d === 1)                    data = parent.__data__ || [1]
-      if ('string'   === typeof data) data = [data]
+      if ('string' === typeof data)   data = [data]
       if (!data)                      data = []
       if (data.constructor !== Array) data = [data]
 
-      var lall = parent.children.length
-        , l = lall + 1
+      var nodes = new Array(data.length)
         , lnod  = data.length
-        , nodes = new Array(lnod)
+        , l = -1
+          j = 0
 
-      j = 0
-      while (--l > 0) { 
-        child = parent.children[lall - l]
-
+      while (child = parent.children[j++]) { 
         if (!child.matches(selector)) continue
-
-        if (++j > lnod) {
-          lall--
-          parent.removeChild(texit[texit.length] = child)
-          continue
+        if (++l >= lnod) { 
+          parent.removeChild(texit[texit.length] = child), --j
+          continue 
         }
 
-        child.__data__ = data[j-1]
-        tnodes[tnodes.length] = nodes[j-1] = child
-        if ('function' === typeof nodes[j-1].draw) nodes[j-1].draw()
+        child.__data__ = data[l]
+        tnodes[tnodes.length] = nodes[l] = child
+        if ('function' === typeof nodes[l].draw) nodes[l].draw()
       }
 
-      while (j++ < lnod) {
-        tag = selector.call ? selector(data[j-1], j-1)
+      while (++l < lnod) {
+        tag = selector.call ? selector(data[l], l)
             : /([^\.\[]*)/.exec(selector)[1] || 'div'
 
-        b ? parent.insertBefore(nodes[j-1] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag), parent.querySelector(b))
-          : parent.appendChild(nodes[j-1] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag))
+        b ? parent.insertBefore(nodes[l] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag), parent.querySelector(b))
+          : parent.appendChild(nodes[l] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag))
         
         attrs = [], css = []
 
@@ -947,12 +945,13 @@ function once(nodes, enter, exit) {
           .replace(/\.([^.]+)/g, function($1, $2){ return css[css.length] = $2, ''})
 
         for (i = 0; i < attrs.length; i++) 
-          nodes[j-1].setAttribute(attrs[i][0], attrs[i][1])
+          nodes[l].setAttribute(attrs[i][0], attrs[i][1])
 
         for (i = 0; i < css.length; i++) 
-          nodes[j-1].classList.add(css[i])
+          nodes[l].classList.add(css[i])
 
-        nodes[j-1].__data__ = data[j-1]
+        nodes[l].__data__ = data[l]
+        if ('function' === typeof nodes[l].draw) nodes[l].draw()
       }
     }
 
@@ -981,7 +980,7 @@ function event(node, index) {
   }
 
   function reemit(event){
-    window.event = event || window.event
+    window.event = event
     if ('object' === typeof window.d3) window.d3.event = event
     var isCustom = event.constructor.name === 'CustomEvent' || ~(event.toString().indexOf('CustomEvent'))
     emit(event.type, [(isCustom && event.detail) || this.__data__, index])
