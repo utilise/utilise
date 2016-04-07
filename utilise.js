@@ -789,6 +789,8 @@ function once(nodes, enter, exit) {
   c.node  = function() { return n[0] }
   c.enter = function() { return once(enter) }
   c.exit  = function() { return once(exit) }
+  c.size  = function() { return n.length }
+
   c.text  = function(value){ 
     var fn = 'function' === typeof value
     return arguments.length === 0 ? n[0].textContent : (this.each(function(d, i){
