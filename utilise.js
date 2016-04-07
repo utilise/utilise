@@ -874,14 +874,15 @@ function once(nodes, enter, exit) {
     if (d === 1 && arguments.length == 2) {
       while (n[++p]) { 
         j = n[p].children.length
+        selector = s.call ? s(n[p].__data__ || 1, 0) : s
         while (n[p].children[--j])  {
-          if (n[p].children[j].matches(s)) {
+          if (n[p].children[j].matches(selector)) {
             (tnodes[++t] = n[p].children[j]).__data__ = n[p].__data__ || 1
             break
           }
         }
 
-        if (j < 0) n[p].appendChild(tnodes[++t] = tenter[tenter.length] = create(s.call ? s(n[p].__data__ || 1, 0) : s, [n[p].__data__ || 1], 0))
+        if (j < 0) n[p].appendChild(tnodes[++t] = tenter[tenter.length] = create(selector, [n[p].__data__ || 1], 0))
         if ('function' === typeof tnodes[t].draw) tnodes[t].draw()
       }
 
