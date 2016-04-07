@@ -6,24 +6,32 @@ var act = { add: add, update: update, remove: remove }
   , parse = JSON.parse
 
 module.exports = function set(d) {
-  return function(o, existing) {
+  return function(o, existing, max) {
     if (!is.obj(o))
       return o
 
     if (!is.obj(d)) { 
-      var s = str(o)
-        , log = existing || o.log || []
-        , log = log.concat({ type: 'update', value: parse(s), time: log.length })
-        , root = parse(s)
+      var log = existing || o.log || []
+        , root = o
 
-      return def(emitterify(root, null), 'log', log), root
+      if (!max)    log = []
+      if (max < 0) log = log.concat(null)
+      if (max > 0) {
+        var s = str(o)
+        root = parse(s) 
+        log = log.concat({ type: 'update', value: parse(s), time: log.length })
+      } 
+
+      return def(log, 'max', max | 0)
+           , def(emitterify(root, null), 'log', log)
+           , root
     }
 
     if (is.def(d.key))
       apply(o, d.type, (d.key = '' + d.key).split('.'), d.value)
 
-    if (o.log) 
-      o.log.push((d.time = o.log.length, d))
+    if (o.log && o.log.max) 
+      o.log.push(o.log.max > 0 ? (d.time = o.log.length, d) : null)
 
     if (o.emit)
       o.emit('change', d)

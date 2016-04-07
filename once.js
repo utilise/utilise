@@ -1,5 +1,8 @@
+'use strict'
+
 var emitterify = require('utilise/emitterify')  
   , deep = require('utilise/key')  
+  , rsplit = /([^\.\[]*)/
 
 module.exports = once
 
@@ -55,8 +58,8 @@ function once(nodes, enter, exit) {
     }), this) 
   }
   c.each = function(fn){
-    p = 0; while(node = n[p++])
-      fn.call(node, node.__data__, p-1)
+    p = -1; while(n[++p])
+      fn.call(n[p], n[p].__data__, p)
     return this
   }
   c.remove = function(){
@@ -75,114 +78,90 @@ function once(nodes, enter, exit) {
   function c(s, d, k, b) {
     var selector
       , data
-      , tag
       , tnodes = []
       , tenter = []
       , texit  = []
-      , parent
-      , child
-      , j = 0
-      , i = 0
-      , p = 0
-      , attrs = [], css = []
-
+      , j = -1
+      , p = -1
+      , l = -1
+      , t = -1
 
     // reselect
     if (arguments.length === 1) {
       if ('string' !== typeof s) return once(s)
 
-      while (parent = n[p++]) 
-        tnodes = tnodes.concat(Array.prototype.slice.call(parent.querySelectorAll(s), 0))
+      while (n[++p]) 
+        tnodes = tnodes.concat(Array.prototype.slice.call(n[p].querySelectorAll(s), 0))
 
       return once(tnodes)
     }
 
     // shortcut
-    if (d === 1 && 'string' === typeof s && arguments.length == 2) {
-      while (parent = n[p++]) { 
-        j = parent.children.length
-        while (child = parent.children[--j])  {
-          if (child.matches(s)) {
-            tnodes[tnodes.length] = child        
+    if (d === 1 && arguments.length == 2) {
+      while (n[++p]) { 
+        j = n[p].children.length
+        while (n[p].children[--j])  {
+          if (n[p].children[j].matches(s)) {
+            (tnodes[++t] = n[p].children[j]).__data__ = n[p].__data__ || 1
             break
           }
         }
 
-        if (j < 0) {
-          tag = /([^\.\[]*)/.exec(s)[1] || 'div'
-          parent.appendChild(child = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag))
-          
-          attrs = [], css = []
-
-          s.replace(/\[(.+?)="(.*?)"\]/g, function($1, $2, $3){ return attrs[attrs.length] = [$2, $3], '' })
-           .replace(/\.([^.]+)/g, function($1, $2){ return css[css.length] = $2, ''})
-
-          for (i = 0; i < attrs.length; i++) 
-            child.setAttribute(attrs[i][0], attrs[i][1])
-
-          for (i = 0; i < css.length; i++) 
-            child.classList.add(css[i])
-        }
-
-        child.__data__ = parent.__data__ || 1
-        if ('function' === typeof child.draw) child.draw()
+        if (j < 0) n[p].appendChild(tnodes[++t] = tenter[tenter.length] = create(s.call ? s(n[p].__data__ || 1, 0) : s, [n[p].__data__ || 1], 0))
+        if ('function' === typeof tnodes[t].draw) tnodes[t].draw()
       }
 
       return once(tnodes, tenter, texit)
     }
 
     // main loop
-    while (parent = n[p++]) {
-      selector = 'function' === typeof s ? s(parent.__data__) : s
-      data     = 'function' === typeof d ? d(parent.__data__) : d
-
-      if (d === 1)                    data = parent.__data__ || [1]
+    while (n[++p]) {
+      selector = 'function' === typeof s ? s(n[p].__data__) : s
+      data     = 'function' === typeof d ? d(n[p].__data__) : d
+      
+      if (d === 1)                    data = n[p].__data__ || [1]
       if ('string' === typeof data)   data = [data]
       if (!data)                      data = []
       if (data.constructor !== Array) data = [data]
+      
+      if (k) {
+        byKey(selector, data, k, b, n[p], tnodes, tenter, texit)
+        continue
+      }
 
-      var nodes = new Array(data.length)
-        , lnod  = data.length
-        , l = -1
-          j = 0
+      l = -1
+      j = -1
 
-      while (child = parent.children[j++]) { 
-        if (!child.matches(selector)) continue
-        if (++l >= lnod) { 
-          parent.removeChild(texit[texit.length] = child), --j
+      while (n[p].children[++j]) { 
+        if (!n[p].children[j].matches(selector)) continue
+        if (++l >= data.length) { // exit
+          n[p].removeChild(texit[texit.length] = n[p].children[j]), --j
           continue 
         }
 
-        child.__data__ = data[l]
-        tnodes[tnodes.length] = nodes[l] = child
-        if ('function' === typeof nodes[l].draw) nodes[l].draw()
+        (tnodes[++t] = n[p].children[j]).__data__ = data[l] // update
+        if ('function' === typeof n[p].children[j].draw) n[p].children[j].draw()
       }
 
-      while (++l < lnod) {
-        tag = selector.call ? selector(data[l], l)
-            : /([^\.\[]*)/.exec(selector)[1] || 'div'
-
-        b ? parent.insertBefore(nodes[l] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag), parent.querySelector(b))
-          : parent.appendChild(nodes[l] = tnodes[tnodes.length] = tenter[tenter.length] = document.createElement(tag))
-        
-        attrs = [], css = []
-
-        selector
-          .toString()
-          .replace(/\[(.+?)="(.*?)"\]/g, function($1, $2, $3){ return attrs[attrs.length] = [$2, $3], '' })
-          .replace(/\.([^.]+)/g, function($1, $2){ return css[css.length] = $2, ''})
-
-        for (i = 0; i < attrs.length; i++) 
-          nodes[l].setAttribute(attrs[i][0], attrs[i][1])
-
-        for (i = 0; i < css.length; i++) 
-          nodes[l].classList.add(css[i])
-
-        nodes[l].__data__ = data[l]
-        if ('function' === typeof nodes[l].draw) nodes[l].draw()
+      // enter
+      if (typeof selector === 'string') { 
+        n[p].templates = n[p].templates || {}
+        n[p].templates[selector] = n[p].templates[selector] || create(selector, [], 0)
+        while (++l < data.length) { 
+          (b ? n[p].insertBefore(tnodes[++t] = tenter[tenter.length] = n[p].templates[selector].cloneNode(false), n[p].querySelector(b)) 
+             : n[p].appendChild( tnodes[++t] = tenter[tenter.length] = n[p].templates[selector].cloneNode(false)))
+             .__data__ = data[l]
+          if ('function' === typeof tnodes[t].draw) tnodes[t].draw()
+        }
+      } else {
+        while (++l < data.length) { 
+          (b ? n[p].insertBefore(tnodes[++t] = tenter[tenter.length] = create(selector, data, l), n[p].querySelector(b)) 
+             : n[p].appendChild( tnodes[++t] = tenter[tenter.length] = create(selector, data, l)))
+          if ('function' === typeof tnodes[t].draw) tnodes[t].draw()
+        }
       }
     }
-
+  
     return once(tnodes, tenter, texit)
   }
 
@@ -223,4 +202,61 @@ function proxy(fn, c) {
     }) 
     return c 
   }
+}
+
+function create(s, d, j) {
+  var i     = 0
+    , attrs = []
+    , css   = []
+    , sel   = s.call ? s(d[j], j) : s
+    , tag   = rsplit.exec(sel)[1] || 'div'
+    , node  = document.createElement(tag)
+
+  ;(s.call ? s.toString() : s)
+    .replace(/\[(.+?)="(.*?)"\]/g, function($1, $2, $3){ return attrs[attrs.length] = [$2, $3], '' })
+    .replace(/\.([^.]+)/g, function($1, $2){ return css[css.length] = $2, ''})
+
+  for (i = 0; i < attrs.length; i++) 
+    node.setAttribute(attrs[i][0], attrs[i][1])
+
+  for (i = 0; i < css.length; i++) 
+    node.classList.add(css[i])
+
+  node.__data__ = d[j] || 1
+  return node
+}
+
+function byKey(selector, data, key, b, parent, tnodes, tenter, texit) {
+  var c = -1
+    , d = data.length
+    , k
+    , indexNodes = {}
+    , child
+    , next
+
+  while (parent.children[++c]) 
+    if (!parent.children[c].matches(selector)) continue
+    else indexNodes[key(parent.children[c].__data__)] = parent.children[c]
+
+  next = b ? parent.querySelector(b) : null
+
+  while (d--) {
+    if (child = indexNodes[k = key(data[d])])
+      if (child === true) continue
+      else child.__data__ = data[d]
+    else
+      tenter[tenter.length] = child = create(selector, data, d)
+    
+    indexNodes[k] = true
+
+    if (d == data.length - 1 || next !== child.nextSibling)
+      parent.insertBefore(child, next)
+
+    next = tnodes[tnodes.length] = child
+    if ('function' === typeof child.draw) child.draw()
+  }
+
+  for (c in indexNodes)
+    if (indexNodes[c] !== true)
+      parent.removeChild(texit[texit.length] = indexNodes[c])
 }
