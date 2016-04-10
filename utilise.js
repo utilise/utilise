@@ -155,8 +155,8 @@ module.exports = function debounce(d){
 },{"utilise/is":38}],15:[function(require,module,exports){
 var has = require('utilise/has')
 
-module.exports = function def(o, p, v, w){
-  !has(o, p) && Object.defineProperty(o, p, { value: v, writable: w })
+module.exports = function def(o, p, v, w, c){
+  Object.defineProperty(o, p, { value: v, writable: w, configurable: c })
   return o[p]
 }
 
@@ -568,7 +568,7 @@ module.exports = function key(k, v){
 var is = require('utilise/is')
 
 module.exports = function keys(o) { 
-  return Object.keys(is.obj(o) ? o : {})
+  return Object.keys(is.obj(o) || is.fn(o) ? o : {})
 }
 },{"utilise/is":38}],42:[function(require,module,exports){
 module.exports =  function last(d) {
@@ -1225,6 +1225,7 @@ module.exports = function set(d) {
       var log = existing || o.log || []
         , root = o
 
+      if (!is.def(max)) max = log.max || 0
       if (!max)    log = []
       if (max < 0) log = log.concat(null)
       if (max > 0) {
@@ -1233,16 +1234,16 @@ module.exports = function set(d) {
         log = log.concat({ type: 'update', value: parse(s), time: log.length })
       } 
 
-      return def(log, 'max', max | 0)
-           , def(emitterify(root, null), 'log', log)
-           , root
+      def(log, 'max', max)
+      def(emitterify(root, null), 'log', log, 0, 1)
+      return root
     }
 
     if (is.def(d.key))
       apply(o, d.type, (d.key = '' + d.key).split('.'), d.value)
 
     if (o.log && o.log.max) 
-      o.log.push(o.log.max > 0 ? (d.time = o.log.length, d) : null)
+      o.log.push((d.time = o.log.length, o.log.max > 0 ? d : null))
 
     if (o.emit)
       o.emit('change', d)
