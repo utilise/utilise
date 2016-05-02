@@ -38,6 +38,8 @@ mutations
 
 * These are mostly stable, a few new ones may still need experimenting with to get the API right. 
 
+* A smaller set of high power-to-weight ratio functions are preferred over many different functions that do similar things.
+
 * Each micro-library is only just a few lines. 
 
 * Each micro-library has 100% tests. See badges below.
@@ -45,10 +47,6 @@ mutations
 * All browsers (IE >= 9) + node/iojs are supported. Tests are run on real browsers using popper (to be open-sourced soon).
 
 * There is no polyfilling done here. Recommend using polyfill.io where needed. Some libraries will fail tests (like promise) which wraps native functions like `Promise`, unless you shim first.
-
-* UPDATE: Turns out npm is really bad at resolving things over git, so I've set up the build to pull the deps inside this index repo
-
-* UPDATE: Coveralls seems to be lying. All modules are at 100% coverage.
 
 # API Reference
 
@@ -561,6 +559,7 @@ Powerful versatile operator for accessing/setting key(s)
 
 ```js
 key('name')(d)                        // returns value of property name from object d
+key(d => d.first + d.last)(d)         // returns computed value
 key('details.profile.name')(d)        // returns deep property
 key('details', 'foo')(d)              // set property
 key('details.profile.name', 'foo')(d) // set deep property
@@ -935,6 +934,18 @@ Takes an atomic diff and applies it to an object, updating the internal log, and
 ```js
 set({ key, value, type })(object)
 ```
+
+If there is no diff, it initialises `object` with the `.log` property:
+
+```js
+set()(object[[, existing], max])
+```
+
+If an `existing` object is specified with a `.log` property, it will branch off that history to create the new `.log` property. If a `max` property is specified, there are three options:
+
+* > 0: Diffs will be pushed onto the `.log`
+* = 0: The `.log` property will always be `[]`
+* < 0: Nulls will be pushed onto the `.log` (this is to avoid potentially expensive operations in the critical path, whilst still being able to use `.log.length` as a revision counter)
 
 Note that this, as will all utilities here, is fully graceful and will work with: 
 

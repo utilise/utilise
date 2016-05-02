@@ -24,7 +24,11 @@ module.exports = function set(d) {
       } 
 
       def(log, 'max', max)
-      def(emitterify(root, null), 'log', log, 0, 1)
+      
+      root.log 
+        ? (root.log = log)
+        : def(emitterify(root, null), 'log', log, 1)
+
       return root
     }
 

@@ -155,8 +155,8 @@ module.exports = function debounce(d){
 },{"utilise/is":38}],15:[function(require,module,exports){
 var has = require('utilise/has')
 
-module.exports = function def(o, p, v, w, c){
-  Object.defineProperty(o, p, { value: v, writable: w, configurable: c })
+module.exports = function def(o, p, v, w){
+  !has(o, p) && Object.defineProperty(o, p, { value: v, writable: w })
   return o[p]
 }
 
@@ -544,19 +544,19 @@ var str = require('utilise/str')
 
 module.exports = function key(k, v){ 
   var set = arguments.length > 1
-    , keys = str(k).split('.')
+    , keys = is.fn(k) ? [] : str(k).split('.')
     , root = keys.shift()
 
   return function deep(o, i){
     var masked = {}
-
+    
     return !o ? undefined 
          : !is.num(k) && !k ? o
          : is.arr(k) ? (k.map(copy), masked)
          : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k], i) : v), o)
-                                         :   o[k])
-                                  : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
-                                         : key(keys.join('.'))(o[root]))
+                                       :  (is.fn(k) ? k(o) : o[k]))
+                                : (set ? (key(keys.join('.'), v)(o[root] ? o[root] : (o[root] = {})), o)
+                                       :  key(keys.join('.'))(o[root]))
 
     function copy(k){
       var val = key(k)(o)
@@ -1020,20 +1020,20 @@ function byKey(selector, data, key, b, parent, tnodes, tenter, texit) {
       if (child === true) continue
       else child.__data__ = data[d]
     else
-      tenter[tenter.length] = child = create(selector, data, d)
+      tenter.unshift(child = create(selector, data, d))
     
     indexNodes[k] = true
 
     if (d == data.length - 1 || next !== child.nextSibling)
       parent.insertBefore(child, next)
 
-    next = tnodes[tnodes.length] = child
+    tnodes.unshift(next = child)
     if ('function' === typeof child.draw) child.draw()
   }
 
   for (c in indexNodes)
     if (indexNodes[c] !== true)
-      parent.removeChild(texit[texit.length] = indexNodes[c])
+      texit.unshift(parent.removeChild(indexNodes[c]))
 }
 },{"utilise/emitterify":19,"utilise/key":40}],54:[function(require,module,exports){
 var is = require('utilise/is')
@@ -1235,7 +1235,11 @@ module.exports = function set(d) {
       } 
 
       def(log, 'max', max)
-      def(emitterify(root, null), 'log', log, 0, 1)
+      
+      root.log 
+        ? (root.log = log)
+        : def(emitterify(root, null), 'log', log, 1)
+
       return root
     }
 

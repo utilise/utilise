@@ -248,18 +248,18 @@ function byKey(selector, data, key, b, parent, tnodes, tenter, texit) {
       if (child === true) continue
       else child.__data__ = data[d]
     else
-      tenter[tenter.length] = child = create(selector, data, d)
+      tenter.unshift(child = create(selector, data, d))
     
     indexNodes[k] = true
 
     if (d == data.length - 1 || next !== child.nextSibling)
       parent.insertBefore(child, next)
 
-    next = tnodes[tnodes.length] = child
+    tnodes.unshift(next = child)
     if ('function' === typeof child.draw) child.draw()
   }
 
   for (c in indexNodes)
     if (indexNodes[c] !== true)
-      parent.removeChild(texit[texit.length] = indexNodes[c])
+      texit.unshift(parent.removeChild(indexNodes[c]))
 }
