@@ -156,13 +156,14 @@ module.exports = function debounce(d){
 var has = require('utilise/has')
 
 module.exports = function def(o, p, v, w){
+  if (o.host && o.host.nodeName) o = o.host
+  if (p.name) v = p, p = p.name
   !has(o, p) && Object.defineProperty(o, p, { value: v, writable: w })
   return o[p]
 }
 
 },{"utilise/has":32}],16:[function(require,module,exports){
-var extend = require('utilise/extend')
-  , keys = require('utilise/keys')
+var keys = require('utilise/keys')
   , is = require('utilise/is')
 
 module.exports = function defaults(o, k, v){
@@ -175,7 +176,7 @@ module.exports = function defaults(o, k, v){
     if (!is.def(o[k])) o[k] = v
   }
 }
-},{"utilise/extend":22,"utilise/is":38,"utilise/keys":41}],17:[function(require,module,exports){
+},{"utilise/is":38,"utilise/keys":41}],17:[function(require,module,exports){
 module.exports = function done(o) {
   return function(then){
     o.once('response._' + (o.log.length - 1), then)
@@ -838,7 +839,8 @@ function once(nodes, enter, exit) {
   }
   c.remove = function(){
     this.each(function(d){
-      this.parentNode.removeChild(this)
+      var el = this.host || this
+      el.parentNode.removeChild(el)
     }) 
     return this
   }
@@ -943,6 +945,8 @@ function once(nodes, enter, exit) {
 }
 
 function event(node, index) {
+  node = node.host && node.host.nodeName ? node.host : node
+  if (node.evented) return
   if (!node.on) emitterify(node)
   var on = node.on
     , emit = node.emit
@@ -956,24 +960,23 @@ function event(node, index) {
   }
 
   node.emit = function(type, detail, p) {
-    var params = p || { detail: detail, bubbles: false, cancelable: false }
-    ;(node.host || node).dispatchEvent(new window.CustomEvent(type, params))
+    var params = p || { detail: detail, bubbles: false, cancelable: true }
+    node.dispatchEvent(new window.CustomEvent(type, params))
     return node
   }
 
   function reemit(event){
-    if (!window.event) window.event = event
     if ('object' === typeof window.d3) window.d3.event = event
-    var isCustom = event.constructor.name === 'CustomEvent' || ~(event.toString().indexOf('CustomEvent'))
-    emit(event.type, [(isCustom && event.detail) || this.__data__, index])
+    emit(event.type, [this.__data__, index, this, event])
   }
 }
 
 function proxy(fn, c) {
   return function(){
     var args = arguments
-    c.each(function(d){
-      this[fn] && this[fn].apply(this, args)
+    c.each(function(){
+      var node = this.host || this
+      node[fn] && node[fn].apply(node, args)
     }) 
     return c 
   }
@@ -1338,7 +1341,9 @@ module.exports = function th(fn) {
 
 },{}],78:[function(require,module,exports){
 module.exports = function time(ms, fn) {
-  return setTimeout(fn, ms)
+  return arguments.length === 1 
+       ? setTimeout(ms)
+       : setTimeout(fn, ms)
 }
 },{}],79:[function(require,module,exports){
 require('./owner').all = require('./all.js')

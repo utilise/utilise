@@ -1,3 +1,5 @@
 module.exports = function time(ms, fn) {
-  return setTimeout(fn, ms)
+  return arguments.length === 1 
+       ? setTimeout(ms)
+       : setTimeout(fn, ms)
 }

@@ -66,7 +66,8 @@ function once(nodes, enter, exit) {
   }
   c.remove = function(){
     this.each(function(d){
-      this.parentNode.removeChild(this)
+      var el = this.host || this
+      el.parentNode.removeChild(el)
     }) 
     return this
   }
@@ -171,6 +172,8 @@ function once(nodes, enter, exit) {
 }
 
 function event(node, index) {
+  node = node.host && node.host.nodeName ? node.host : node
+  if (node.evented) return
   if (!node.on) emitterify(node)
   var on = node.on
     , emit = node.emit
@@ -184,24 +187,23 @@ function event(node, index) {
   }
 
   node.emit = function(type, detail, p) {
-    var params = p || { detail: detail, bubbles: false, cancelable: false }
-    ;(node.host || node).dispatchEvent(new window.CustomEvent(type, params))
+    var params = p || { detail: detail, bubbles: false, cancelable: true }
+    node.dispatchEvent(new window.CustomEvent(type, params))
     return node
   }
 
   function reemit(event){
-    if (!window.event) window.event = event
     if ('object' === typeof window.d3) window.d3.event = event
-    var isCustom = event.constructor.name === 'CustomEvent' || ~(event.toString().indexOf('CustomEvent'))
-    emit(event.type, [(isCustom && event.detail) || this.__data__, index])
+    emit(event.type, [this.__data__, index, this, event])
   }
 }
 
 function proxy(fn, c) {
   return function(){
     var args = arguments
-    c.each(function(d){
-      this[fn] && this[fn].apply(this, args)
+    c.each(function(){
+      var node = this.host || this
+      node[fn] && node[fn].apply(node, args)
     }) 
     return c 
   }

@@ -1,5 +1,4 @@
-var extend = require('utilise/extend')
-  , keys = require('utilise/keys')
+var keys = require('utilise/keys')
   , is = require('utilise/is')
 
 module.exports = function defaults(o, k, v){
