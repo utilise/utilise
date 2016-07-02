@@ -47,6 +47,7 @@
     "utilise.def": "*",
     "utilise.defaults": "*",
     "utilise.done": "*",
+    "utilise.el": "*",
     "utilise.emitterify": "*",
     "utilise.err": "*",
     "utilise.escape": "*",
