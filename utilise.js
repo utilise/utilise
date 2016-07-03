@@ -885,9 +885,10 @@ function event(node, index) {
     return node
   }
 
-  node.emit = function(type, detail, p) {
-    var params = p || { detail: detail, bubbles: false, cancelable: true }
-    node.dispatchEvent(new window.CustomEvent(type, params))
+  node.emit = function(event, detail) {
+    node.dispatchEvent(event instanceof window.Event 
+      ? event
+      : new window.CustomEvent(event, { detail: detail, bubbles: false, cancelable: true }))
     return node
   }
 
