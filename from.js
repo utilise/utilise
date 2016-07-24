@@ -1,5 +1,5 @@
-var datum = require('utilise/datum')
-  , key = require('utilise/key')
+var datum = require('./datum')
+  , key = require('./key')
 
 module.exports = from
 from.parent = fromParent

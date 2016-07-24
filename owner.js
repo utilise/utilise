@@ -1,1 +1,2 @@
-module.exports = require('utilise/client') ? /* istanbul ignore next */ window : global
+var client = require('./client')
+module.exports = client ? /* istanbul ignore next */ window : global

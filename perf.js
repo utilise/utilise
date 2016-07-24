@@ -1,5 +1,5 @@
-var log = require('utilise/log')('[perf]')
-  , client = require('utilise/client')
+var log = require('./log')('[perf]')
+  , client = require('./client')
 
 module.exports =  function perf(fn, msg) {
   return function(){

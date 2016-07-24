@@ -1,7 +1,7 @@
 var act = { add: add, update: update, remove: remove }
-  , emitterify = require('utilise/emitterify')
-  , def = require('utilise/def')
-  , is  = require('utilise/is')
+  , emitterify = require('./emitterify')
+  , def = require('./def')
+  , is  = require('./is')
   , str = JSON.stringify
   , parse = JSON.parse
 

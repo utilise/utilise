@@ -1,6 +1,6 @@
-var last = require('utilise/last')
-  , set = require('utilise/set')
-  , is = require('utilise/is')
+var last = require('./last')
+  , set = require('./set')
+  , is = require('./is')
 
 module.exports = function pop(o){
   return is.arr(o) 

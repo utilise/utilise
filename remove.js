@@ -1,5 +1,5 @@
-var set = require('utilise/set')
-  , key = require('utilise/key')
+var set = require('./set')
+  , key = require('./key')
   
 module.exports = function remove(k){
   return function(o){

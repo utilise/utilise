@@ -1,4 +1,4 @@
-var has = require('utilise/has')
+var has = require('./has')
 
 module.exports = function def(o, p, v, w){
   if (o.host && o.host.nodeName) o = o.host

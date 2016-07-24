@@ -1,6 +1,6 @@
-var client = require('utilise/client')
-  , owner = require('utilise/owner')
-  , noop = require('utilise/noop')
+var client = require('./client')
+  , owner = require('./owner')
+  , noop = require('./noop')
 
 module.exports = function group(prefix, fn){
   if (!owner.console) return fn()

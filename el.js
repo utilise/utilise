@@ -1,7 +1,7 @@
-var attr = require('utilise/attr')
-  , split = require('utilise/split')
-  , replace = require('utilise/replace')
-  , prepend = require('utilise/prepend')
+var attr = require('./attr')
+  , split = require('./split')
+  , replace = require('./replace')
+  , prepend = require('./prepend')
 
 module.exports = function el(selector){
   var attrs = []

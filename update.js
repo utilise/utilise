@@ -1,4 +1,4 @@
-var set = require('utilise/set')
+var set = require('./set')
   
 module.exports = function update(key, value){
   return function(o){

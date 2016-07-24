@@ -1,7 +1,7 @@
-var is = require('utilise/is')
-  , not = require('utilise/not')
-  , keys = require('utilise/keys')
-  , copy = require('utilise/copy')
+var is = require('./is')
+  , not = require('./not')
+  , keys = require('./keys')
+  , copy = require('./copy')
 
 module.exports = function extend(to){ 
   return function(from){

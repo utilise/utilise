@@ -1,4 +1,4 @@
-var owner = require('utilise/owner')
+var owner = require('./owner')
 
 module.exports = mo
 mo.format = moFormat

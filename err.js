@@ -1,5 +1,5 @@
-var owner = require('utilise/owner')
-  , to = require('utilise/to')
+var owner = require('./owner')
+  , to = require('./to')
 
 module.exports = function err(prefix){
   return function(d){

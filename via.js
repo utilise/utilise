@@ -1,6 +1,6 @@
-var debounce = require('utilise/debounce')
+var debounce = require('./debounce')
   , through = require('through')
-  , noop = require('utilise/noop')
+  , noop = require('./noop')
 
 module.exports = function via(fn){
   var stream = through(write, noop)

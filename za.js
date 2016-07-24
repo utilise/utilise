@@ -1,4 +1,4 @@
-var key = require('utilise/key')
+var key = require('./key')
 
 module.exports = function za(k) {
   return function(a, b){

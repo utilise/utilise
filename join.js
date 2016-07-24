@@ -1,7 +1,7 @@
-var clone = require('utilise/clone')
-  , key = require('utilise/key')
-  , by = require('utilise/by')
-  , is = require('utilise/is')
+var clone = require('./clone')
+  , key = require('./key')
+  , by = require('./by')
+  , is = require('./is')
 
 module.exports = function join(left, right){
   if (arguments.length == 1) {

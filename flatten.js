@@ -1,4 +1,4 @@
-var is = require('utilise/is')  
+var is = require('./is')  
 
 module.exports = function flatten(p,v){ 
   is.arr(v) && (v = v.reduce(flatten, []))

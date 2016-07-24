@@ -1,5 +1,5 @@
-var set = require('utilise/set')
-  , is = require('utilise/is')
+var set = require('./set')
+  , is = require('./is')
 
 module.exports = function push(value){
   return function(o){

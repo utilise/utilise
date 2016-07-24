@@ -1,5 +1,5 @@
-var keys = require('utilise/keys')
-  , is = require('utilise/is')
+var keys = require('./keys')
+  , is = require('./is')
 
 module.exports = function defaults(o, k, v){
   if (o.host) o = o.host

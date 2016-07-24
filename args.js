@@ -1,5 +1,5 @@
-var to = require('utilise/to')
-  , is = require('utilise/is')
+var to = require('./to')
+  , is = require('./is')
 
 module.exports = function args(indices) {
   return function (fn, ctx) {

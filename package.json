@@ -14,11 +14,12 @@
     "via": false
   },
   "scripts": {
-    "bundle": "browserify tmp.js -o utilise.js -i d3 -i colors -s utilise && rm tmp.js",
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
-    "rebuild": "node alias.js && npm run bundle && npm run minify && npm run gzip",
+    "rebuild": "node build && npm run minify && npm run gzip",
     "build": "npm update && npm run rebuild",
+    "rollup": "node alias.js && npm run roll",
+    "roll": "rollup tmp.js -o utilise.js",
     "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags"
   },
@@ -31,6 +32,9 @@
   "devDependencies": {
     "browserify": "^10.2.1",
     "colors": "^1.1.2",
+    "rollup": "^0.34.1",
+    "rollup-plugin-commonjs": "^3.3.1",
+    "rollup-plugin-node-resolve": "^1.7.1",
     "uglify-js": "^2.4.23",
     "utilise.all": "*",
     "utilise.append": "*",
@@ -57,6 +61,7 @@
     "utilise.first": "*",
     "utilise.flatten": "*",
     "utilise.fn": "*",
+    "utilise.form": "*",
     "utilise.from": "*",
     "utilise.grep": "*",
     "utilise.group": "*",

@@ -1,4 +1,4 @@
-var is = require('utilise/is')
+var is = require('./is')
 
 module.exports = function debounce(d){
   var pending, wait = is.num(d) ? d : 100

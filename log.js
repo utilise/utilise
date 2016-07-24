@@ -1,6 +1,6 @@
-var is = require('utilise/is')
-  , to = require('utilise/to')
-  , owner = require('utilise/owner')
+var is = require('./is')
+  , to = require('./to')
+  , owner = require('./owner')
 
 module.exports = function log(prefix){
   return function(d){

@@ -1,6 +1,6 @@
-var is = require('utilise/is')
-  , keys = require('utilise/keys')
-  , copy = require('utilise/copy')
+var is = require('./is')
+  , keys = require('./keys')
+  , copy = require('./copy')
 
 module.exports = function overwrite(to){ 
   return function(from){

@@ -1,5 +1,5 @@
-var is = require('utilise/is')
-  , identity = require('utilise/identity')
+var is = require('./is')
+  , identity = require('./identity')
 
 module.exports = function proxy(fn, ret, ctx){ 
   return function(){
