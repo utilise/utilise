@@ -34,19 +34,19 @@ mutations
   * You don't have to load a 0.5MB utility library just to use one function.
   * You can be a lot smarter with dead code elimination, even if you include the base file (but not use everything).
 
-* There is no spraying your code with `_.` everywhere, since these functions are largely first-class additions to the language that make your code a lot more fluent. 
+* There is no spraying your code with `_.` everywhere, since these functions are largely first-class additions to the grammar of the language that make your code a lot more fluent. 
 
-* These are mostly stable, a few new ones may still need experimenting with to get the API right. 
+* These are mostly stable/fixed, a few new ones may still need experimenting with to get the API right. 
 
-* A smaller set of high power-to-weight ratio functions are preferred over many different functions that do similar things.
+* A smaller set of high power-to-weight ratio functions are preferred over many, many different functions that do similar things.
 
 * Each micro-library is only just a few lines. 
 
-* Each micro-library has 100% tests. See badges below.
+* Each micro-library has 100% coverage. See badges below.
 
-* All browsers (IE >= 9) + node/iojs are supported. Tests are run on real browsers using popper (to be open-sourced soon).
+* All browsers (IE >= 9) + node are supported. Tests are run on real browsers using [popper](https://github.com/pemrouz/popper).
 
-* There is no polyfilling done here. Recommend using polyfill.io where needed. Some libraries will fail tests (like promise) which wraps native functions like `Promise`, unless you shim first.
+* There is no polyfilling done here. Recommend using polyfill.io where needed. Some libraries will fail tests (like promise) which assume a native API like `Promise`, unless you [shim first](https://github.com/pemrouz/popper).
 
 # API Reference
 
