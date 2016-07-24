@@ -367,6 +367,22 @@ twoD = [[1], [2], [3]]
 oneD = twoD.reduce(flatten)  // [1, 2, 3]
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/form/badge.svg?branch=master)](https://coveralls.io/r/utilise/form?branch=master) [![Build](https://api.travis-ci.org/utilise/form.svg)](https://travis-ci.org/utilise/form) form
+
+Converts a `<form>` to a JSON object as you would expect. This is useful to abstract the different ways of getting values from different controls (text inputs, radio elements, checkboxes, selects, files, custom elements). The keys come from the `name` attributes. Checkboxes are represented as arrays. Files as `FileList`. For Custom Elements, it takes the `element.state.value` property, so they can also participate in forms.
+
+```js
+const { values, invalid } = form(element)
+
+values == {
+  foo: '..'         // text inputs, radio elements, selects as single value
+, bar: ['..', '..'] // checkboxes as arrays
+, baz: FileList     // file inputs   
+}
+```
+
+`invalid` is an array containing all the elements that were marked by the `is-invalid` class.
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/fn/badge.svg?branch=master)](https://coveralls.io/r/utilise/fn?branch=master) [![Build](https://api.travis-ci.org/utilise/fn.svg)](https://travis-ci.org/utilise/fn) fn
 
 Turns a function as a string into a real function
