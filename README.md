@@ -540,6 +540,7 @@ is.falsy      // falsy
 is.arr        // array
 is.null       // null
 is.def        // undefined
+is.promise    // promise
 is.in(set)(d) // checks if d in set (string, array or object)
 ```
 
@@ -766,6 +767,14 @@ owner == global
 
 Equivalent to `JSON.parse`
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/patch/badge.svg?branch=master)](https://coveralls.io/r/utilise/patch?branch=master) [![Build](https://api.travis-ci.org/utilise/patch.svg)](https://travis-ci.org/utilise/patch) patch
+
+Updates multiple values at a key, updates the internal log (if versioned), and emits a standardised change event (if emitterified). See also other [functional versioned operators](https://github.com/utilise/utilise#--update).
+
+```js
+patch('key', { a, b, c })(object)
+```
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/pause/badge.svg?branch=master)](https://coveralls.io/r/utilise/pause?branch=master) [![Build](https://api.travis-ci.org/utilise/pause.svg)](https://travis-ci.org/utilise/parse) pause
 
 Actually pauses a stream so you can build up a pipeline, pass it around, attach more pipes, before starting the flow. Server only.
@@ -973,6 +982,7 @@ See also the more ergonomic functional versioned operators which use this generi
 
 * [pop](https://github.com/utilise/utilise#--pop)
 * [push](https://github.com/utilise/utilise#--push)
+* [patch](https://github.com/utilise/utilise#--patch)
 * [update](https://github.com/utilise/utilise#--update)
 * [remove](https://github.com/utilise/utilise#--remove)
 

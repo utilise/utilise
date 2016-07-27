@@ -36,18 +36,19 @@
     }
   }
 
-  is.fn     = isFunction
-  is.str    = isString
-  is.num    = isNumber
-  is.obj    = isObject
-  is.lit    = isLiteral
-  is.bol    = isBoolean
-  is.truthy = isTruthy
-  is.falsy  = isFalsy
-  is.arr    = isArray
-  is.null   = isNull
-  is.def    = isDef
-  is.in     = isIn
+  is.fn      = isFunction
+  is.str     = isString
+  is.num     = isNumber
+  is.obj     = isObject
+  is.lit     = isLiteral
+  is.bol     = isBoolean
+  is.truthy  = isTruthy
+  is.falsy   = isFalsy
+  is.arr     = isArray
+  is.null    = isNull
+  is.def     = isDef
+  is.in      = isIn
+  is.promise = isPromise
 
   function is(v){
     return function(d){
@@ -98,6 +99,10 @@
 
   function isDef(d) {
     return typeof d !== 'undefined'
+  }
+
+  function isPromise(d) {
+    return d instanceof Promise
   }
 
   function isIn(set) {
@@ -867,21 +872,6 @@
     }
   }
 
-  var log$1 = log('[perf]')
-  function perf(fn, msg) {
-    return function(){
-      /* istanbul ignore next */
-      var start  = client ? performance.now() : process.hrtime()
-        , retval = fn.apply(this, arguments)
-        , diff   = client ? performance.now() - start : process.hrtime(start)
-
-      !client && (diff = (diff[0]*1e3 + diff[1]/1e6))
-      diff = Math.round(diff*100)/100
-      log$1(msg || fn.name, diff, 'ms'), diff
-      return retval
-    }
-  }
-
   var act = { add: add, update: update, remove: remove }
   var str$1 = JSON.stringify
   var parse$1 = JSON.parse
@@ -953,6 +943,30 @@
     is.arr(o) 
       ? o.splice(k, 1)
       : delete o[k]
+  }
+
+  function patch(key, values){
+    return function(o){
+      return keys(values)
+        .map(function(k){
+          return set({ key: key + '.' + k, value: values[k], type: 'update' })(o)
+        }), o
+    }
+  }
+
+  var log$1 = log('[perf]')
+  function perf(fn, msg) {
+    return function(){
+      /* istanbul ignore next */
+      var start  = client ? performance.now() : process.hrtime()
+        , retval = fn.apply(this, arguments)
+        , diff   = client ? performance.now() - start : process.hrtime(start)
+
+      !client && (diff = (diff[0]*1e3 + diff[1]/1e6))
+      diff = Math.round(diff*100)/100
+      log$1(msg || fn.name, diff, 'ms'), diff
+      return retval
+    }
   }
 
   function pop(o){
@@ -1161,6 +1175,7 @@
   owner.overwrite = overwrite
   owner.owner = owner
   owner.parse = parse
+  owner.patch = patch
   owner.perf = perf
   owner.pop = pop
   owner.prepend = prepend

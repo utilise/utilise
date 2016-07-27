@@ -87,6 +87,7 @@
     "utilise.owner": "*",
     "utilise.parse": "*",
     "utilise.pause": "*",
+    "utilise.patch": "*",
     "utilise.perf": "*",
     "utilise.pop": "*",
     "utilise.prepend": "*",

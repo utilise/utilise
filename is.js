@@ -1,16 +1,17 @@
 module.exports = is
-is.fn     = isFunction
-is.str    = isString
-is.num    = isNumber
-is.obj    = isObject
-is.lit    = isLiteral
-is.bol    = isBoolean
-is.truthy = isTruthy
-is.falsy  = isFalsy
-is.arr    = isArray
-is.null   = isNull
-is.def    = isDef
-is.in     = isIn
+is.fn      = isFunction
+is.str     = isString
+is.num     = isNumber
+is.obj     = isObject
+is.lit     = isLiteral
+is.bol     = isBoolean
+is.truthy  = isTruthy
+is.falsy   = isFalsy
+is.arr     = isArray
+is.null    = isNull
+is.def     = isDef
+is.in      = isIn
+is.promise = isPromise
 
 function is(v){
   return function(d){
@@ -61,6 +62,10 @@ function isNull(d) {
 
 function isDef(d) {
   return typeof d !== 'undefined'
+}
+
+function isPromise(d) {
+  return d instanceof Promise
 }
 
 function isIn(set) {
