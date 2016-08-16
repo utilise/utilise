@@ -209,6 +209,26 @@ nodes
   .map(datum)
 ```
 
+## [![Coverage Status](https://coveralls.io/repos/utilise/deb/badge.svg?branch=master)](https://coveralls.io/r/utilise/deb?branch=master) [![Build](https://api.travis-ci.org/utilise/deb.svg)](https://travis-ci.org/utilise/deb) deb
+
+Lightweight scoped version of `console.log` with a prefix, useful for per module identification
+
+```js
+deb = deb('[module/prefix]')
+deb('something went wrong!') // [module/prefix] something went wrong
+```
+
+Returns the input, so it is useful with intermediary logging whilst iterating over a list
+
+```js
+list
+  .map(op1)
+  .map(deb)
+  .map(op2)
+```
+
+You can filter debug logs on server-side with `DEBUG` (`module`, or `module/submodule`) or using the `debug` querystring parameter on the client-side.
+
 ## [![Coverage Status](https://coveralls.io/repos/utilise/debounce/badge.svg?branch=master)](https://coveralls.io/r/utilise/debounce?branch=master) [![Build](https://api.travis-ci.org/utilise/debounce.svg)](https://travis-ci.org/utilise/debounce) debounce
 
 Returns a debounced function. Specify time in ms, or defaults to 100ms.

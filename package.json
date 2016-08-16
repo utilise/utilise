@@ -16,10 +16,8 @@
   "scripts": {
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
-    "rebuild": "node build && npm run minify && npm run gzip",
-    "build": "npm update && npm run rebuild",
-    "rollup": "node alias.js && npm run roll",
-    "roll": "rollup tmp.js -o utilise.js",
+    "build": "node build && npm run minify && npm run gzip",
+    "refresh": "npm update && npm run build",
     "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags"
   },
@@ -48,6 +46,7 @@
     "utilise.copy": "*",
     "utilise.datum": "*",
     "utilise.debounce": "*",
+    "utilise.deb": "*",
     "utilise.def": "*",
     "utilise.defaults": "*",
     "utilise.done": "*",
