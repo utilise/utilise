@@ -5,7 +5,7 @@ var is = require('./is')
   , split = require('./split')
   , client = require('./client')
   , identity = require('./identity')
-  , DEBUG = strip((client ? owner.location.search.match(/debug=(.*?)(&|$)/)[1] : key('process.env.DEBUG')(owner)) || '')
+  , DEBUG = strip((client ? (owner.location.search.match(/debug=(.*?)(&|$)/) || [])[1] : key('process.env.DEBUG')(owner)) || '')
   , whitelist = DEBUG.split(',').map(split('/'))
 
 module.exports = function deb(ns){

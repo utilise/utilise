@@ -265,7 +265,7 @@ function identity(d) {
   return d
 }
 
-var DEBUG = strip((client ? owner.location.search.match(/debug=(.*?)(&|$)/)[1] : key('process.env.DEBUG')(owner)) || '')
+var DEBUG = strip((client ? (owner.location.search.match(/debug=(.*?)(&|$)/) || [])[1] : key('process.env.DEBUG')(owner)) || '')
 var whitelist = DEBUG.split(',').map(split('/'))
 
 function deb(ns){
