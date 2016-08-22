@@ -381,7 +381,7 @@ function emitterify(body, dparam) {
       , tp = is.def(param)  ? param 
            : is.def(dparam) ? dparam
            : [body]
-      , pm = tp.length && !is.str(tp) ? tp : [tp]
+      , pm = tp && tp.length && !is.str(tp) ? tp : [tp]
 
     if (ns) return invoke(li, ns, pm), body
 
@@ -629,7 +629,6 @@ function nullify(fn){
 }
 
 var rsplit = /([^\.\[]*)/
-var deep = key
 
 function once(nodes, enter, exit) {
   var n = c.nodes = Array === nodes.constructor ? nodes
