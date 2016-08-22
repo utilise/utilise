@@ -628,6 +628,7 @@ function nullify(fn){
   : null
 }
 
+var deep = key
 var rsplit = /([^\.\[]*)/
 
 function once(nodes, enter, exit) {

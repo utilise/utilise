@@ -2,7 +2,8 @@
 
 var emitterify = require('./emitterify')  
   , keys = require('./keys')
-  , deep = require('./key')
+  , key = require('./key')
+  , deep = key
   , rsplit = /([^\.\[]*)/
 
 module.exports = once
