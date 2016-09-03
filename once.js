@@ -72,6 +72,11 @@ function once(nodes, enter, exit) {
       el.parentNode.removeChild(el)
     }) 
     return this
+  }  
+  c.closest = function(tag){ 
+    return once(n
+      .map(function(d){ return d.closest(tag) })
+      .filter(Boolean))
   }
   c.draw = proxy('draw', c)
   c.once = proxy('once', c)
