@@ -1,3 +1,5 @@
+const is = require('./is')
+
 module.exports = { 
   arr: toArray
 , obj: toObject
@@ -17,7 +19,7 @@ function toObject(d) {
 
   function reduce(p,v,i){
     if (i === 0) p = {}
-    p[v[by]] = v
+    p[is.fn(by) ? by(v, i) : v[by]] = v
     return p
   }
 }

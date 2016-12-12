@@ -1108,13 +1108,13 @@ to.arr(NodeList)
 to.arr(arguments)
 ```
 
-**to.obj**: Converts an array to an object. Uses `id` property as key by default if none specified
+**to.obj**: Converts an array to an object. Uses `id` property as key by default if none specified. The key can also be a function which will receive the item and it's index as parameters, and return the computed string to use as the key.
 
 ```js
 [
   { id: 'foo', value: 1 }
 , { id: 'bar', value: 2 }
-].reduce(to.obj, 1)
+].reduce(to.obj, {})
 
 /* returns 
 { 
@@ -1123,10 +1123,10 @@ to.arr(arguments)
 } 
 */
 
-// or you can use .reduce(to.obj('prop'), 1)
+// or you can use .reduce(to.obj('prop'), {})
 ```
 
-Note: You should always use an initial value with the reduce function (it doesn't matter what the value is). This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
+Note: You should always use an initial value with the reduce function. This is because if your array happens to be an array with only one element and there is no initial value, JavaScript will not even call the reduce function.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/unique/badge.svg?branch=master)](https://coveralls.io/r/utilise/unique?branch=master) [![Build](https://api.travis-ci.org/utilise/unique.svg)](https://travis-ci.org/utilise/unique) unique
 

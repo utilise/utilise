@@ -1,41 +1,6 @@
 (function () {
 'use strict';
 
-var to = { 
-  arr: toArray
-, obj: toObject
-}
-
-function toArray(d){
-  return Array.prototype.slice.call(d, 0)
-}
-
-function toObject(d) {
-  var by = 'id'
-    , o = {}
-
-  return arguments.length == 1 
-    ? (by = d, reduce)
-    : reduce.apply(this, arguments)
-
-  function reduce(p,v,i){
-    if (i === 0) p = {}
-    p[v[by]] = v
-    return p
-  }
-}
-
-function all(selector, doc){
-  var prefix = !doc && document.head.createShadowRoot ? 'html /deep/ ' : ''
-  return to.arr((doc || document).querySelectorAll(prefix+selector))
-}
-
-function append(v) {
-  return function(d){
-    return d+v
-  }
-}
-
 is.fn      = isFunction
 is.str     = isString
 is.num     = isNumber
@@ -110,6 +75,41 @@ function isIn(set) {
     return !set ? false  
          : set.indexOf ? ~set.indexOf(d)
          : d in set
+  }
+}
+
+var to = { 
+  arr: toArray
+, obj: toObject
+}
+
+function toArray(d){
+  return Array.prototype.slice.call(d, 0)
+}
+
+function toObject(d) {
+  var by = 'id'
+    , o = {}
+
+  return arguments.length == 1 
+    ? (by = d, reduce)
+    : reduce.apply(this, arguments)
+
+  function reduce(p,v,i){
+    if (i === 0) p = {}
+    p[is.fn(by) ? by(v, i) : v[by]] = v
+    return p
+  }
+}
+
+function all(selector, doc){
+  var prefix = !doc && document.head.createShadowRoot ? 'html /deep/ ' : ''
+  return to.arr((doc || document).querySelectorAll(prefix+selector))
+}
+
+function append(v) {
+  return function(d){
+    return d+v
   }
 }
 
@@ -1104,7 +1104,7 @@ function stripws(d){
 function draw(host, fn, state) {
   var el = host.node ? host.node() : host
   el.state = state || {}
-  el.draw = function(d){ return fn && fn.call(el, el, el.state) }
+  el.draw = function(d){ return fn && fn.call(el, el.state) }
   el.draw()
   return host
 }
