@@ -1,4 +1,4 @@
-const is = require('./is')
+var is = require('./is')
 
 module.exports = { 
   arr: toArray
