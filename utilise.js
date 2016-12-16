@@ -447,6 +447,10 @@ function falsy(){
   return false
 }
 
+function file(name){
+  return require('fs').readFileSync(name, { encoding:'utf8' })
+}
+
 function first(d){
   return d && d[0]
 }
@@ -912,6 +916,25 @@ function overwrite(to){
   }
 }
 
+function pause(stream) {
+  var pipeline = []
+  stream.save  = stream.pipe
+  stream.pipe  = pipe
+  stream.flow  = flow
+  return stream
+
+  function pipe(dest) {
+    pipeline.push(dest)
+    return stream
+  }
+
+  function flow() {
+    while (pipeline.length) 
+      stream = (stream.save || stream.pipe).call(stream, pipeline.shift())
+    return stream
+  }
+}
+
 var act = { add: add, update: update, remove: remove }
 var str$1 = JSON.stringify
 var parse$1 = JSON.parse
@@ -1084,6 +1107,12 @@ function remove$1(k){
   }
 }
 
+function send(path){
+  return function(req, res){
+    res.sendFile(path)
+  }
+}
+
 function slice(from, to){
   return function(d){
     return d.slice(from, to)
@@ -1138,6 +1167,24 @@ function values(o) {
   return !o ? [] : keys(o).map(from(o))
 }
 
+var through = require('through')
+function via(fn){
+  var stream = through(write, noop)
+    , once = debounce(push)
+    , buffer = ''
+
+  return stream
+
+  function write(chunk){
+    buffer += chunk
+    once()
+  }
+
+  function push(){ 
+    stream.push(fn(buffer.toString())) 
+  }
+}
+
 function wait(condition){
   return function(handler){
     return function(){
@@ -1188,6 +1235,7 @@ owner.err = err$1
 owner.escape = escape
 owner.extend = extend
 owner.falsy = falsy
+owner.file = file
 owner.first = first
 owner.flatten = flatten
 owner.fn = fn
@@ -1216,6 +1264,7 @@ owner.once = once
 owner.overwrite = overwrite
 owner.owner = owner
 owner.parse = parse
+owner.pause = pause
 owner.patch = patch
 owner.perf = perf
 owner.pop = pop
@@ -1227,6 +1276,7 @@ owner.raw = raw
 owner.ready = ready
 owner.remove = remove$1
 owner.replace = replace
+owner.send = send
 owner.set = set
 owner.slice = slice
 owner.sort = sort
@@ -1240,6 +1290,7 @@ owner.to = to
 owner.unique = unique
 owner.update = update$1
 owner.values = values
+owner.via = via
 owner.wait = wait
 owner.wrap = wrap
 owner.za = za
