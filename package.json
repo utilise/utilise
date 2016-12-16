@@ -8,10 +8,10 @@
   },
   "main": "index.js",
   "browser": {
-    "pause": false,
-    "send": false,
-    "file": false,
-    "via": false
+    "./pause": false,
+    "./send": false,
+    "./file": false,
+    "./via": false
   },
   "scripts": {
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
