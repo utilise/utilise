@@ -53,6 +53,7 @@
     "utilise.deb": "*",
     "utilise.def": "*",
     "utilise.defaults": "*",
+    "utilise.delay": "*",
     "utilise.done": "*",
     "utilise.el": "*",
     "utilise.emitterify": "*",

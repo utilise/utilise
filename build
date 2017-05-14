@@ -20,7 +20,8 @@ const fs = require('fs')
     , alias = "module.exports = require('{mod}')"
     , imp = 'import {name} from "./tmp_{name}";\n'
     , cjs = 'require("./owner").{name} = require("./{name}")\n'
-    , exp = 'owner.{name} = {name}\n'
+    , exp = 'exports.{name} = require("./{name}")\n'
+    , own = 'owner.{name} = {name}\n'
     , modules = keys(require('./package.json').devDependencies)
         .filter(includes('utilise'))
         .map(replace('utilise.', ''))
@@ -53,6 +54,12 @@ modules
   .map(d => cjs.replace(/{name}/g, d))
   .map(d => index.write(d))
 
+// expose single node entry point
+const pure = fs.createWriteStream('pure.js')
+modules
+  .map(d => exp.replace(/{name}/g, d))
+  .map(d => pure.write(d))
+
 //---------------------------------------------------------------------
 // create utilise/{name} aliases
 modules
@@ -84,7 +91,7 @@ modules
 
 modules
   .filter(not(is.in(browser)))
-  .map(d => exp.replace(/{name}/g, d))
+  .map(d => own.replace(/{name}/g, d))
   .map(d => tmp.write(d))
 
 tmp.write(';(client ? window : global).owner = owner')

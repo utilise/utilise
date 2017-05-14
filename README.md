@@ -31,6 +31,7 @@ mutations
   * You can `npm i utilise` and finally write imports like `<org>/<repo>` in each file.
   * You don't have to make up esoteric names due to lack of `<org>/<repo>` in npm.
   * You can use `utilise.js` to import everything (in your application).
+  * You can use `{ utility } = require('utilise/pure')` to import what you need + tree shake.
   * You don't have to load a 0.5MB utility library just to use one function.
   * You can be a lot smarter with dead code elimination, even if you include the base file (but not use everything).
 
@@ -278,6 +279,15 @@ defaults(state, 'odd', state.numbers.filter(d => d % 2))
 
 // state.numbers == [1,2,3,4,5]
 // state.odd == [1,3,5]
+```
+
+## [![Coverage Status](https://coveralls.io/repos/utilise/delay/badge.svg?branch=master)](https://coveralls.io/r/utilise/delay?branch=master) [![Build](https://api.travis-ci.org/utilise/delay.svg)](https://travis-ci.org/utilise/delay) delay
+
+Creates a promise that eventually delays after the specified milliseconds. You can also set to resolve to a specific value.
+
+```js
+await delay(1000)
+await delay(1000, 'some value')
 ```
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/done/badge.svg?branch=master)](https://coveralls.io/r/utilise/done?branch=master) [![Build](https://api.travis-ci.org/utilise/done.svg)](https://travis-ci.org/utilise/done) done

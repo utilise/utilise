@@ -5,7 +5,7 @@ var act = { add: add, update: update, remove: remove }
   , str = JSON.stringify
   , parse = JSON.parse
 
-module.exports = function set(d) {
+module.exports = function set(d, skipEmit) {
   return function(o, existing, max) {
     if (!is.obj(o))
       return o
@@ -32,13 +32,16 @@ module.exports = function set(d) {
       return root
     }
 
-    if (is.def(d.key))
-      apply(o, d.type, (d.key = '' + d.key).split('.'), d.value)
+    if (is.def(d.key)) {
+      if (!apply(o, d.type, (d.key = '' + d.key).split('.'), d.value))
+        return false
+    } else
+      return false
 
     if (o.log && o.log.max) 
       o.log.push((d.time = o.log.length, o.log.max > 0 ? d : null))
 
-    if (o.emit)
+    if (!skipEmit && o.emit)
       o.emit('change', d)
 
     return o
@@ -48,14 +51,18 @@ module.exports = function set(d) {
 function apply(body, type, path, value) {
   var next = path.shift()
 
+  if (!act[type]) 
+    return false
   if (path.length) { 
     if (!(next in body)) 
-      if (type == 'remove') return
+      if (type == 'remove') return true
       else body[next] = {}
-    apply(body[next], type, path, value)
+    return apply(body[next], type, path, value)
   }
-  else 
+  else {
     act[type](body, next, value)
+    return true
+  }
 }
 
 function add(o, k, v) {

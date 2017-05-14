@@ -68,7 +68,7 @@ function once(nodes, enter, exit) {
   }
   c.remove = function(){
     this.each(function(){
-      var el = this.host || this
+      var el = this.host && this.host.nodeName ? this.host : this
       el.parentNode.removeChild(el)
     }) 
     return this
@@ -216,7 +216,7 @@ function proxy(fn, c) {
   return function(){
     var args = arguments
     c.each(function(){
-      var node = this.host || this
+      var node = this.host && this.host.nodeName ? this.host : this
       node[fn] && node[fn].apply(node, args)
     }) 
     return c 

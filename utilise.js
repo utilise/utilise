@@ -317,6 +317,12 @@ function defaults(o, k, v){
   }
 }
 
+function delay(ms, d){ 
+  return new Promise(function(resolve){
+    setTimeout(function(){ resolve(d) }, ms)
+  })
+}
+
 function done(o) {
   return function(then){
     o.once('response._' + (o.log.length - 1), then)
@@ -348,7 +354,128 @@ function el(selector){
   return elem
 }
 
-function err$1(ns){
+function promise() {
+  var resolve
+    , reject
+    , p = new Promise(function(res, rej){ 
+        resolve = res, reject = rej
+      })
+
+  arguments.length && resolve(arguments[0])
+  p.resolve = resolve
+  p.reject  = reject
+  return p
+}
+
+function emitterify(body) {
+  body = body || {}
+  def(body, 'emit', emit, 1)
+  def(body, 'once', once, 1)
+  def(body, 'off', off, 1)
+  def(body, 'on', on, 1)
+  body.on['*'] = []
+  return body
+
+  function emit(type, pm, filter) {
+    var li = body.on[type.split('.')[0]] || []
+    
+    for (var i = 0; i < li.length; i++)
+      if (!li[i].ns || !filter || filter(li[i].ns))
+        call(li[i].once ? li.splice(i, 1)[0] : li[i], pm)
+
+    for (var i = 0; i < body.on['*'].length; i++)
+      call(body.on['*'][i], [type, pm])
+
+    if (li.source) call(li.source, pm)
+
+    return body
+  }
+
+
+  function call(cb, pm){
+      cb.next             ? cb.next(pm) 
+    : pm instanceof Array ? cb.apply(body, pm) 
+                          : cb.call(body, pm) 
+  }
+
+  function on(type, cb) {
+    var id = type.split('.')[0]
+      , li = body.on[id] = body.on[id] || []
+      , i = li.length
+
+    if (!cb) return body.on[type].source || (body.on[type].source = observable())
+
+    if ((cb.ns = type.split('.')[1]))
+      while (~--i && li[i].ns === cb.ns)
+        li.splice(i, 1)
+
+    li.push(cb)
+    return cb.next ? cb : body
+  }
+
+  function once(type, callback){
+    (callback = callback || observable()).once = true
+    return body.on(type, callback)
+  }
+
+  function off(type, cb) {
+    var li = (body.on[type] || [])
+      , i  = li.length
+
+    if (cb && cb == li.source) 
+      return delete li.source
+
+    while (~--i && (cb == li[i] || !cb))
+      li.splice(i, 1)
+  }
+
+  function observable() {
+    var o = promise()
+    o.listeners = []
+    o.i = 0
+
+    o.map = function(fn) {
+      var n = observable()
+      o.listeners.push(function(d, i){ n.next(fn(d, i, n)) })
+      o.listeners[o.listeners.length - 1].fn = fn
+      return n
+    }
+
+    o.filter = function(fn) {
+      var n = observable()
+      o.listeners.push(function(d, i){ fn(d, i, n) && n.next(d) })
+      o.listeners[o.listeners.length - 1].fn = fn
+      return n
+    }
+
+    o.reduce = function(fn, seed) {
+      var n = observable()
+      o.listeners.push(function(d, i){ n.next(seed = fn(seed, d, i, n)) })
+      o.listeners[o.listeners.length - 1].fn = fn
+      return n
+    }
+
+    o.next = function(d) {
+      o.resolve(d)
+      o.listeners.map(function(fn){ fn(d, o.i) })
+      o.i++
+      return o
+    }
+
+    o.off = function(fn){
+      var i = o.listeners.length
+
+      while (~--i && (fn == o.listeners[i].fn || !fn))
+        o.listeners.splice(i, 1)
+      return o
+    }
+
+    return o
+
+  }
+}
+
+function err(ns){
   return function(d){
     if (!owner.console || !console.error.apply) return d;
     is.arr(arguments[2]) && (arguments[2] = arguments[2].length)
@@ -357,65 +484,6 @@ function err$1(ns){
 
     args.unshift(prefix.red ? prefix.red : prefix)
     return console.error.apply(console, args), d
-  }
-}
-
-function not(fn){
-  return function(){
-    return !fn.apply(this, arguments)
-  }
-}
-
-var err = err$1('[emitterify]')
-function emitterify(body, dparam) {
-  return def(body, 'emit', emit, 1)
-       , def(body, 'once', once, 1)
-       , def(body, 'on', on, 1)
-       , body
-
-  function emit(type, param, filter) {
-    var ns = type.split('.')[1]
-      , id = type.split('.')[0]
-      , li = body.on[id] || []
-      , tt = li.length - 1
-      , tp = is.def(param)  ? param 
-           : is.def(dparam) ? dparam
-           : [body]
-      , pm = tp && tp.length && !is.str(tp) ? tp : [tp]
-
-    if (ns) return invoke(li, ns, pm), body
-
-    for (var i = li.length; i >=0; i--)
-      invoke(li, i, pm)
-
-    keys(li)
-      .filter(not(isFinite))
-      .filter(filter || Boolean)
-      .map(function(n){ return invoke(li, n, pm) })
-
-    return body
-  }
-
-  function invoke(o, k, p){
-    if (!o[k]) return
-    var fn = o[k]
-    o[k].once && (isFinite(k) ? o.splice(k, 1) : delete o[k])
-    try { fn.apply(body, p) } catch(e) { err(e, e.stack)  }
-   }
-
-  function on(type, callback) {
-    var ns = type.split('.')[1]
-      , id = type.split('.')[0]
-
-    body.on[id] = body.on[id] || []
-    return !callback && !ns ? (body.on[id])
-         : !callback &&  ns ? (body.on[id][ns])
-         :  ns              ? (body.on[id][ns] = callback, body)
-                            : (body.on[id].push(callback), body)
-  }
-
-  function once(type, callback){
-    return callback.once = true, body.on(type, callback), body
   }
 }
 
@@ -431,6 +499,12 @@ var safe = {
 , ">": "&gt;"
 , '"': "&quot;"
 , "'": "&#39;"
+}
+
+function not(fn){
+  return function(){
+    return !fn.apply(this, arguments)
+  }
 }
 
 function extend(to){ 
@@ -691,7 +765,7 @@ function once(nodes, enter, exit) {
   }
   c.remove = function(){
     this.each(function(){
-      var el = this.host || this
+      var el = this.host && this.host.nodeName ? this.host : this
       el.parentNode.removeChild(el)
     }) 
     return this
@@ -839,7 +913,7 @@ function proxy(fn, c) {
   return function(){
     var args = arguments
     c.each(function(){
-      var node = this.host || this
+      var node = this.host && this.host.nodeName ? this.host : this
       node[fn] && node[fn].apply(node, args)
     }) 
     return c 
@@ -916,7 +990,7 @@ var act = { add: add, update: update, remove: remove }
 var str$1 = JSON.stringify
 var parse$1 = JSON.parse
 
-function set(d) {
+function set(d, skipEmit) {
   return function(o, existing, max) {
     if (!is.obj(o))
       return o
@@ -943,13 +1017,16 @@ function set(d) {
       return root
     }
 
-    if (is.def(d.key))
-      apply(o, d.type, (d.key = '' + d.key).split('.'), d.value)
+    if (is.def(d.key)) {
+      if (!apply(o, d.type, (d.key = '' + d.key).split('.'), d.value))
+        return false
+    } else
+      return false
 
     if (o.log && o.log.max) 
       o.log.push((d.time = o.log.length, o.log.max > 0 ? d : null))
 
-    if (o.emit)
+    if (!skipEmit && o.emit)
       o.emit('change', d)
 
     return o
@@ -959,14 +1036,18 @@ function set(d) {
 function apply(body, type, path, value) {
   var next = path.shift()
 
+  if (!act[type]) 
+    return false
   if (path.length) { 
     if (!(next in body)) 
-      if (type == 'remove') return
+      if (type == 'remove') return true
       else body[next] = {}
-    apply(body[next], type, path, value)
+    return apply(body[next], type, path, value)
   }
-  else 
+  else {
     act[type](body, next, value)
+    return true
+  }
 }
 
 function add(o, k, v) {
@@ -1013,45 +1094,6 @@ function pop(o){
   return is.arr(o) 
        ? set({ key: o.length - 1, value: last(o), type: 'remove' })(o)
        : o 
-}
-
-promise.sync = promiseSync
-promise.null = promiseNull
-promise.noop = promiseNoop
-promise.args = promiseArgs
-function promise() {
-  var resolve
-    , reject
-    , p = new Promise(function(res, rej){ 
-        resolve = res, reject = rej
-      })
-
-  arguments.length && resolve(arguments[0])
-  p.resolve = resolve
-  p.reject  = reject
-  return p
-}
-
-function promiseArgs(i){
-  return function(){
-    return promise(arguments[i])
-  }
-}
-
-function promiseSync(arg){
-  return function() {
-    var a = arguments
-      , o = { then: function(cb){ cb(a[arg]); return o } }
-    return o
-  }
-}
-
-function promiseNoop(){
-  return promise()
-}
-
-function promiseNull(){
-  return promise(null)
 }
 
 function proxy$1(fn, ret, ctx){ 
@@ -1181,10 +1223,11 @@ owner.debounce = debounce
 owner.deb = deb
 owner.def = def
 owner.defaults = defaults
+owner.delay = delay
 owner.done = done
 owner.el = el
 owner.emitterify = emitterify
-owner.err = err$1
+owner.err = err
 owner.escape = escape
 owner.extend = extend
 owner.falsy = falsy
