@@ -107,7 +107,7 @@ Sorts array ascendingly based on the value of a key
 array.sort(az('value'))
 ```
 
-Since it uses [key](https://github.com/utilise/utilise#--key) internally, you can also sory on a deep key.
+Since it uses [key](https://github.com/utilise/utilise#--key) internally, you can also sort on a deep key.
 
 ## [![Coverage Status](https://coveralls.io/repos/utilise/body/badge.svg?branch=master)](https://coveralls.io/r/utilise/body?branch=master) [![Build](https://api.travis-ci.org/utilise/body.svg)](https://travis-ci.org/utilise/body) body
 
