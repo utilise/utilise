@@ -143,6 +143,12 @@ function attr(name, value) {
           } 
 }
 
+function wrap(d){
+  return function(){
+    return d
+  }
+}
+
 function str(d){
   return d === 0 ? '0'
        : !d ? ''
@@ -169,7 +175,8 @@ function key(k, v){
 
     function copy(k){
       var val = key(k)(o)
-      ;(val != undefined) && key(k, val)(masked)
+      if (val != undefined) 
+        key(k, is.fn(val) ? wrap(val) : val)(masked)
     }
   }
 }
@@ -236,23 +243,6 @@ function datum(node){
   return node.__data__
 }
 
-function debounce(d){
-  var pending, wait = is.num(d) ? d : 100
-
-  return is.fn(d) 
-       ? next(d)
-       : next
-
-  function next(fn){
-    return function(){
-      var ctx = this, args = arguments
-      pending && clearTimeout(pending)
-      pending = setTimeout(function(){ fn.apply(ctx, args) }, wait)
-    }
-  }
-  
-}
-
 var owner = client ? /* istanbul ignore next */ window : global
 
 function split(delimiter){
@@ -293,6 +283,23 @@ function matches(ns) {
 
 function strip(str) {
   return str.replace(/(\[|\])/g, '')
+}
+
+function debounce(d){
+  var pending, wait = is.num(d) ? d : 100
+
+  return is.fn(d) 
+       ? next(d)
+       : next
+
+  function next(fn){
+    return function(){
+      var ctx = this, args = arguments
+      pending && clearTimeout(pending)
+      pending = setTimeout(function(){ fn.apply(ctx, args) }, wait)
+    }
+  }
+  
 }
 
 function def(o, p, v, w){
@@ -1192,12 +1199,6 @@ function wait(condition){
   }
 }
 
-function wrap(d){
-  return function(){
-    return d
-  }
-}
-
 function za(k) {
   return function(a, b){
     var ka = key(k)(a) || ''
@@ -1220,8 +1221,8 @@ owner.clone = clone
 owner.colorfill = colorfill
 owner.copy = copy
 owner.datum = datum
-owner.debounce = debounce
 owner.deb = deb
+owner.debounce = debounce
 owner.def = def
 owner.defaults = defaults
 owner.delay = delay

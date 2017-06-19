@@ -1,4 +1,5 @@
-var str = require('./str')
+var wrap = require('./wrap')
+  , str = require('./str')
   , is = require('./is')
 
 module.exports = function key(k, v){ 
@@ -19,7 +20,8 @@ module.exports = function key(k, v){
 
     function copy(k){
       var val = key(k)(o)
-      ;(val != undefined) && key(k, val)(masked)
+      if (val != undefined) 
+        key(k, is.fn(val) ? wrap(val) : val)(masked)
     }
   }
 }
