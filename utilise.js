@@ -143,12 +143,6 @@ function attr(name, value) {
           } 
 }
 
-function wrap(d){
-  return function(){
-    return d
-  }
-}
-
 function str(d){
   return d === 0 ? '0'
        : !d ? ''
@@ -175,8 +169,7 @@ function key(k, v){
 
     function copy(k){
       var val = key(k)(o)
-      if (val != undefined) 
-        key(k, is.fn(val) ? wrap(val) : val)(masked)
+      ;(val != undefined) && key(k, val)(masked)
     }
   }
 }
@@ -1196,6 +1189,12 @@ function wait(condition){
         ? handler.apply(this, arguments)
         : this.once('change', wait(condition)(handler))
     }
+  }
+}
+
+function wrap(d){
+  return function(){
+    return d
   }
 }
 
