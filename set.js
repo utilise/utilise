@@ -7,7 +7,7 @@ var act = { add: add, update: update, remove: remove }
 
 module.exports = function set(d, skipEmit) {
   return function(o, existing, max) {
-    if (!is.obj(o))
+    if (!is.obj(o) && !is.fn(o))
       return o
 
     if (!is.obj(d)) { 
