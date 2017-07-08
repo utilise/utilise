@@ -324,10 +324,24 @@ function defaults(o, k, v){
   }
 }
 
+function promise() {
+  var resolve
+    , reject
+    , p = new Promise(function(res, rej){ 
+        resolve = res, reject = rej
+      })
+
+  arguments.length && resolve(arguments[0])
+  p.resolve = resolve
+  p.reject  = reject
+  return p
+}
+
 function delay(ms, d){ 
-  return new Promise(function(resolve){
-    setTimeout(function(){ resolve(d) }, ms)
-  })
+  var p = promise()
+    , t = setTimeout(function(){ p.resolve(d) }, ms)
+  p.abort = function(){ clearTimeout(t) }
+  return p
 }
 
 function done(o) {
@@ -359,19 +373,6 @@ function el(selector){
   elem.toString = function(){ return tag + css.map(prepend('.')).join('') }
 
   return elem
-}
-
-function promise() {
-  var resolve
-    , reject
-    , p = new Promise(function(res, rej){ 
-        resolve = res, reject = rej
-      })
-
-  arguments.length && resolve(arguments[0])
-  p.resolve = resolve
-  p.reject  = reject
-  return p
 }
 
 function emitterify(body) {

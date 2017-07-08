@@ -77,7 +77,7 @@
     "utilise.includes": "*",
     "utilise.is": "*",
     "utilise.join": "*",
-    "utilise.key": "0.0.9",
+    "utilise.key": "*",
     "utilise.keys": "*",
     "utilise.last": "*",
     "utilise.lo": "*",
