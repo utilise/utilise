@@ -409,14 +409,15 @@ function emitterify(body) {
       , ns = type.split('.')[1]
       , li = body.on[id] = body.on[id] || []
       
-    return !cb &&  ns ? (cb = body.on[id]['$'+ns]) ? cb : push(observable())
-         : !cb && !ns ? push(observable())
+    return !cb &&  ns ? (cb = body.on[id]['$'+ns]) ? cb : push(observable(body))
+         : !cb && !ns ? push(observable(body))
          :  cb &&  ns ? push((remove(li, body.on[id]['$'+ns] || -1), cb))
          :  cb && !ns ? push(cb)
                       : false
 
     function push(cb){
       cb.once = once
+      cb.type = type
       if (ns) body.on[id]['$'+(cb.ns = ns)] = cb
       li.push(cb)
       return cb.next ? cb : body
@@ -445,7 +446,11 @@ function emitterify(body) {
     o.parent = parent
     o.fn = fn
     o.i = 0
-
+    Object.defineProperty(o, 'source', parent.emit 
+      ? { value: o, writable: true }
+      : { get: function(){ return parent.source } }
+    )
+    
     o.map = function(fn) {
       var n = observable(o, fn)
       o.listeners[o.listeners.push(function(d, i){ n.next(fn(d, i, n)) }) - 1].fn = fn
@@ -476,7 +481,9 @@ function emitterify(body) {
     }
 
     o.unsubscribe = function(){
-      return o.parent.off(o.fn), o.parent = null, o
+      o.fn ? o.parent.off(o.fn) : o.parent.off(o.type, o)
+      o.parent = o.source = undefined
+      return o
     }
 
     return o
