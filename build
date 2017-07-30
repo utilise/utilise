@@ -20,7 +20,7 @@ const fs = require('fs')
     , alias = "module.exports = require('{mod}')"
     , imp = 'import {name} from "./tmp_{name}";\n'
     , cjs = 'require("./owner").{name} = require("./{name}")\n'
-    , exp = 'exports.{name} = require("./{name}")\n'
+    , exp = ', {name}: require("./{name}")\n'
     , own = 'owner.{name} = {name}\n'
     , modules = keys(require('./package.json').devDependencies)
         .filter(includes('utilise'))
@@ -56,9 +56,11 @@ modules
 
 // expose single node entry point
 const pure = fs.createWriteStream('pure.js')
+pure.write('module.exports = { $: 0')
 modules
   .map(d => exp.replace(/{name}/g, d))
   .map(d => pure.write(d))
+pure.write('}')
 
 //---------------------------------------------------------------------
 // create utilise/{name} aliases
