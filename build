@@ -42,8 +42,7 @@ modules
   .map(s => { 
     const key = s.path.slice(0,-3)
         , req = file('./node_modules/utilise.'+key+'/index.js')
-        , out = req
-            .replace(/utilise./g, './')
+        , out = req.replace(/utilise./g, './')
 
     s.write(out)
   })
@@ -98,27 +97,20 @@ modules
 
 tmp.write(';(client ? window : global).owner = owner')
 
-
+// rollup
 time(100, d => rollup
   .rollup({ entry: 'tmp.js' })
   .then(bundle => bundle.write({
     dest: 'utilise.js'
   , format: 'iife'
   }))
-  .then(end)
-  .catch(end))
-
+  .then(end))
+  
 // delete tmp files
-function end() {
+function end(error) {
   fs.readdirSync(__dirname)
     .filter(includes('tmp'))
     .map(prepend(__dirname+'/'))
     .map(log('deleting'))
     .map(fs.unlinkSync)
 }
-
-//             // .replace(/require\('utilise/mg, 'require(\'utilise')
-//             // .replace(/^.*require\('utilise.*$/mg, '')
-//             // .replace(/.*require\('colors.*\n/g, '')
-//             // .replace(/module.exports =/g, 'export default')
-//             // console.log("out", out)

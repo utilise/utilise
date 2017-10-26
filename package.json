@@ -21,7 +21,7 @@
   "scripts": {
     "minify": "uglifyjs utilise.js -m -c drop_console,dead_code -d client=true -o utilise.min.js",
     "gzip": "gzip -c utilise.min.js > utilise.min.js.gz",
-    "build": "node build && npm run minify && npm run gzip",
+    "build": "node --trace-warnings build && npm run minify && npm run gzip",
     "refresh": "npm update && npm run build",
     "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags"
@@ -30,8 +30,7 @@
   "license": "pemrouz.mit-license.org",
   "dependencies": {
     "colors": "^1.1.2",
-    "through": "^2.3.8",
-    "uglify-es": "^3.0.25"
+    "through": "^2.3.8"
   },
   "devDependencies": {
     "browserify": "^10.2.1",
@@ -39,7 +38,7 @@
     "rollup": "^0.34.1",
     "rollup-plugin-commonjs": "^3.3.1",
     "rollup-plugin-node-resolve": "^1.7.1",
-    "uglify-js": "^2.8.29",
+    "uglify-es": "^3.1.5",
     "utilise.all": "*",
     "utilise.append": "*",
     "utilise.args": "*",
