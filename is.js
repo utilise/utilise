@@ -41,8 +41,7 @@ function isObject(d) {
 }
 
 function isLiteral(d) {
-  return typeof d == 'object' 
-      && !(d instanceof Array)
+  return d.constructor == Object
 }
 
 function isTruthy(d) {

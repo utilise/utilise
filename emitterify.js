@@ -128,18 +128,21 @@ module.exports = function emitterify(body) {
       return remove(o.li, fn), o
     }
 
-    o[Symbol.asyncIterator] = function(){ return { 
-      next: () => (o.wait = new Promise(resolve => {
-        o.wait = true
-        o.map((d, i, n) => {
-          delete o.wait
-          o.off(n)
-          resolve({ value: d, done: false })
-        })
-
-        o.emit('pull', o)
-      }))
-    }}
+    o[Symbol.asyncIterator] = function(){ 
+      return { 
+        next: function(){ 
+          return o.wait = new Promise(function(resolve){
+            o.wait = true
+            o.map(function(d, i, n){
+              delete o.wait
+              o.off(n)
+              resolve({ value: d, done: false })
+            })
+            o.emit('pull', o)
+          })
+        }
+      }
+    }
 
     return o
   }
