@@ -153,6 +153,10 @@ function wrap(d){
   }
 }
 
+function keys(o) { 
+  return Object.keys(is.obj(o) || is.fn(o) ? o : {})
+}
+
 function str(d){
   return d === 0 ? '0'
        : !d ? ''
@@ -163,14 +167,14 @@ function str(d){
 
 function key(k, v){ 
   var set = arguments.length > 1
-    , keys = is.fn(k) ? [] : str(k).split('.')
+    , keys = is.fn(k) ? [] : str(k).split('.').filter(Boolean)
     , root = keys.shift()
 
   return function deep(o, i){
     var masked = {}
     
     return !o ? undefined 
-         : !is.num(k) && !k ? o
+         : !is.num(k) && !k ? (set ? replace(o, v) : o)
          : is.arr(k) ? (k.map(copy), masked)
          : o[k] || !keys.length ? (set ? ((o[k] = is.fn(v) ? v(o[k], i) : v), o)
                                        :  (is.fn(k) ? k(o) : o[k]))
@@ -181,6 +185,12 @@ function key(k, v){
       var val = key(k)(o)
       if (val != undefined) 
         key(k, is.fn(val) ? wrap(val) : val)(masked)
+    }
+
+    function replace(o, v) {
+      dir(o).map(function(k){ delete o[k] })
+      dir(v).map(function(k){ o[k] = v[k] })
+      return o
     }
   }
 }
@@ -311,10 +321,6 @@ function def(o, p, v, w){
   if (p.name) v = p, p = p.name
   !has(o, p) && Object.defineProperty(o, p, { value: v, writable: w })
   return o[p]
-}
-
-function keys(o) { 
-  return Object.keys(is.obj(o) || is.fn(o) ? o : {})
 }
 
 function defaults(o, k, v){
@@ -1095,8 +1101,7 @@ function apply(body, type, path, value) {
     return apply(body[next], type, path, value)
   }
   else {
-    act[type](body, next, value)
-    return true
+    return !act[type](body, next, value)
   }
 }
 
@@ -1106,8 +1111,13 @@ function add(o, k, v) {
     : (o[k] = v)
 }
 
-function update(o, k, v) { 
-  o[k] = v 
+function update(o, k, v) {
+  if (!is.num(k) && !k) {
+    if (!is.obj(v)) return true
+    for (var x in o) delete o[x]
+    for (var x in v) o[x] = v[x]
+  } else 
+    o[k] = v 
 }
 
 function remove(o, k, v) { 

@@ -60,8 +60,7 @@ function apply(body, type, path, value) {
     return apply(body[next], type, path, value)
   }
   else {
-    act[type](body, next, value)
-    return true
+    return !act[type](body, next, value)
   }
 }
 
@@ -71,8 +70,13 @@ function add(o, k, v) {
     : (o[k] = v)
 }
 
-function update(o, k, v) { 
-  o[k] = v 
+function update(o, k, v) {
+  if (!is.num(k) && !k) {
+    if (!is.obj(v)) return true
+    for (var x in o) delete o[x]
+    for (var x in v) o[x] = v[x]
+  } else 
+    o[k] = v 
 }
 
 function remove(o, k, v) { 
