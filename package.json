@@ -56,7 +56,7 @@
     "utilise.delay": "*",
     "utilise.done": "*",
     "utilise.el": "*",
-    "utilise.emitterify": "^1.3.2",
+    "utilise.emitterify": "*",
     "utilise.err": "*",
     "utilise.escape": "*",
     "utilise.extend": "*",

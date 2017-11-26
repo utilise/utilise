@@ -33,7 +33,7 @@ module.exports = function set(d, skipEmit) {
     }
 
     if (is.def(d.key)) {
-      if (!apply(o, d.type, (d.key = '' + d.key).split('.'), d.value))
+      if (!apply(o, d.type, (d.key = '' + d.key).split('.').filter(Boolean), d.value))
         return false
     } else
       return false
