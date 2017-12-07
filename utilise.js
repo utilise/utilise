@@ -195,14 +195,20 @@ function key(k, v){
   }
 }
 
-function az(k) {
+function az() {
+  return compare(to.arr(arguments))
+}
+
+function compare(keys){ 
   return function(a, b){
-    var ka = key(k)(a) || ''
+    if (!keys.length) return 0
+    var k = keys[0]
+      , ka = key(k)(a) || ''
       , kb = key(k)(b) || ''
 
     return ka > kb ?  1 
          : ka < kb ? -1 
-                   :  0
+         : compare(keys.slice(1))(a, b)
   }
 }
 
@@ -1251,14 +1257,20 @@ function wait(condition){
   }
 }
 
-function za(k) {
+function az$1() {
+  return compare$1(to.arr(arguments))
+}
+
+function compare$1(keys){ 
   return function(a, b){
-    var ka = key(k)(a) || ''
+    if (!keys.length) return 0
+    var k = keys[0]
+      , ka = key(k)(a) || ''
       , kb = key(k)(b) || ''
 
-    return ka > kb ? -1 
-         : ka < kb ?  1 
-                   :  0
+    return ka < kb ?  1 
+         : ka > kb ? -1 
+         : compare$1(keys.slice(1))(a, b)
   }
 }
 
@@ -1339,7 +1351,7 @@ owner.update = update$1
 owner.values = values
 owner.wait = wait
 owner.wrap = wrap
-owner.za = za
+owner.za = az$1
 ;(client ? window : global).owner = owner
 
 }());

@@ -37,12 +37,12 @@
     "rollup": "^0.34.1",
     "rollup-plugin-commonjs": "^3.3.1",
     "rollup-plugin-node-resolve": "^1.7.1",
-    "uglify-es": "^3.2.0",
+    "uglify-es": "^3.2.1",
     "utilise.all": "*",
     "utilise.append": "*",
     "utilise.args": "*",
     "utilise.attr": "*",
-    "utilise.az": "*",
+    "utilise.az": "^1.0.0",
     "utilise.by": "*",
     "utilise.client": "*",
     "utilise.clone": "*",
@@ -119,6 +119,6 @@
     "utilise.via": "*",
     "utilise.wait": "*",
     "utilise.wrap": "*",
-    "utilise.za": "*"
+    "utilise.za": "^1.0.0"
   }
 }
