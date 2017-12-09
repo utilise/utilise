@@ -42,7 +42,7 @@
     "utilise.append": "*",
     "utilise.args": "*",
     "utilise.attr": "*",
-    "utilise.az": "^1.0.0",
+    "utilise.az": "*",
     "utilise.by": "*",
     "utilise.client": "*",
     "utilise.clone": "*",
@@ -92,7 +92,7 @@
     "utilise.parse": "*",
     "utilise.patch": "*",
     "utilise.pause": "*",
-    "utilise.perf": "^1.0.0",
+    "utilise.perf": "*",
     "utilise.pop": "*",
     "utilise.prepend": "*",
     "utilise.promise": "*",
@@ -109,7 +109,7 @@
     "utilise.split": "*",
     "utilise.str": "*",
     "utilise.stripws": "*",
-    "utilise.tdraw": "0.0.6",
+    "utilise.tdraw": "*",
     "utilise.th": "*",
     "utilise.time": "*",
     "utilise.to": "*",
@@ -119,6 +119,6 @@
     "utilise.via": "*",
     "utilise.wait": "*",
     "utilise.wrap": "*",
-    "utilise.za": "^1.0.0"
+    "utilise.za": "*"
   }
 }

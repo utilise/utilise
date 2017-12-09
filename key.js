@@ -21,7 +21,10 @@ module.exports = function key(k, v){
 
     function copy(k){
       var val = key(k)(o)
-      if (val != undefined) 
+      val = is.fn(v)       ? v(val) 
+          : val == undefined ? v
+                           : val
+    if (val != undefined) 
         key(k, is.fn(val) ? wrap(val) : val)(masked)
     }
 

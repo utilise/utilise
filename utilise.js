@@ -183,7 +183,10 @@ function key(k, v){
 
     function copy(k){
       var val = key(k)(o)
-      if (val != undefined) 
+      val = is.fn(v)       ? v(val) 
+          : val == undefined ? v
+                           : val
+    if (val != undefined) 
         key(k, is.fn(val) ? wrap(val) : val)(masked)
     }
 
@@ -473,10 +476,10 @@ function emitterify(body) {
     o.source = opts.fn ? o.parent.source : o
     
     o.on('stop', function(reason){
-      o.reason = reason
-      return o.type
+      o.type
         ? o.parent.off(o.type, o)
         : o.parent.off(o)
+      return o.reason = reason
     })
 
     o.each = function(fn) {
@@ -515,7 +518,7 @@ function emitterify(body) {
     }
 
     o.until = function(stop){
-      stop.each(function(){ o.source.emit('stop') })
+      stop.each(function(reason){ return o.source.emit('stop', reason) })
       return o
     }
 
