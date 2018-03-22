@@ -14,7 +14,7 @@ function once(nodes, enter, exit) {
         : [nodes]
 
   var p = n.length
-  while (p-- > 0) if (!n[p].evented) event(n[p], p)
+  while (p-- > 0) if (!n[p].on) event(n[p], p)
 
   c.node  = function() { return n[0] }
   c.enter = function() { return once(enter) }
@@ -63,7 +63,7 @@ function once(nodes, enter, exit) {
   }
   c.each = function(fn){
     p = -1; while(n[++p])
-      fn.call(n[p], n[p], n[p].__data__, p)
+      fn.call(n[p], n[p], n[p].state, p)
     return this
   }
   c.remove = function(){
@@ -110,15 +110,15 @@ function once(nodes, enter, exit) {
     if (d === 1 && arguments.length == 2) {
       while (n[++p]) { 
         j = n[p].children.length
-        selector = s.call ? s(n[p].__data__ || 1, 0) : s
+        selector = s.call ? s(n[p].state || 1, 0) : s
         while (n[p].children[--j])  {
           if (n[p].children[j].matches(selector)) {
-            (tnodes[++t] = n[p].children[j]).__data__ = n[p].__data__ || 1
+            (tnodes[++t] = n[p].children[j]).state = n[p].state || 1
             break
           }
         }
 
-        if (j < 0) n[p].appendChild(tnodes[++t] = tenter[tenter.length] = create(selector, [n[p].__data__ || 1], 0))
+        if (j < 0) n[p].appendChild(tnodes[++t] = tenter[tenter.length] = create(selector, [n[p].state || 1], 0))
         if ('function' === typeof tnodes[t].draw) tnodes[t].draw()
       }
 
@@ -127,10 +127,10 @@ function once(nodes, enter, exit) {
 
     // main loop
     while (n[++p]) {
-      selector = 'function' === typeof s ? s(n[p].__data__) : s
-      data     = 'function' === typeof d ? d(n[p].__data__) : d
+      selector = 'function' === typeof s ? s(n[p].state) : s
+      data     = 'function' === typeof d ? d(n[p].state) : d
       
-      if (d === 1)                    data = n[p].__data__ || [1]
+      if (d === 1)                    data = n[p].state || [1]
       if ('string' === typeof data)   data = [data]
       if (!data)                      data = []
       if (data.constructor !== Array) data = [data]
@@ -150,7 +150,7 @@ function once(nodes, enter, exit) {
           continue 
         }
 
-        (tnodes[++t] = n[p].children[j]).__data__ = data[l] // update
+        (tnodes[++t] = n[p].children[j]).state = data[l] // update
         if ('function' === typeof n[p].children[j].draw) n[p].children[j].draw()
       }
 
@@ -161,7 +161,7 @@ function once(nodes, enter, exit) {
         while (++l < data.length) { 
           (b ? n[p].insertBefore(tnodes[++t] = tenter[tenter.length] = n[p].templates[selector].cloneNode(false), n[p].querySelector(b)) 
              : n[p].appendChild( tnodes[++t] = tenter[tenter.length] = n[p].templates[selector].cloneNode(false)))
-             .__data__ = data[l]
+             .state = data[l]
           if ('function' === typeof tnodes[t].draw) tnodes[t].draw()
         }
       } else {
@@ -178,37 +178,35 @@ function once(nodes, enter, exit) {
 
 }
 
-function event(node, index) {
-  node = node.host && node.host.nodeName ? node.host : node
-  if (node.evented) return
-  if (!node.on) emitterify(node)
-  var on = node.on
-    , emit = node.emit
-    , old = keys(node.on)
+// TODO: factor out - need to fix nbuild / non-./deps
+function event(node) {
+  // node = node.host && node.host.nodeName ? node.host : node
+  if (node.on) return
+  node.listeners = {}
 
-  node.evented = true
-
-  node.on = function(type) {
-    node.addEventListener(type.split('.').shift(), reemit)
-    on.apply(node, arguments)
-    return node
+  const on = o => {
+    const type = o.type.split('.').shift()
+    if (!node.listeners[type])
+      node.addEventListener(type, node.listeners[type] = 
+        event => (!event.detail || !event.detail.emitted ? emit(type, event) : 0)
+      )
   }
 
-  node.emit = function(event, detail) {
-    node.dispatchEvent(event instanceof window.Event 
-      ? event
-      : new window.CustomEvent(event, { detail: detail, bubbles: false, cancelable: true }))
-    return node
+  const off = o => {
+    if (!node.on[o.type].length) {
+      node.removeEventListener(o.type, node.listeners[o.type])
+      delete node.listeners[o.type]
+    }
   }
 
-  old.map(function(event){
-    node.on[event] = on[event]
-    node.on(event)
-  })
+  emitterify(node, { on, off })
+  const { emit } = node
 
-  function reemit(event){
-    if ('object' === typeof window.d3) window.d3.event = event
-    emit(event.type, [this.__data__, index, this, event])
+  node.emit = function(type, params){
+    const detail = { params, emitted: true }
+        , event = new CustomEvent(type, { detail, bubbles: false, cancelable: true })
+    node.dispatchEvent(event)
+    return emit(type, event)
   }
 }
 
@@ -241,7 +239,7 @@ function create(s, d, j) {
   for (i = 0; i < css.length; i++) 
     node.classList.add(css[i])
 
-  node.__data__ = d[j] || 1
+  node.state = d[j] || 1
   return node
 }
 
@@ -255,14 +253,14 @@ function byKey(selector, data, key, b, parent, tnodes, tenter, texit) {
 
   while (parent.children[++c]) 
     if (!parent.children[c].matches(selector)) continue
-    else indexNodes[key(parent.children[c].__data__)] = parent.children[c]
+    else indexNodes[key(parent.children[c].state)] = parent.children[c]
 
   next = b ? parent.querySelector(b) : null
 
   while (d--) {
     if (child = indexNodes[k = key(data[d])])
       if (child === true) continue
-      else child.__data__ = data[d]
+      else child.state = data[d]
     else
       tenter.unshift(child = create(selector, data, d))
     

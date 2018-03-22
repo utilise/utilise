@@ -73,11 +73,11 @@ modules
         , req = file('./node_modules/utilise.'+key+'/index.js')
         , out = req
             .replace(/^.*require\('utilise\.(.*)'\)\((.*)\).*$/mg, `import _$1 from "./tmp_$1"\nvar $1 = _$1($2)`)
-            .replace(/^.*require\('utilise\.(.*)'\).*$/mg, 'import $1 from "./tmp_$1"')
+            .replace(/^.*require\('utilise\.(.*)'\).*$/mg, 'import $1 from "./tmp_$1";')
             // // .replace(/utilise./g, './')
             // // .replace(/require\('utilise/mg, 'require(\'utilise')
             .replace(/.*require\('colors.*\n/g, '')
-            .replace(/^  ,/mg, 'var')
+            .replace(/;\r?\n  ,/mg, '\nvar')
             .replace(/module.exports =/g, 'export default')
 
     s.write(out)

@@ -1,9 +1,11 @@
 var promise = require('./promise')
   , flatten = require('./flatten')
   , def     = require('./def')
-  
-module.exports = function emitterify(body) {
+  , noop = function(){}
+
+module.exports = function emitterify(body, hooks) {
   body = body || {}
+  hooks = hooks || {}
   def(body, 'emit', emit, 1)
   def(body, 'once', once, 1)
   def(body, 'off', off, 1)
@@ -48,6 +50,7 @@ module.exports = function emitterify(body) {
       cb.type = id
       if (ns) body.on[id]['$'+(cb.ns = ns)] = cb
       li.push(cb)
+      ;(hooks.on || noop)(cb)
       return cb.next ? cb : body
     }
   }
@@ -60,7 +63,7 @@ module.exports = function emitterify(body) {
     var i = li.length
     while (~--i) 
       if (cb == li[i] || cb == li[i].fn || !cb)
-        li.splice(i, 1)
+        (hooks.off || noop)(li.splice(i, 1)[0])
   }
 
   function off(type, cb) {
@@ -121,12 +124,17 @@ module.exports = function emitterify(body) {
     }
 
     o.until = function(stop){
-      stop.each(function(reason){ return o.source.emit('stop', reason) })
+      (stop.each || stop.then).call(stop, function(reason){ return o.source.emit('stop', reason) })
       return o
     }
 
     o.off = function(fn){
       return remove(o.li, fn), o
+    }
+
+    o.start = function(fn){
+      o.source.emit('start')
+      return o
     }
 
     o[Symbol.asyncIterator] = function(){ 

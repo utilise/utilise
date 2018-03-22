@@ -11,11 +11,11 @@ module.exports = function form(root) {
     .map(function(el){ 
       var n = name(el)
         , v = values[n] = 
-            el.state              ? el.state.value 
-          : el.files              ? el.files
-          : el.type == 'checkbox' ? (values[n] || []).concat(el.checked ? el.value : [])
-          : el.type == 'radio'    ? (el.checked ? el.value : values[n])
-                                  : el.value
+            el.state && 'value' in el.state ? el.state.value 
+          : el.files                        ? el.files
+          : el.type == 'checkbox'           ? (values[n] || []).concat(el.checked ? el.value : [])
+          : el.type == 'radio'              ? (el.checked ? el.value : values[n])
+                                            : el.value
 
       if (includes('is-invalid')(el.className)) invalid.push(el)
     })
