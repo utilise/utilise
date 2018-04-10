@@ -521,7 +521,10 @@ function emitterify(body, hooks) {
     }
 
     o.until = function(stop){
-      (stop.each || stop.then).call(stop, function(reason){ return o.source.emit('stop', reason) })
+      stop.each ? stop.each(o.stop) // TODO: check clean up on stop too
+    : stop.then ? stop.then(o.stop)
+    : stop.call ? o.filter(stop).each(o.stop)
+                : 0
       return o
     }
 
@@ -529,9 +532,13 @@ function emitterify(body, hooks) {
       return remove(o.li, fn), o
     }
 
-    o.start = function(fn){
+    o.start = function(){
       o.source.emit('start')
       return o
+    }
+
+    o.stop = function(reason){
+      return o.source.emit('stop', reason)
     }
 
     o[Symbol.asyncIterator] = function(){ 
