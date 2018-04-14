@@ -188,7 +188,7 @@ function event(node) {
     const type = o.type.split('.').shift()
     if (!node.listeners[type])
       node.addEventListener(type, node.listeners[type] = 
-        event => (!event.detail || !event.detail.emitted ? emit(type, event) : 0)
+        event => (!event.detail || !event.detail.emitted ? emit(type, [event, node.state, node]) : 0)
       )
   }
 

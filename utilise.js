@@ -521,11 +521,10 @@ function emitterify(body, hooks) {
     }
 
     o.until = function(stop){
-      stop.each ? stop.each(o.stop) // TODO: check clean up on stop too
-    : stop.then ? stop.then(o.stop)
-    : stop.call ? o.filter(stop).each(o.stop)
-                : 0
-      return o
+      return stop.each ? stop.each(o.stop) // TODO: check clean up on stop too
+           : stop.then ? stop.then(o.stop)
+           : stop.call ? o.filter(stop).map(o.stop)
+                       : 0
     }
 
     o.off = function(fn){
@@ -975,7 +974,7 @@ function event(node) {
     const type = o.type.split('.').shift()
     if (!node.listeners[type])
       node.addEventListener(type, node.listeners[type] = 
-        event => (!event.detail || !event.detail.emitted ? emit(type, event) : 0)
+        event => (!event.detail || !event.detail.emitted ? emit(type, [event, node.state, node]) : 0)
       )
   }
 
