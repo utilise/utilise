@@ -93,7 +93,7 @@
     "utilise.parse": "*",
     "utilise.patch": "*",
     "utilise.pause": "*",
-    "utilise.perf": "*",
+    "utilise.perf": "^1.0.1",
     "utilise.pop": "*",
     "utilise.prepend": "*",
     "utilise.promise": "*",

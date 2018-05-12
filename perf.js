@@ -1,7 +1,7 @@
 var log = require('./log')('[perf]')
   , client = require('./client')
 
-module.exports =  function perf(fn, msg) {
+module.exports =  function perf(fn, msg, say) {
   return function(){
     /* istanbul ignore next */
     var start  = client ? performance.now() : process.hrtime()
@@ -18,6 +18,6 @@ module.exports =  function perf(fn, msg) {
     var diff = client ? performance.now() - start : process.hrtime(start)
     if (!client) diff = (diff[0]*1e3 + diff[1]/1e6)
     diff = Math.round(diff*100)/100
-    log(msg || fn.name, diff, 'ms')
+    ;(say || log)(msg || fn.name, diff, 'ms')
   }
 }

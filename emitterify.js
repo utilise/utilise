@@ -81,17 +81,12 @@ module.exports = function emitterify(body, hooks) {
     o.parent = parent
     o.source = opts.fn ? o.parent.source : o
     
-    o.once('stop', function(reason){
+    o.on('stop', function(reason){
       o.type
         ? o.parent.off(o.type, o)
         : o.parent.off(o)
-      return o.done = reason || true
+      return o.reason = reason
     })
-
-    // TODO: should be getter
-    o[Symbol.species] = function(){
-      return observable()
-    }
 
     o.each = function(fn) {
       var n = fn.next ? fn : observable(o, { fn: fn })
@@ -115,15 +110,6 @@ module.exports = function emitterify(body, hooks) {
       return o.each(function(d, i, n){ return n.next(acc = fn(acc, d, i, n)) })
     }
 
-    o.transform = function(){
-      const fns = Array.from(arguments).reverse()
-          , n = o.each(function(d, i, n){ pipeline(n, d) })
-          , pipeline = fns.reduce(function(res, fn){
-              return fn(res, o)
-            }, function(_,d){ n.next(d) })
-      return n
-    } 
-
     o.unpromise = function(){ 
       var n = observable(o, { base: {}, fn: function(d){ return n.next(d) } })
       o.li.push(n)
@@ -132,15 +118,13 @@ module.exports = function emitterify(body, hooks) {
 
     o.next = function(value) {
       o.resolve && o.resolve(value)
-      o.emit('next', value)
       return o.li.length 
            ? o.li.map(function(n){ return n.fn(value, n.i++, n) })
            : value
     }
 
     o.until = function(stop){
-      return !stop     ? 0
-           : stop.each ? stop.each(o.stop) // TODO: check clean up on stop too
+      return stop.each ? stop.each(o.stop) // TODO: check clean up on stop too
            : stop.then ? stop.then(o.stop)
            : stop.call ? o.filter(stop).map(o.stop)
                        : 0
@@ -161,28 +145,18 @@ module.exports = function emitterify(body, hooks) {
     }
 
     o[Symbol.asyncIterator] = function(){ 
-      const queue = []
-          , buffer = o.map(value => 
-              new Promise(resolve => queue.push({ value, done: false, resolve }))
-            ).start(o.source
-              .once('stop')
-              .map(value => new Promise(resolve => {
-                o.off(buffer)
-                queue.push({ value, done: true, resolve })
-                buffer.emit('next')
-              })))
-
       return { 
         next: function(){ 
-          return Promise.resolve(
-              queue.length ? queue.shift() : buffer.once('next').map(() => queue.shift())
-          ).then(({ value, done, resolve }) => {
-            resolve(value)
-            return { value, done }
+          return o.wait = new Promise(function(resolve){
+            o.wait = true
+            o.map(function(d, i, n){
+              delete o.wait
+              o.off(n)
+              resolve({ value: d, done: false })
+            })
+            o.emit('pull', o)
           })
         }
-      , return: o.stop
-      , queue
       }
     }
 
