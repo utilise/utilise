@@ -65,7 +65,7 @@
     "utilise.first": "*",
     "utilise.flatten": "*",
     "utilise.fn": "*",
-    "utilise.form": "*",
+    "utilise.form": "^1.0.1",
     "utilise.from": "*",
     "utilise.grep": "*",
     "utilise.group": "*",
