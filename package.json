@@ -29,7 +29,7 @@
   "author": "Pedram Emrouznejad (https://github.com/pemrouz)",
   "license": "pemrouz.mit-license.org",
   "dependencies": {
-    "colors": "^1.2.3",
+    "@dabh/colors": "^1.4.0",
     "through": "^2.3.8"
   },
   "devDependencies": {
